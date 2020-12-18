@@ -1,5 +1,9 @@
 package com.gigaboutique.gigauserservice.dto;
 
+import java.util.List;
+
+import com.gigaboutique.gigauserservice.model.ProduitPanierId;
+
 public class UtilisateurDto {
 
 	private int idUtilisateur;
@@ -10,7 +14,7 @@ public class UtilisateurDto {
 
 	private String mail;
 
-	private int idProduit;
+	private List<ProduitPanierId> produits;
 
 	public int getIdUtilisateur() {
 		return idUtilisateur;
@@ -44,12 +48,13 @@ public class UtilisateurDto {
 		this.mail = mail;
 	}
 
-	public int getIdProduit() {
-		return idProduit;
+	public List<ProduitPanierId> getProduits() {
+		return produits;
 	}
 
-	public void setIdProduit(int idProduit) {
-		this.idProduit = idProduit;
+	public void setProduits(List<ProduitPanierId> produits) {
+		this.produits = produits;
 	}
+
 
 }
