@@ -3,13 +3,16 @@ package com.gigaboutique.gigauserservice.model;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -41,8 +44,12 @@ public class UtilisateurBean implements Serializable {
 	@Column(name = "mot_de_passe")
 	private String motDePasse;
 
-	@OneToMany(mappedBy = "emprunteur", cascade = CascadeType.ALL)
-	private Set<ProduitPanierBean> produitPanier;
+	@ManyToMany(mappedBy = "emprunteur", fetch = FetchType.EAGER)
+	@JoinTable(name = "course_like", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
+	private Set<ProduitPanierBean> produitsPanier;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private RoleBean role;
 
 	public Integer getId() {
 		return id;
@@ -84,12 +91,20 @@ public class UtilisateurBean implements Serializable {
 		this.motDePasse = motDePasse;
 	}
 
-	public Set<ProduitPanierBean> getProduitPanier() {
-		return produitPanier;
+	public Set<ProduitPanierBean> getProduitsPanier() {
+		return produitsPanier;
 	}
 
-	public void setProduitPanier(Set<ProduitPanierBean> produitPanier) {
-		this.produitPanier = produitPanier;
+	public void setProduitsPanier(Set<ProduitPanierBean> produitPanier) {
+		this.produitsPanier = produitPanier;
+	}
+
+	public RoleBean getRole() {
+		return role;
+	}
+
+	public void setRole(RoleBean role) {
+		this.role = role;
 	}
 
 }
