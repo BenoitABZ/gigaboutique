@@ -25,11 +25,11 @@ public class RoleService {
 
 		if (isAdmin(utilisateur)) {
 
-			role.setRole(rc.getUserRole());
+			role.setRole(rc.getAdminRole());
 
 		} else {
-
-			role.setRole(rc.getAdminRole());
+			
+			role.setRole(rc.getUserRole());
 
 		}
 
@@ -51,13 +51,9 @@ public class RoleService {
 
 		boolean bool = false;
 
-		for (String password : rc.getAdminPassword()) {
+		if (utilisateur.getMail().endsWith(rc.getAdminMail())) {
 
-			if (utilisateur.getMail().equals(rc.getAdminMail()) && utilisateur.getMotDePasse().equals(password)) {
-
-				bool = true;
-			}
-
+			bool = true;
 		}
 
 		return bool;

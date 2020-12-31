@@ -4,21 +4,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
+import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @Service
 public class UtilisateurService {
-	
+
 	@Autowired
 	MapUtilisateurDtoService mapUtilisateurDtoService;
 
@@ -26,14 +31,17 @@ public class UtilisateurService {
 	private UtilisateurDao utilisateurDao;
 
 	@Autowired
-	private Validator validator;
+	private ModelMapper modelMapper;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<UtilisateurDto> getUtilisateurs() {
-		return ((List<UtilisateurBean>) utilisateurDao.findAll()).stream()
-				.map(mapUtilisateurDtoService::convertToUtilisateurDto).collect(Collectors.toList());
+		return ((List<UtilisateurBean>) utilisateurDao
+				.findAll())
+				.stream()
+				.map(mapUtilisateurDtoService::convertToUtilisateurDto)
+				.collect(Collectors.toList());
 	}
 
 	public UtilisateurDto getUtilisateur(String mail) throws UtilisateurException {
@@ -52,7 +60,10 @@ public class UtilisateurService {
 
 	}
 
-	public UtilisateurDto registerUtilisateur(UtilisateurBean utilisateur, RoleService rc) throws UtilisateurException {
+	public UtilisateurDto registerUtilisateur(RegisterDto registerDto, RoleService rc) throws UtilisateurException {
+
+		UtilisateurBean utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto,
+				modelMapper);
 
 		UtilisateurBean utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
 
@@ -62,7 +73,7 @@ public class UtilisateurService {
 
 		}
 
-		Set<ConstraintViolation<UtilisateurBean>> vViolations = validator.validate(utilisateur);
+		Set<ConstraintViolation<UtilisateurBean>> vViolations = getConstraintValidator().validate(utilisateur);
 		if (!vViolations.isEmpty()) {
 
 			for (ConstraintViolation<UtilisateurBean> vViolation : vViolations) {
@@ -71,17 +82,24 @@ public class UtilisateurService {
 
 			}
 		}
-		
+
 		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-		
+
 		utilisateur = rc.setRoleUtilisateur(utilisateur);
-		
+
 		utilisateurDao.save(utilisateur);
 
 		UtilisateurDto utilisateurDto = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateur);
-		
+
 		return utilisateurDto;
 
+	}
+
+	private Validator getConstraintValidator() {
+		Configuration<?> vConfiguration = Validation.byDefaultProvider().configure();
+		ValidatorFactory vFactory = vConfiguration.buildValidatorFactory();
+		Validator vValidator = vFactory.getValidator();
+		return vValidator;
 	}
 
 }

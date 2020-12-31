@@ -1,3 +1,8 @@
+CREATE TABLE ProduitPanier (
+                id_produitPanier INTEGER NOT NULL,
+                CONSTRAINT id_produitpanier PRIMARY KEY (id_produitPanier)
+);
+
 
 CREATE SEQUENCE utilisateur_id_utilisateur_seq;
 
@@ -13,14 +18,21 @@ CREATE TABLE Utilisateur (
 
 ALTER SEQUENCE utilisateur_id_utilisateur_seq OWNED BY Utilisateur.id_utilisateur;
 
-CREATE TABLE Utilisateur_Produit (
-                id_produit_external INTEGER NOT NULL,
+CREATE TABLE Utilisateur_ProduitPanier (
                 id_utilisateur INTEGER NOT NULL,
-                CONSTRAINT utilisateur_produit_pk PRIMARY KEY (id_produit_external, id_utilisateur)
+                id_produitPanier INTEGER NOT NULL,
+                CONSTRAINT utilisateur_produitpanier_pk PRIMARY KEY (id_utilisateur, id_produitPanier)
 );
 
 
-ALTER TABLE Utilisateur_Produit ADD CONSTRAINT utilisateur_utilisateur_produit_fk
+ALTER TABLE Utilisateur_ProduitPanier ADD CONSTRAINT produitpanier_utilisateur_produitpanier_fk
+FOREIGN KEY (id_produitPanier)
+REFERENCES ProduitPanier (id_produitPanier)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Utilisateur_ProduitPanier ADD CONSTRAINT utilisateur_utilisateur_produit_fk
 FOREIGN KEY (id_utilisateur)
 REFERENCES Utilisateur (id_utilisateur)
 ON DELETE NO ACTION

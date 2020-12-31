@@ -2,8 +2,6 @@ package com.gigaboutique.gigauserservice.dto;
 
 import java.util.Set;
 
-import com.gigaboutique.gigauserservice.model.RoleBean;
-
 public class UtilisateurDto {
 
 	private int idUtilisateur;
@@ -14,9 +12,11 @@ public class UtilisateurDto {
 
 	private String mail;
 
-	private RoleBean role;
+	private String role;
 
 	private Set<Integer> produits;
+
+	private int idProduitToRemove;
 
 	private String message;
 
@@ -52,11 +52,11 @@ public class UtilisateurDto {
 		this.mail = mail;
 	}
 
-	public RoleBean getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(RoleBean role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -74,6 +74,14 @@ public class UtilisateurDto {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getIdProduitToRemove() {
+		return idProduitToRemove;
+	}
+
+	public void setIdProduitToRemove(int idProduitToRemove) {
+		this.idProduitToRemove = idProduitToRemove;
 	}
 
 }

@@ -1,10 +1,5 @@
 package com.gigaboutique.gigauserservice;
 
-import javax.validation.Configuration;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,14 +18,6 @@ public class GigaUserserviceApplication {
 	@Bean
 	public ModelMapper getMapper() {
 		return new ModelMapper();
-	}
-
-	@Bean
-	public Validator getConstraintValidator() {
-		Configuration<?> vConfiguration = Validation.byDefaultProvider().configure();
-		ValidatorFactory vFactory = vConfiguration.buildValidatorFactory();
-		Validator vValidator = vFactory.getValidator();
-		return vValidator;
 	}
 
 	@Bean
