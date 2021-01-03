@@ -47,11 +47,11 @@ public class UtilisateurBean implements Serializable {
 	@Column(name = "adresse_mail")
 	private String mail;
 
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})", message = "votre mot de passe doit comporter au moins 8 caractères dont 1 majuscule et 1 chiffre")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}", message = "votre mot de passe doit comporter au moins 8 caractères dont 1 majuscule et 1 chiffre")
 	@Column(name = "mot_de_passe")
 	private String motDePasse;
 
-	@ManyToMany(mappedBy = "utilisateur", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
 	private Set<ProduitPanierBean> produitsPanier;
 
