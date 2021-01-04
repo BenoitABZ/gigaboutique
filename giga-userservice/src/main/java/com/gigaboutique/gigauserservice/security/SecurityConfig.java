@@ -27,7 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService)
 		    .passwordEncoder(bCryptPasswordEncoder);
 		
-	}
+		auth.inMemoryAuthentication().withUser("utilisateur").password(bCryptPasswordEncoder.encode("mdp"))
+		.authorities("USER");
+		
+   }
+		
+	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -36,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	  .and()
 		    .authorizeRequests()
-		    .antMatchers("/signup/**", "/login/**")
+		    .antMatchers("/signup/utilisateur", "/login/**")
 		    .permitAll()
 		    .antMatchers("/utilisateurs").hasAuthority("ADMIN")
 		    .anyRequest().authenticated()

@@ -61,12 +61,25 @@ public class UtilisateurService {
 	}
 
 	public UtilisateurDto registerUtilisateur(RegisterDto registerDto, RoleService rc) throws UtilisateurException {
+		
+		UtilisateurBean utilisateurVerify=null;
+		
+		UtilisateurBean utilisateur =null;
+		
+		UtilisateurDto utilisateurDto =null;
+		
+		try {
 
-		UtilisateurBean utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto,
+		utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto,
 				modelMapper);
-
-		UtilisateurBean utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
-
+		
+		utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
+		
+		 }catch(NullPointerException npe) {
+				
+				System.out.println("ici");
+			}
+		
 		if (utilisateurVerify != null) {
 
 			throw new UtilisateurException("Cette adresse mail existe déjà!");
@@ -82,6 +95,8 @@ public class UtilisateurService {
 
 			}
 		}
+		
+		System.out.println(utilisateur.getMotDePasse());
 
 		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
@@ -89,7 +104,9 @@ public class UtilisateurService {
 
 		utilisateurDao.save(utilisateur);
 
-		UtilisateurDto utilisateurDto = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateur);
+		utilisateurDto = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateur);
+		
+       
 
 		return utilisateurDto;
 

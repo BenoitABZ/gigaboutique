@@ -42,8 +42,17 @@ public class MapUtilisateurDtoService {
 	}
 
 	public UtilisateurBean convertToUtilisateurBeanForRegistration(RegisterDto registerDto, ModelMapper modelMapper) {
-
-		UtilisateurBean utilisateurBean = modelMapper.map(registerDto, UtilisateurBean.class);
+		
+		UtilisateurBean utilisateurBean = new UtilisateurBean();
+		
+		utilisateurBean.setNom(registerDto.getNom());
+		utilisateurBean.setPrenom(registerDto.getPrenom());
+		utilisateurBean.setMail(registerDto.getMail());
+		utilisateurBean.setMotDePasse(registerDto.getPassword());
+		
+		/*
+		UtilisateurBean utilisateurBean = modelMapper.map(registerDto, UtilisateurBean.class);	
+		*/
 
 		return utilisateurBean;
 	}

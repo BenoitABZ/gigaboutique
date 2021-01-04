@@ -15,7 +15,7 @@ public class RoleService {
 
 	private RoleBean role;
 
-	RoleService() {
+	public RoleService() {
 
 		setRole(new RoleBean());
 

@@ -31,10 +31,17 @@ public class UtilisateurController {
 		try {
 			utilisateurDto = utilisateurService.registerUtilisateur(registerDto, roleService);
 		} catch (UtilisateurException e) {
+			
 			utilisateurDto.setMessage(e.getMessage());
+			
+			System.out.println("ici");
+			
+			return utilisateurDto;
 		}
+		
+		System.out.println(utilisateurDto);
 
-		utilisateurDto.setMessage("succés de l'inscription");
+		//utilisateurDto.setMessage("succes de l'inscription");
 
 		return utilisateurDto;
 	}

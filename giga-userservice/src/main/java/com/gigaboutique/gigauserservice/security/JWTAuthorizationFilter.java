@@ -33,7 +33,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		if (request.getMethod().equals("OPTIONS")) {
 			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
-			String jwtToken = request.getHeader(scc.getHeader());
+			
+			String jwtToken = null;
+			
+			try {
+			jwtToken = request.getHeader(scc.getHeader());
+			}catch(NullPointerException npe) {
+				
+				System.out.println("ici");
+			}
 			if (jwtToken == null || !jwtToken.startsWith(scc.getTokenPrefix())) {
 				chain.doFilter(request, response);
 				return;
