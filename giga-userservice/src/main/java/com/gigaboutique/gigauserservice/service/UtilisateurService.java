@@ -19,6 +19,7 @@ import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
+import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @Service
@@ -37,11 +38,8 @@ public class UtilisateurService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<UtilisateurDto> getUtilisateurs() {
-		return ((List<UtilisateurBean>) utilisateurDao
-				.findAll())
-				.stream()
-				.map(mapUtilisateurDtoService::convertToUtilisateurDto)
-				.collect(Collectors.toList());
+		return ((List<UtilisateurBean>) utilisateurDao.findAll()).stream()
+				.map(mapUtilisateurDtoService::convertToUtilisateurDto).collect(Collectors.toList());
 	}
 
 	public UtilisateurDto getUtilisateur(String mail) throws UtilisateurException {
@@ -61,30 +59,31 @@ public class UtilisateurService {
 	}
 
 	public UtilisateurDto registerUtilisateur(RegisterDto registerDto, RoleService rc) throws UtilisateurException {
-		
-		UtilisateurBean utilisateurVerify=null;
-		
-		UtilisateurBean utilisateur =null;
-		
-		UtilisateurDto utilisateurDto =null;
-		
+
+		UtilisateurBean utilisateurVerify = null;
+
+		UtilisateurBean utilisateur = null;
+
+		UtilisateurDto utilisateurDto = null;
+
 		try {
 
-		utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto,
-				modelMapper);
-		
-		utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
-		
-		 }catch(NullPointerException npe) {
-				
-				System.out.println("ici");
-			}
-		
+			utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto, modelMapper);
+
+			utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
+
+		} catch (NullPointerException npe) {
+
+			System.out.println("ici");
+		}
+
 		if (utilisateurVerify != null) {
 
 			throw new UtilisateurException("Cette adresse mail existe déjà!");
 
 		}
+
+		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
 		Set<ConstraintViolation<UtilisateurBean>> vViolations = getConstraintValidator().validate(utilisateur);
 		if (!vViolations.isEmpty()) {
@@ -95,18 +94,16 @@ public class UtilisateurService {
 
 			}
 		}
-		
-		System.out.println(utilisateur.getMotDePasse());
-
-		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
 		utilisateur = rc.setRoleUtilisateur(utilisateur);
+
+		RoleBean role = utilisateur.getRole();
+
+		System.out.println(role.getId());
 
 		utilisateurDao.save(utilisateur);
 
 		utilisateurDto = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateur);
-		
-       
 
 		return utilisateurDto;
 

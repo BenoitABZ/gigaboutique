@@ -3,6 +3,7 @@ package com.gigaboutique.gigauserservice.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class RoleBean implements Serializable {
 	@Column(name = "role")
 	private String role;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany //(mappedBy = "role", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<UtilisateurBean> utilisateurs;
 
 	public Integer getId() {

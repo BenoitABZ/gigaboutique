@@ -1,9 +1,7 @@
 package com.gigaboutique.gigauserservice.dto;
 
-import com.gigaboutique.gigauserservice.model.RoleBean;
-
 public class RegisterDto {
-	
+
 	private String nom;
 
 	private String prenom;

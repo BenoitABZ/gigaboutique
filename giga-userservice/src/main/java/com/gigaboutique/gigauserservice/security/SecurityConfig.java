@@ -27,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService)
 		    .passwordEncoder(bCryptPasswordEncoder);
 		
-		auth.inMemoryAuthentication().withUser("utilisateur").password(bCryptPasswordEncoder.encode("mdp"))
-		.authorities("USER");
+		//auth.inMemoryAuthentication().withUser("utilisateur").password(bCryptPasswordEncoder.encode("mdp"))
+		//.authorities("USER");
 		
    }
 		

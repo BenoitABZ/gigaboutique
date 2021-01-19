@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.gigaboutique.gigauserservice.dao.ProduitPanierDao;
 import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
-import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.TechnicalException;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
@@ -29,38 +28,41 @@ public class ProduitPanierService {
 	@Autowired
 	UtilisateurDao utilisateurDao;
 
-	public UtilisateurDto addProduitPanier(UtilisateurDto utilisateurDto) throws TechnicalException {
-
-		Set<ProduitPanierBean> produitsPanier = new HashSet<>();
+	public void addProduitPanier(Integer idProduit, Integer idUtilisateur) throws TechnicalException {
 
 		ProduitPanierBean produit = null;
 
 		try {
 
-			UtilisateurBean utilisateurBean = mapUtilisateurDtoService.convertToUtilisateurBean(utilisateurDto,
-					modelMapper);
+			UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur).get();
 
-			for (Integer id : utilisateurDto.getProduits()) {
+			if (produitPanierDao.findById(idProduit).isPresent()) {
 
-				if (produitPanierDao.findById(id).isPresent()) {
+				produit = produitPanierDao.findById(idProduit).get();
 
-					produit = produitPanierDao.findById(id).get();
+				Set<UtilisateurBean> utilisateurs = produit.getUtilisateurs();
 
-				} else {
+				utilisateurs.add(utilisateurBean);
 
-					produit = new ProduitPanierBean();
+				produit.setUtilisateurs(utilisateurs);
 
-					produit.setId(id);
+				produitPanierDao.save(produit);
 
-				}
+			} else {
 
-				produitsPanier.add(produit);
+				produit = new ProduitPanierBean();
+
+				produit.setId(idProduit);
+
+				Set<UtilisateurBean> utilisateurs = new HashSet<>();
+
+				utilisateurs.add(utilisateurBean);
+
+				produit.setUtilisateurs(utilisateurs);
+
+				produitPanierDao.save(produit);
 
 			}
-
-			utilisateurBean.setProduitsPanier(produitsPanier);
-
-			utilisateurDao.save(utilisateurBean);
 
 		} catch (Exception e) {
 
@@ -68,59 +70,28 @@ public class ProduitPanierService {
 
 		}
 
-		return utilisateurDto;
-
 	}
 
-	public UtilisateurDto removeProduitPanier(UtilisateurDto utilisateurDto) throws TechnicalException {
+	public void removeProduitPanier(int idProduit, int idUtilisateur) {
 
-		Set<ProduitPanierBean> produitsPanier = new HashSet<>();
+		ProduitPanierBean produit = produitPanierDao.findById(idProduit);
 
-		Set<UtilisateurBean> utilisateurs = new HashSet<>();
+		UtilisateurBean utilisateur = utilisateurDao.findById(idUtilisateur);
 
-		ProduitPanierBean produit = null;
+		Set<UtilisateurBean> utilisateurs = produit.getUtilisateurs();
 
-		try {
+		utilisateurs.removeIf(x -> (x == utilisateur));
 
-			UtilisateurBean utilisateurBean = mapUtilisateurDtoService.convertToUtilisateurBean(utilisateurDto,
-					modelMapper);
+		if (utilisateurs.isEmpty()) {
 
-			Integer id = utilisateurDto.getIdProduitToRemove();
+			produitPanierDao.delete(produit);
 
-			if (produitPanierDao.findById(id).isPresent()) {
+		} else {
 
-				produit = produitPanierDao.findById(id).get();
+			produit.setUtilisateurs(utilisateurs);
 
-				utilisateurs = produit.getUtilisateurs();
-
-				utilisateurs.remove(utilisateurBean);
-
-				if (utilisateurs.isEmpty()) {
-
-					produitPanierDao.delete(produit);
-				} else {
-
-					produit.setUtilisateurs(utilisateurs);
-
-					produitPanierDao.save(produit);
-
-				}
-			}
-			produitsPanier = utilisateurBean.getProduitsPanier();
-
-			produitsPanier.remove(produit);
-
-			utilisateurBean.setProduitsPanier(produitsPanier);
-
-			utilisateurDao.save(utilisateurBean);
-
-		} catch (Exception e) {
-
-			throw new TechnicalException("un problème a eu lieu lors de de la suppression du produit au panier.");
-
+			produitPanierDao.save(produit);
 		}
-
-		return utilisateurDto;
 
 	}
 

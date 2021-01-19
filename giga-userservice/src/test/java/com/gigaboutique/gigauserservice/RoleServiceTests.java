@@ -1,6 +1,7 @@
 package com.gigaboutique.gigauserservice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.gigaboutique.gigauserservice.configuration.RoleConfiguration;
+import com.gigaboutique.gigauserservice.dao.RoleDao;
+import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 import com.gigaboutique.gigauserservice.service.RoleService;
 
@@ -26,6 +29,9 @@ public class RoleServiceTests {
 	@Mock
 	RoleConfiguration rc;
 
+	@Mock
+	RoleDao roleDao;
+
 	UtilisateurBean utilisateurBean;
 
 	@BeforeAll
@@ -33,15 +39,27 @@ public class RoleServiceTests {
 
 		utilisateurBean = new UtilisateurBean();
 
-		utilisateurBean.setMail("admin@gigaboutique.fr");
+		utilisateurBean.setMail("mailadmin@gmail.com");
 
 	}
 
 	@Test
 	public void setUtilisateurRoleTest() {
 
-		when(rc.getAdminMail()).thenReturn("@gigaboutique.fr");
-		when(rc.getAdminRole()).thenReturn("ROLE_ADMIN");
+		RoleBean roleBeanAdmin = new RoleBean();
+		roleBeanAdmin.setId(1);
+		roleBeanAdmin.setRole("ROLE_ADMIN");
+
+		RoleBean roleBeanUser = new RoleBean();
+		roleBeanUser.setId(2);
+		roleBeanUser.setRole("ROLE_USER");
+
+		when(rc.getAdminMail()).thenReturn("admin@gmail.com");
+
+		when(rc.getRoleBeanAdmin()).thenReturn(roleBeanAdmin);
+
+		doNothing().when(rc).init();
+		when(roleDao.save(roleBeanAdmin)).thenReturn(roleBeanAdmin);
 
 		utilisateurBean = roleService.setRoleUtilisateur(utilisateurBean);
 

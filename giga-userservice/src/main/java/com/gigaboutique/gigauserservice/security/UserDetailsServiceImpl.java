@@ -17,6 +17,7 @@ import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+	
 	@Autowired
 	private UtilisateurDao utilisateurDao;
 

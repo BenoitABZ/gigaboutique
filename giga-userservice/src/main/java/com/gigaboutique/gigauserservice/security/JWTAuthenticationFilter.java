@@ -15,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gigaboutique.gigauserservice.configuration.SecurityConstantConfiguration;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
@@ -31,36 +30,57 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
+
+		setFilterProcessesUrl("/login/utilisateur");
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException {
 		try {
-			UtilisateurBean creds = new ObjectMapper().readValue(req.getInputStream(), UtilisateurBean.class);
+
+			UtilisateurBean creds = new UtilisateurBean();
+
+			creds.setMail(req.getParameter("mail"));
+
+			creds.setMotDePasse(req.getParameter("motDePasse"));
 
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getMail(), creds.getMotDePasse()));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (NullPointerException npe) {
+
+			throw new RuntimeException(npe);
+
 		}
 	}
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException {
+		try {
+						
+			User springUser = (User) auth.getPrincipal();
+			
+			System.out.println(auth.getPrincipal());
+			
+			System.out.println(auth.getAuthorities());
+			
+			System.out.println(springUser.getUsername());
+									
+			long expiration = Long.parseLong(scc.getExpiration());
+			
+			String secret = scc.getSecret();
+			
+			String token = Jwts.builder()
+					.setSubject(springUser.getUsername())
+					.setExpiration(new Date(System.currentTimeMillis() + expiration))
+					.signWith(SignatureAlgorithm.HS512, secret.getBytes())
+					.claim("roles", springUser.getAuthorities())
+					.compact();
 
-		User springUser = (User) auth.getPrincipal();
+			res.addHeader(scc.getHeader(), scc.getTokenPrefix() + " " + token);
 
-		String token = Jwts.builder()
-				.setSubject(springUser.getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + scc.getExpiration()))
-				.signWith(SignatureAlgorithm.RS512, scc.getSecret())
-				.claim("role", springUser.getAuthorities())
-				.compact();
+		} catch (NullPointerException npe) {
 
-		String body = (springUser + " " + token);
-
-		res.getWriter().write(body);
-		res.getWriter().flush();
+		}
 	}
 }

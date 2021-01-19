@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "Utilisateur_Produit")
+@Table(name = "ProduitPanier")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ProduitPanierBean.class)
 public class ProduitPanierBean implements Serializable {
 

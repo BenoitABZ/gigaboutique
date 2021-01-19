@@ -35,7 +35,7 @@ public class MapUtilisateurDtoServiceTests {
 		utilisateurBean.setNom("testLastName");
 		utilisateurBean.setPrenom("testFirstName");
 		utilisateurBean.setPrenom("testFirstName");
-		utilisateurBean.setMail("testAdresseMail@gigaboutique.fr");
+		utilisateurBean.setMail("mailadmin@gmail.com");
 		utilisateurBean.setMotDePasse("Poiuytreza31");
 
 		RoleBean roleBean = new RoleBean();
@@ -80,7 +80,7 @@ public class MapUtilisateurDtoServiceTests {
 
 		UtilisateurDto utilisateurDto = new UtilisateurDto();
 		utilisateurDto.setIdUtilisateur(1);
-		utilisateurDto.setMail("testAdresseMail@gigaboutique.fr");
+		utilisateurDto.setMail("mailadmin@gmail.com");
 		utilisateurDto.setNom("testLastName");
 		utilisateurDto.setPrenom("testFirstName");
 
@@ -96,7 +96,7 @@ public class MapUtilisateurDtoServiceTests {
 	public void convertToUtilisateurBeanForRegistrationTest() {
 
 		RegisterDto registerDto = new RegisterDto();
-		registerDto.setMail("testAdresseMail@gigaboutique.fr");
+		registerDto.setMail("mailadmin@gmail.com");
 		registerDto.setNom("testLastName");
 		registerDto.setPrenom("testFirstName");
 		registerDto.setPassword("Poiuytreza31");

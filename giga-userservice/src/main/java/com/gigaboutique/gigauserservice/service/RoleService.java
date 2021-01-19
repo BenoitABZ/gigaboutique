@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gigaboutique.gigauserservice.configuration.RoleConfiguration;
+import com.gigaboutique.gigauserservice.dao.RoleDao;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
@@ -13,25 +14,26 @@ public class RoleService {
 	@Autowired
 	RoleConfiguration rc;
 
+	@Autowired
+	RoleDao roleDao;
+
 	private RoleBean role;
-
-	public RoleService() {
-
-		setRole(new RoleBean());
-
-	}
 
 	public UtilisateurBean setRoleUtilisateur(UtilisateurBean utilisateur) {
 
+		rc.init();
+
 		if (isAdmin(utilisateur)) {
 
-			role.setRole(rc.getAdminRole());
+			role = rc.getRoleBeanAdmin();
 
 		} else {
-			
-			role.setRole(rc.getUserRole());
+
+			role = rc.getRoleBeanUser();
 
 		}
+
+		role = roleDao.save(role);
 
 		utilisateur.setRole(role);
 

@@ -9,7 +9,7 @@ public class SecurityConstantConfiguration {
 	
 	private String tokenPrefix;
 	
-	private long expiration;
+	private String expiration;
 	
 	private String header;
 	
@@ -23,11 +23,11 @@ public class SecurityConstantConfiguration {
 		this.tokenPrefix = tokenPrefix;
 	}
 
-	public long getExpiration() {
+	public String getExpiration() {
 		return expiration;
 	}
 
-	public void setExpiration(long expiration) {
+	public void setExpiration(String expiration) {
 		this.expiration = expiration;
 	}
 

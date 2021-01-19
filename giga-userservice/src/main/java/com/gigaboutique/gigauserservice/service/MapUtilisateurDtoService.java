@@ -59,7 +59,8 @@ public class MapUtilisateurDtoService {
 
 	private static Set<Integer> populateProduitPanierId(UtilisateurBean utilisateur) {
 
-		Set<Integer> setProduitPanier;
+		Set<Integer> setProduitPanier = new HashSet<>();
+
 		try {
 			setProduitPanier = ((Set<ProduitPanierBean>) utilisateur
 					.getProduitsPanier())
