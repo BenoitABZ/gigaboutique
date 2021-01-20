@@ -15,17 +15,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.gigaboutique.gigauserservice.configuration.SecurityConstantConfiguration;
+import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-
-	@Autowired
-	SecurityConstantConfiguration scc;
+	
+	UserConfiguration scc;
+	
+	public JWTAuthorizationFilter(UserConfiguration scc) {
+		super();
+		this.scc = scc;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

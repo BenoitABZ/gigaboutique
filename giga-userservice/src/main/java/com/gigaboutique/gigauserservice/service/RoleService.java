@@ -3,7 +3,7 @@ package com.gigaboutique.gigauserservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gigaboutique.gigauserservice.configuration.RoleConfiguration;
+import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
 import com.gigaboutique.gigauserservice.dao.RoleDao;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
@@ -12,7 +12,7 @@ import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 public class RoleService {
 
 	@Autowired
-	RoleConfiguration rc;
+	UserConfiguration rc;
 
 	@Autowired
 	RoleDao roleDao;

@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.gigaboutique.gigauserservice.configuration.RoleConfiguration;
+import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
 import com.gigaboutique.gigauserservice.dao.RoleDao;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
@@ -27,7 +27,7 @@ public class RoleServiceTests {
 	RoleService roleService;
 
 	@Mock
-	RoleConfiguration rc;
+	UserConfiguration rc;
 
 	@Mock
 	RoleDao roleDao;

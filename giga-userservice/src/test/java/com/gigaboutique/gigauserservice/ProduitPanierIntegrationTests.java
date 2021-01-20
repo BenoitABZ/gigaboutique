@@ -80,6 +80,8 @@ public class ProduitPanierIntegrationTests {
 					   .params(params)
 					   .accept("application/json;charset=UTF-8"))
 					   .andReturn().getResponse().getHeader("Authorization");
+			
+			System.out.println(token);
 
 			utilisateurDto = new UtilisateurDto();
 

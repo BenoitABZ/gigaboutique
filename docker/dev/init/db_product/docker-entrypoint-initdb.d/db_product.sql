@@ -1,4 +1,10 @@
 
+CREATE TABLE Vendeur (
+                id_vendeur INTEGER NOT NULL,
+                CONSTRAINT vendeur_pk PRIMARY KEY (id_vendeur)
+);
+
+
 CREATE SEQUENCE categorie_id_categorie_seq_1;
 
 CREATE TABLE Categorie (
@@ -9,14 +15,6 @@ CREATE TABLE Categorie (
 
 
 ALTER SEQUENCE categorie_id_categorie_seq_1 OWNED BY Categorie.id_categorie;
-
-CREATE TABLE SousCategorie (
-                id_sous_categorie INTEGER NOT NULL,
-                nom_sous_categorie VARCHAR NOT NULL,
-                id_categorie INTEGER NOT NULL,
-                CONSTRAINT souscategorie_pk PRIMARY KEY (id_sous_categorie)
-);
-
 
 CREATE SEQUENCE taille_id_taille_seq;
 
@@ -33,12 +31,13 @@ CREATE SEQUENCE produit_id_produit_seq;
 
 CREATE TABLE Produit (
                 id_produit INTEGER NOT NULL DEFAULT nextval('produit_id_produit_seq'),
-                nom_produit VARCHAR NOT NULL,
-                prix INTEGER NOT NULL,
+                nom VARCHAR NOT NULL,
+                prix DOUBLE PRECISION NOT NULL,
                 promotion INTEGER NOT NULL,
                 id_categorie INTEGER NOT NULL,
-                disponibilite BOOLEAN NOT NULL,
                 id_vendeur INTEGER NOT NULL,
+                marque VARCHAR NOT NULL,
+                adresse_web VARCHAR NOT NULL,
                 CONSTRAINT id_produit PRIMARY KEY (id_produit)
 );
 
@@ -60,18 +59,19 @@ ALTER SEQUENCE imageproduit_id_image_produit_seq OWNED BY ImageProduit.id_image_
 CREATE TABLE Taille_Produit (
                 id_produit INTEGER NOT NULL,
                 id_taille INTEGER NOT NULL,
+                disponibilite BOOLEAN NOT NULL,
                 CONSTRAINT taille_produit_pk PRIMARY KEY (id_produit, id_taille)
 );
 
 
-ALTER TABLE Produit ADD CONSTRAINT categorie_produit_fk
-FOREIGN KEY (id_categorie)
-REFERENCES Categorie (id_categorie)
+ALTER TABLE Produit ADD CONSTRAINT vendeur_produit_fk
+FOREIGN KEY (id_vendeur)
+REFERENCES Vendeur (id_vendeur)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE SousCategorie ADD CONSTRAINT categorie_souscategorie_fk
+ALTER TABLE Produit ADD CONSTRAINT categorie_produit_fk
 FOREIGN KEY (id_categorie)
 REFERENCES Categorie (id_categorie)
 ON DELETE NO ACTION

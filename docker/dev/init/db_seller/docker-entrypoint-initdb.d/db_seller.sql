@@ -1,10 +1,11 @@
+
 CREATE SEQUENCE vendeur_id_vendeur_seq;
 
 CREATE TABLE Vendeur (
                 id_vendeur INTEGER NOT NULL DEFAULT nextval('vendeur_id_vendeur_seq'),
-                adresse_web VARCHAR NOT NULL,
-                frais_port INTEGER NOT NULL,
+                nom VARCHAR NOT NULL,
                 logo VARCHAR NOT NULL,
+                note VARCHAR NOT NULL,
                 CONSTRAINT vendeur_pk PRIMARY KEY (id_vendeur)
 );
 
@@ -19,7 +20,7 @@ CREATE TABLE Commentaire (
                 description VARCHAR NOT NULL,
                 auteur VARCHAR NOT NULL,
                 id_vendeur INTEGER NOT NULL,
-                note INTEGER NOT NULL,
+                note VARCHAR NOT NULL,
                 CONSTRAINT commentaire PRIMARY KEY (id_commentaire)
 );
 

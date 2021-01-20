@@ -7,7 +7,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.gigaboutique.gigauserservice.configuration.SecurityConstantConfiguration;
+import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 import io.jsonwebtoken.Jwts;
@@ -23,13 +22,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	@Autowired
-	SecurityConstantConfiguration scc;
+	UserConfiguration scc;
 
 	private AuthenticationManager authenticationManager;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserConfiguration scc) {
 		this.authenticationManager = authenticationManager;
+		this.scc = scc;
 
 		setFilterProcessesUrl("/login/utilisateur");
 	}
@@ -65,6 +64,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			System.out.println(auth.getAuthorities());
 			
 			System.out.println(springUser.getUsername());
+			
+			System.out.println(scc.getExpiration());
 									
 			long expiration = Long.parseLong(scc.getExpiration());
 			

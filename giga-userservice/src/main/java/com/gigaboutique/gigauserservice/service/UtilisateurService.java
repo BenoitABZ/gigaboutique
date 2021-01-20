@@ -82,8 +82,12 @@ public class UtilisateurService {
 			throw new UtilisateurException("Cette adresse mail existe déjà!");
 
 		}
-
-		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+		
+		if(!utilisateur.getMotDePasse().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}")){
+			
+			throw new UtilisateurException("votre mot de passe doit comporter au moins 8 caractères dont 1 majuscule et 1 chiffre");
+		}
+		
 
 		Set<ConstraintViolation<UtilisateurBean>> vViolations = getConstraintValidator().validate(utilisateur);
 		if (!vViolations.isEmpty()) {
@@ -96,6 +100,8 @@ public class UtilisateurService {
 		}
 
 		utilisateur = rc.setRoleUtilisateur(utilisateur);
+		
+		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
 		RoleBean role = utilisateur.getRole();
 

@@ -11,43 +11,36 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
+	private UserConfiguration scc;
+
+	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.userDetailsService(userDetailsService)
-		    .passwordEncoder(bCryptPasswordEncoder);
-		
-		//auth.inMemoryAuthentication().withUser("utilisateur").password(bCryptPasswordEncoder.encode("mdp"))
-		//.authorities("USER");
-		
-   }
-		
-	
-	
+
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		http.csrf().disable()
-		    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	  .and()
-		    .authorizeRequests()
-		    .antMatchers("/signup/utilisateur", "/login/**")
-		    .permitAll()
-		    .antMatchers("/utilisateurs").hasAuthority("ADMIN")
-		    .anyRequest().authenticated()
-	   .and()
-	        .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-	        .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authorizeRequests().antMatchers("/signup/utilisateur", "/login/**").permitAll()
+				.antMatchers("/utilisateurs").hasAuthority("ADMIN").anyRequest().authenticated().and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(), scc))
+				.addFilterBefore(new JWTAuthorizationFilter(scc), UsernamePasswordAuthenticationFilter.class);
 	}
 
 }
