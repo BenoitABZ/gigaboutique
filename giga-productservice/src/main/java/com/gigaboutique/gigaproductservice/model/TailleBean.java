@@ -36,4 +36,28 @@ public class TailleBean implements Serializable  {
 	@OneToMany(mappedBy = "produit")
 	private List<TailleProduit> taillesProduits = new ArrayList<>();
 
+	public Integer getIdTaille() {
+		return idTaille;
+	}
+
+	public void setIdTaille(Integer idTaille) {
+		this.idTaille = idTaille;
+	}
+
+	public String getTaille() {
+		return taille;
+	}
+
+	public void setTaille(String taille) {
+		this.taille = taille;
+	}
+
+	public List<TailleProduit> getTaillesProduits() {
+		return taillesProduits;
+	}
+
+	public void setTaillesProduits(List<TailleProduit> taillesProduits) {
+		this.taillesProduits = taillesProduits;
+	}
+
 }

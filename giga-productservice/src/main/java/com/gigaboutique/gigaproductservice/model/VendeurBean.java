@@ -29,4 +29,20 @@ public class VendeurBean implements Serializable {
 	@OneToMany(mappedBy = "vendeur", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ProduitBean> produits = new ArrayList<>();
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<ProduitBean> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(List<ProduitBean> produits) {
+		this.produits = produits;
+	}
+
 }

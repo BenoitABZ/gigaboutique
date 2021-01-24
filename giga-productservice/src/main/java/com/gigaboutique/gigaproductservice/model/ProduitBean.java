@@ -37,7 +37,7 @@ public class ProduitBean implements Serializable  {
 	private Integer idProduit;
 	
 	@Column(name = "nom")
-	private String name;
+	private String nom;
 	
 	@Column(name = "prix")
 	@Digits(fraction = 2, integer = 5)
@@ -77,12 +77,12 @@ public class ProduitBean implements Serializable  {
 		this.idProduit = idProduit;
 	}
 
-	public String getName() {
-		return name;
+	public String getNom() {
+		return nom;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 	public Double getPrix() {

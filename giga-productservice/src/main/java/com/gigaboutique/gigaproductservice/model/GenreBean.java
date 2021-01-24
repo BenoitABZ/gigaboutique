@@ -37,5 +37,29 @@ public class GenreBean implements Serializable  {
 	@OneToMany(mappedBy = "genre", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ProduitBean> produits = new ArrayList<>();
 
+	public Integer getIdGenre() {
+		return idGenre;
+	}
+
+	public void setIdGenre(Integer idGenre) {
+		this.idGenre = idGenre;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public List<ProduitBean> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(List<ProduitBean> produits) {
+		this.produits = produits;
+	}
+
 
 }

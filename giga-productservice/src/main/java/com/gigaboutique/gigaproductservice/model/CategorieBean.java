@@ -37,4 +37,28 @@ public class CategorieBean implements Serializable  {
 	@OneToMany(mappedBy = "categorie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ProduitBean> produits = new ArrayList<>();
 
+	public Integer getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(Integer idCategorie) {
+		this.idCategorie = idCategorie;
+	}
+
+	public String getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+
+	public List<ProduitBean> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(List<ProduitBean> produits) {
+		this.produits = produits;
+	}
+
 }
