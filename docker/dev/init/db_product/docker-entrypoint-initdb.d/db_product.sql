@@ -1,9 +1,8 @@
-
 CREATE SEQUENCE genre_id_genre_seq_1;
 
 CREATE TABLE Genre (
                 id_genre INTEGER NOT NULL DEFAULT nextval('genre_id_genre_seq_1'),
-                genre VARCHAR NOT NULL,
+                nom_genre VARCHAR NOT NULL,
                 CONSTRAINT genre_pk PRIMARY KEY (id_genre)
 );
 
@@ -50,6 +49,7 @@ CREATE TABLE Produit (
                 marque VARCHAR NOT NULL,
                 adresse_web VARCHAR NOT NULL,
                 id_genre INTEGER NOT NULL,
+                maj BOOLEAN NOT NULL,
                 CONSTRAINT id_produit PRIMARY KEY (id_produit)
 );
 

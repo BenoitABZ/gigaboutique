@@ -27,10 +27,10 @@ services:
     ports:
       - "127.0.0.1:9034:5434"
     volumes:
-#      - "./data/db_comment:/var/lib/postgresql/data"
-       - "./init/db_comment/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+#      - "./data/db_seller:/var/lib/postgresql/data"
+       - "./init/db_seller/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
     environment:
-      - POSTGRES_DB=db_giga_comment
-      - POSTGRES_USER=comment_giga
+      - POSTGRES_DB=db_giga_seller
+      - POSTGRES_USER=seller_giga
       - POSTGRES_PASSWORD=gigaboutique
       

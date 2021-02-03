@@ -1,7 +1,6 @@
 package com.gigaboutique.gigauserservice.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +8,8 @@ import com.gigaboutique.gigauserservice.dao.RoleDao;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 
 @Component
-@ConfigurationProperties("user-configs")
-public class UserConfiguration {
+@ConfigurationProperties("role-configs")
+public class RoleConfiguration {
 
 	@Autowired
 	RoleDao roleDao;

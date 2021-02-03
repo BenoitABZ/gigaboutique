@@ -1,5 +1,7 @@
 package com.gigaboutique.gigauserservice.dto;
 
+import java.util.Set;
+
 public class UtilisateurDto {
 
 	private int idUtilisateur;
@@ -10,7 +12,13 @@ public class UtilisateurDto {
 
 	private String mail;
 
-	private int idProduit;
+	private String role;
+
+	private Set<Integer> produits;
+
+	private int idProduitToRemove;
+
+	private String message;
 
 	public int getIdUtilisateur() {
 		return idUtilisateur;
@@ -44,12 +52,36 @@ public class UtilisateurDto {
 		this.mail = mail;
 	}
 
-	public int getIdProduit() {
-		return idProduit;
+	public String getRole() {
+		return role;
 	}
 
-	public void setIdProduit(int idProduit) {
-		this.idProduit = idProduit;
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public Set<Integer> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(Set<Integer> produits) {
+		this.produits = produits;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public int getIdProduitToRemove() {
+		return idProduitToRemove;
+	}
+
+	public void setIdProduitToRemove(int idProduitToRemove) {
+		this.idProduitToRemove = idProduitToRemove;
 	}
 
 }

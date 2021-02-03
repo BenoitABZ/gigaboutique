@@ -1,18 +1,21 @@
+
 package com.gigaboutique.gigauserservice.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "Utilisateur_Produit")
+@Table(name = "ProduitPanier")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ProduitPanierBean.class)
 public class ProduitPanierBean implements Serializable {
 
@@ -21,27 +24,27 @@ public class ProduitPanierBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ProduitPanierId ppId;
+	@Id
+	@Column(name = "id_produitPanier")
+	private int id;
 
-	@JoinColumn(name = "utilisateur_id", referencedColumnName = "utilisateur_id")
-	@ManyToOne
-	private UtilisateurBean utilisateur;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<UtilisateurBean> utilisateurs;
 
-	public ProduitPanierId getPpId() {
-		return ppId;
+	public int getId() {
+		return id;
 	}
 
-	public void setPpId(ProduitPanierId ppId) {
-		this.ppId = ppId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public UtilisateurBean getUtilisateur() {
-		return utilisateur;
+	public Set<UtilisateurBean> getUtilisateurs() {
+		return utilisateurs;
 	}
 
-	public void setUtilisateur(UtilisateurBean utilisateur) {
-		this.utilisateur = utilisateur;
+	public void setUtilisateurs(Set<UtilisateurBean> utilisateurs) {
+		this.utilisateurs = utilisateurs;
 	}
 
 }

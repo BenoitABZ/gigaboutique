@@ -1,11 +1,16 @@
 package com.gigaboutique.gigaproductservice;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import com.gigaboutique.gigaproductservice.dao.CategorieDao;
 import com.gigaboutique.gigaproductservice.dao.GenreDao;
@@ -23,58 +28,52 @@ import com.gigaboutique.gigaproductservice.model.TailleProduit;
 import com.gigaboutique.gigaproductservice.model.VendeurBean;
 
 @SpringBootTest
-public class ConsumerIntegrationTests {
-	
+@Transactional
+@Rollback(true)
+public class ConsumerLayerIntegrationTests {
+
 	@Autowired
 	CategorieDao categorieDao;
-	
+
 	@Autowired
 	TailleDao tailleDao;
-	
+
 	@Autowired
 	ImageProduitDao imageProduitDao;
-	
+
 	@Autowired
 	GenreDao genreDao;
-	
+
 	@Autowired
 	VendeurDao vendeurDao;
-	
+
 	@Autowired
 	ProduitDao produitDao;
-	
+
 	@Autowired
 	TailleProduitDao tailleProduitDao;
 
-	
 	@Test
 	public void addProduitToDbTest() {
-		
+
 		VendeurBean vendeur = new VendeurBean();
 		vendeur.setId(1);
 		vendeurDao.save(vendeur);
-		
+
 		CategorieBean categorie = new CategorieBean();
-		categorie.setCategorie("manteau");
+		categorie.setCategorie("chaussure");
 		categorieDao.save(categorie);
-		
+
 		GenreBean genre = new GenreBean();
 		genre.setGenre("homme");
 		genreDao.save(genre);
-		
+
 		TailleBean taille = new TailleBean();
 		taille.setTaille("43");
 		tailleDao.save(taille);
-		
-		ImageProduitBean image = new ImageProduitBean();
-		image.setAdresseWeb("test");
-		imageProduitDao.save(image);
-		
-		List<ImageProduitBean> images = new ArrayList<>();		
-		images.add(image);
-		
+
 		ProduitBean produit = new ProduitBean();
-		
+
 		produit.setMarque("nike");
 		produit.setNom("airmax");
 		produit.setPrix(85.20);
@@ -82,23 +81,41 @@ public class ConsumerIntegrationTests {
 		produit.setVendeur(vendeur);
 		produit.setGenre(genre);
 		produit.setCategorie(categorie);
-		produit.setImages(images);
-		
+
 		produitDao.save(produit);
-		
-		
+
+		ImageProduitBean image = new ImageProduitBean();
+		image.setAdresseWeb("test");
+		image.setProduit(produit);
+		imageProduitDao.save(image);
+
+		vendeur.getProduits().add(produit);
+
+		vendeurDao.save(vendeur);
+
 		TailleProduit tailleProduit = new TailleProduit();
 		tailleProduit.setProduit(produit);
 		tailleProduit.setTaille(taille);
-		
+
 		produit.getTaillesProduits().add(tailleProduit);
 		taille.getTaillesProduits().add(tailleProduit);
-		
+
 		tailleProduitDao.save(tailleProduit);
-	    
-		
+
+		VendeurBean vendeurTest = vendeurDao.findById(1);
+
+		List<ProduitBean> produits = vendeurTest.getProduits();
+
+		List<TailleProduit> taillesProduits = produits.get(0).getTaillesProduits();
+
+		assertEquals("nike", produits.get(0).getMarque());
+
+		assertEquals("homme", produits.get(0).getGenre().getGenre());
+
+		assertEquals("chaussure", produits.get(0).getCategorie().getCategorie());
+
+		assertEquals("43", taillesProduits.get(0).getTaille().getTaille());
+
 	}
-	
-	
 
 }

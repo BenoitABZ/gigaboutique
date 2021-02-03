@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "Produit")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ProduitBean.class)
-public class ProduitBean implements Serializable  {
-	
+public class ProduitBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,37 +35,40 @@ public class ProduitBean implements Serializable  {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "identifier")
 	@Column(name = "id_produit")
 	private Integer idProduit;
-	
+
 	@Column(name = "nom")
 	private String nom;
-	
+
 	@Column(name = "prix")
-	@Digits(fraction = 2, integer = 5)
+	@Digits(fraction = 2, integer = 5, message = "2 digits max")
 	private Double prix;
-	
+
 	@Column(name = "promotion")
 	@Min(0)
-	@Max(100)	
+	@Max(100)
 	private Integer promotion;
-	
+
 	@Column(name = "marque")
 	private String marque;
-	
+
+	@Column(name = "maj")
+	private Boolean maj;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_vendeur")
 	private VendeurBean vendeur;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_categorie")
 	private CategorieBean categorie;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_genre")
 	private GenreBean genre;
-	
-	@OneToMany(mappedBy = "produit",  cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
 	private List<ImageProduitBean> images = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER)
 	private List<TailleProduit> taillesProduits = new ArrayList<>();
 
@@ -149,5 +152,12 @@ public class ProduitBean implements Serializable  {
 		this.taillesProduits = taillesProduits;
 	}
 
+	public Boolean getMaj() {
+		return maj;
+	}
+
+	public void setMaj(Boolean maj) {
+		this.maj = maj;
+	}
 
 }
