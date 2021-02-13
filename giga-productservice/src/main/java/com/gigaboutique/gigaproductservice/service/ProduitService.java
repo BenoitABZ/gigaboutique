@@ -14,21 +14,16 @@ import javax.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigaproductservice.configuration.ProductConfiguration;
-import com.gigaboutique.gigaproductservice.dao.ImageProduitDao;
 import com.gigaboutique.gigaproductservice.dao.ProduitDao;
-import com.gigaboutique.gigaproductservice.dao.TailleProduitDao;
 import com.gigaboutique.gigaproductservice.dto.CritereDto;
 import com.gigaboutique.gigaproductservice.dto.ProduitDto;
 import com.gigaboutique.gigaproductservice.exception.ProduitException;
 import com.gigaboutique.gigaproductservice.exception.TechnicalException;
-import com.gigaboutique.gigaproductservice.model.ImageProduitBean;
 import com.gigaboutique.gigaproductservice.model.ProduitBean;
-import com.gigaboutique.gigaproductservice.model.TailleProduit;
 
 import javassist.NotFoundException;
 
@@ -45,16 +40,10 @@ public class ProduitService {
 	@Autowired
 	private ProduitDao produitDao;
 
-	@Autowired
-	private TailleProduitDao tailleProduitDao;
-
-	@Autowired
-	private ImageProduitDao imageProduitDao;
-
 	public List<ProduitDto> getProduits(Pageable paging) throws ProduitException, NotFoundException {
 
 		List<ProduitDto> produitsDto = new ArrayList<>();
-		
+
 		Page<ProduitBean> page = produitDao.findAll(paging);
 
 		for (ProduitBean produitBean : page.getContent()) {
@@ -67,14 +56,15 @@ public class ProduitService {
 		return produitsDto;
 	}
 
-	public List<ProduitDto> getProduitsByCriteria(CritereDto critere, Pageable paging) throws ProduitException, NotFoundException {
+	public List<ProduitDto> getProduitsByCriteria(CritereDto critere, Pageable paging)
+			throws ProduitException, NotFoundException {
 
 		List<String> marques = critere.getMarques();
 		List<String> categories = critere.getCategories();
 		String genre = critere.getGenre();
 
 		List<ProduitDto> produitsDto = new ArrayList<>();
-		
+
 		Page<ProduitBean> page = produitDao.findByCriteria(genre, categories, marques, paging);
 
 		for (ProduitBean produitBean : page.getContent()) {
@@ -128,27 +118,14 @@ public class ProduitService {
 			if (produitBean != null) {
 
 				mapProduitDtoService.updateToProduitBean(produitDto, produitBean);
+
 			} else {
 
 				this.normalizeCategorieProduitDto(produitDto);
 
 				this.normalizeGenreProduitDto(produitDto);
 
-				ProduitBean produit = mapProduitDtoService.convertToProduitBean(produitDto);
-
-				produit.setMaj(true);
-
-				produitDao.save(produit);
-
-				for (ImageProduitBean image : produit.getImages()) {
-
-					imageProduitDao.save(image);
-				}
-
-				for (TailleProduit tailleProduit : produit.getTaillesProduits()) {
-
-					tailleProduitDao.save(tailleProduit);
-				}
+				produitBean = mapProduitDtoService.convertToProduitBean(produitDto);
 
 				Set<ConstraintViolation<ProduitBean>> vViolations = getConstraintValidator().validate(produitBean);
 				if (!vViolations.isEmpty()) {
@@ -163,7 +140,7 @@ public class ProduitService {
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("problème lors de l'ajout du produit");
+			throw new TechnicalException("problème lors de l'ajout du produit" + e.getMessage());
 		}
 
 	}
@@ -199,8 +176,8 @@ public class ProduitService {
 
 				for (String categorie : categories) {
 
-					if (produitDto.getCategorie().trim().toLowerCase().contains(categorie)
-							|| produitDto.getNom().trim().toLowerCase().contains(categorie)) {
+					if (produitDto.getCategorie().trim().toLowerCase().contains(categorie.trim().toLowerCase())
+					    || produitDto.getNom().trim().toLowerCase().contains(categorie.trim().toLowerCase())) {
 
 						produitDto.setCategorie(normalizeCategorie);
 					}
@@ -223,7 +200,7 @@ public class ProduitService {
 
 			for (String genre : genres) {
 
-				if (produitDto.getGenre().trim().toLowerCase().contains(genre)) {
+				if (produitDto.getGenre().trim().toLowerCase().contains(genre.trim().toLowerCase())) {
 
 					produitDto.setGenre(genre);
 				}
@@ -243,4 +220,5 @@ public class ProduitService {
 		Validator vValidator = vFactory.getValidator();
 		return vValidator;
 	}
+	
 }

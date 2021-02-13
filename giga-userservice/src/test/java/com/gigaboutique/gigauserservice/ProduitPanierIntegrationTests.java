@@ -137,7 +137,8 @@ public class ProduitPanierIntegrationTests {
 		   .header("Authorization", token)
 		   .contentType(MediaType.APPLICATION_JSON)
 		   .params(paramsAdd)
-		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
 
 		int idProduitToRemove = 1;
 

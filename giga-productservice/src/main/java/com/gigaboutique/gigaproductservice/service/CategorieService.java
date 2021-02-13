@@ -36,7 +36,7 @@ public class CategorieService {
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("problème lors de l'ajout d'un vendeur");
+			throw new TechnicalException("problème lors de la récupération des catégories");
 		}
 
 		return categoriesDispos;

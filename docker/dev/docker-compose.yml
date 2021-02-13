@@ -14,7 +14,7 @@ services:
   giga.db.product:
     image: postgres:9.4
     ports:
-      - "127.0.0.1:9033:5433"
+      - "127.0.0.1:9033:5432"
     volumes:
 #      - "./data/db_product:/var/lib/postgresql/data"
        - "./init/db_product/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
@@ -25,7 +25,7 @@ services:
   giga.db.comment:
     image: postgres:9.4
     ports:
-      - "127.0.0.1:9034:5434"
+      - "127.0.0.1:9034:5432"
     volumes:
 #      - "./data/db_seller:/var/lib/postgresql/data"
        - "./init/db_seller/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"

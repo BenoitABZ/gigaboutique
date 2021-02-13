@@ -2,7 +2,6 @@ package com.gigaboutique.gigaproductservice;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -93,7 +92,7 @@ public class ConsumerLayerIntegrationTests {
 
 		vendeurDao.save(vendeur);
 
-		TailleProduit tailleProduit = new TailleProduit();
+		TailleProduit tailleProduit = new TailleProduit(true, produit, taille);
 		tailleProduit.setProduit(produit);
 		tailleProduit.setTaille(taille);
 

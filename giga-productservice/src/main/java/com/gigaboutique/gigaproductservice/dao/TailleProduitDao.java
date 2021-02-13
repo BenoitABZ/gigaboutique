@@ -6,14 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.gigaboutique.gigaproductservice.model.TailleProduit;
-import com.gigaboutique.gigaproductservice.model.TailleProduitId;
 
 @Repository
-public interface TailleProduitDao extends JpaRepository<TailleProduit, TailleProduitId> {
+public interface TailleProduitDao extends JpaRepository<TailleProduit, Integer> {
 
-	List<TailleProduit> findByIdIdProduit(int id);
+	List<TailleProduit> findById(int id);
 
-	List<TailleProduit> findByIdIdTaille(int id);
+	List<TailleProduit> findByProduit(int id);
+
+	List<TailleProduit> findByTaille(int id);
 
 	List<TailleProduit> findAll();
 

@@ -23,10 +23,10 @@ public interface ProduitDao extends JpaRepository<ProduitBean, Integer> {
 	
 	void deleteByMaj(boolean bool);
 	
-	@Query("Select p.marque from Produit p")
+	@Query("Select p.marque from ProduitBean as p")
 	List<String> findAllMarques();
 		
-	@Query("Select p FROM Produit p JOIN p.genre g JOIN p.categorie c "
+	@Query("Select p FROM ProduitBean as p INNER JOIN p.genre as g INNER JOIN p.categorie as c "
 			+ "WHERE (:genre is null OR g.genre =:genre) "
 			+ "AND  (:categories is null OR c.categorie IN :categories) "
 			+ "AND (:categories is null OR p.marque IN :marques) "

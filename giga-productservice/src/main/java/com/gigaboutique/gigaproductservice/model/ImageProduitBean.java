@@ -24,7 +24,7 @@ public class ImageProduitBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "identifier", sequenceName = "imageProduit_id_image_produit_seq", allocationSize = 1)
+	@SequenceGenerator(name = "identifier", sequenceName = "imageproduit_id_image_produit_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "identifier")
 	@Column(name = "id_image_produit")
 	private Integer idImageProduit;

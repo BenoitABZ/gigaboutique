@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,10 +57,9 @@ public class ProduitController {
 	}
 
 	@GetMapping("/get/all")
-	public List<ProduitDto> getProduits(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "3") int size) {
+	public List<ProduitDto> getProduits(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
 
-		Pageable paging = PageRequest.of(page, size, Sort.by("prix"));
+		Pageable paging = PageRequest.of(page, size);
 
 		List<ProduitDto> produits = null;
 
@@ -84,10 +85,9 @@ public class ProduitController {
 	public List<ProduitDto> getProduitsCriteria(@RequestBody CritereDto critereDto) {
 
 		int page = critereDto.getPage();
-
 		int size = critereDto.getSize();
 
-		Pageable paging = PageRequest.of(page, size, Sort.by("prix"));
+		Pageable paging = PageRequest.of(page, size);
 
 		List<ProduitDto> produits = null;
 
@@ -144,7 +144,7 @@ public class ProduitController {
 	}
 
 	@PutMapping("/setfalse")
-	public void setFalse(@PathVariable("nom") String nom) {
+	public void setFalse() {
 
 		try {
 
@@ -158,11 +158,11 @@ public class ProduitController {
 	}
 
 	@DeleteMapping("/removeiffalse")
-	public void removeFalse(@PathVariable("nom") String nom) {
+	public void removeFalse() {
 
 		try {
 
-			produitService.setMajFalse();
+			produitService.removeProduitIfFalse();;
 
 		} catch (TechnicalException e) {
 

@@ -21,7 +21,10 @@ public class VendeurService {
 
 		VendeurBean vendeur = vendeurDao.findById(id);
 
-		if (vendeur != null) {
+		if (vendeur == null) {
+			
+			vendeur = new VendeurBean();			
+			vendeur.setId(id);
 
 			vendeurDao.save(vendeur);
 		}

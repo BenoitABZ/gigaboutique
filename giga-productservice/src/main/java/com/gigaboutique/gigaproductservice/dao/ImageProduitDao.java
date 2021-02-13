@@ -12,6 +12,8 @@ import com.gigaboutique.gigaproductservice.model.ProduitBean;
 public interface ImageProduitDao extends JpaRepository<ImageProduitBean, Integer> {
 
 	ImageProduitBean findById(int id);
+	
+	ImageProduitBean findByAdresseWeb(String adresseWeb);
 
 	ImageProduitBean findByProduit(ProduitBean produit);
 

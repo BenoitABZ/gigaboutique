@@ -60,12 +60,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 						
 			User springUser = (User) auth.getPrincipal();
 			
-			System.out.println(auth.getPrincipal());
-			
-			System.out.println(auth.getAuthorities());
-			
-			System.out.println(springUser.getUsername());
-			
+     		System.out.println(auth.getPrincipal());			
+			System.out.println(auth.getAuthorities());		
+			System.out.println(springUser.getUsername());		
 			System.out.println(sc.getExpiration());
 									
 			long expiration = Long.parseLong(sc.getExpiration());

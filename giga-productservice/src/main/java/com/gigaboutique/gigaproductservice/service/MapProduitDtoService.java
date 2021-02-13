@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigaproductservice.dao.CategorieDao;
 import com.gigaboutique.gigaproductservice.dao.GenreDao;
+import com.gigaboutique.gigaproductservice.dao.ImageProduitDao;
 import com.gigaboutique.gigaproductservice.dao.ProduitDao;
 import com.gigaboutique.gigaproductservice.dao.TailleDao;
 import com.gigaboutique.gigaproductservice.dao.TailleProduitDao;
@@ -51,6 +52,9 @@ public class MapProduitDtoService {
 	@Autowired
 	ProduitDao produitDao;
 
+	@Autowired
+	ImageProduitDao imageProduitDao;
+
 	public ProduitDto convertToProduitDto(ProduitBean produit) throws ProduitException, NotFoundException {
 
 		ProduitDto produitDto = null;
@@ -65,6 +69,7 @@ public class MapProduitDtoService {
 			produitDto.setMarque(produit.getMarque());
 			produitDto.setCategorie(produit.getCategorie().getCategorie());
 			produitDto.setNom(produit.getNom());
+			produitDto.setAdresseWeb(produit.getAdresseWeb());
 
 			normalizeFormatProduitBean(produitDto, produit);
 
@@ -87,14 +92,14 @@ public class MapProduitDtoService {
 			}
 
 			produitDto.setImages(adressesWebImage);
-			
+
 		} catch (NullPointerException npe) {
 
 			throw new NotFoundException("produit(s) inexistant en base de données");
-			
-		}catch (Exception e) {
 
-			throw new ProduitException("problème lors de la conversion du bean produit en produitDto");
+		} catch (Exception e) {
+
+			throw new ProduitException("problème lors de la conversion du bean produit en produitDto" + e.getMessage());
 		}
 
 		return produitDto;
@@ -106,27 +111,44 @@ public class MapProduitDtoService {
 
 			produitBean.setMaj(true);
 
-			produitDao.save(produitBean);
+			normalizeFormatProduitDto(produit, produitBean);
 
-			List<TailleProduit> taillesProduits = produitBean.getTaillesProduits();
+			produitDao.save(produitBean);
 
 			Map<String, Boolean> mapTaillesProduits = produit.getTailles();
 
-			for (TailleProduit tailleProduit : taillesProduits) {
+			List<TailleProduit> taillesProduits = tailleProduitDao.findAll();
 
-				for (Map.Entry<String, Boolean> entry : mapTaillesProduits.entrySet()) {
+			for (Map.Entry<String, Boolean> entry : mapTaillesProduits.entrySet()) {
 
-					TailleBean tailleBean = tailleDao.findByTaille(entry.getKey());
+				TailleBean tailleBean = tailleDao.findByTaille(entry.getKey());
 
-					if (tailleBean.getTaille().equals(entry.getKey())) {
+				for (TailleProduit tailleProduit : taillesProduits) {
+
+					if ((tailleProduit.getProduit().getIdProduit() == produitBean.getIdProduit())
+							&& (tailleProduit.getTaille().getIdTaille() == tailleBean.getIdTaille())) {
+
+						int indexProduit = tailleProduit.getProduit().getTaillesProduits().indexOf(tailleProduit);
+
+						tailleProduit.getProduit().getTaillesProduits().remove(indexProduit);
+
 						tailleProduit.setDisponibilite(entry.getValue());
-						tailleProduit.setTaille(tailleBean);
-						tailleProduit.setProduit(produitBean);
+
+						tailleProduit.getProduit().getTaillesProduits().add(indexProduit, tailleProduit);
+
+						int indexTaille = tailleProduit.getTaille().getTaillesProduits().indexOf(tailleProduit);
+
+						tailleProduit.getTaille().getTaillesProduits().remove(indexTaille);
+
+						tailleProduit.setDisponibilite(entry.getValue());
+
+						tailleProduit.getTaille().getTaillesProduits().add(indexTaille, tailleProduit);
 
 						tailleProduitDao.save(tailleProduit);
-
 					}
+
 				}
+
 			}
 
 		} catch (Exception e) {
@@ -145,6 +167,8 @@ public class MapProduitDtoService {
 			produitBean = new ProduitBean();
 			produitBean.setNom(produit.getNom());
 			produitBean.setMarque(produit.getMarque().toUpperCase());
+			produitBean.setAdresseWeb(produit.getAdresseWeb());
+			produitBean.setMaj(true);
 
 			normalizeFormatProduitDto(produit, produitBean);
 
@@ -153,10 +177,10 @@ public class MapProduitDtoService {
 			if (categorie != null) {
 
 				produitBean.setCategorie(categorie);
+
 			} else {
 
 				CategorieBean categorieToSave = new CategorieBean();
-
 				categorieToSave.setCategorie(produit.getCategorie());
 
 				categorieDao.save(categorieToSave);
@@ -173,7 +197,6 @@ public class MapProduitDtoService {
 			} else {
 
 				GenreBean genreToSave = new GenreBean();
-
 				genreToSave.setGenre(produit.getGenre());
 
 				genreDao.save(genreToSave);
@@ -182,21 +205,29 @@ public class MapProduitDtoService {
 			}
 
 			VendeurBean vendeur = vendeurDao.findById(produit.getIdVendeur());
-
 			produitBean.setVendeur(vendeur);
+
+			produitDao.save(produitBean);
 
 			List<String> adressesWebImage = produit.getImages();
 
 			for (String adresse : adressesWebImage) {
 
 				ImageProduitBean image = new ImageProduitBean();
-
 				image.setAdresseWeb(adresse);
-
 				image.setProduit(produitBean);
 
+				imageProduitDao.save(image);
+				
 				produitBean.getImages().add(image);
+
 			}
+			
+			produitDao.save(produitBean);
+
+			vendeur.getProduits().add(produitBean);
+
+			vendeurDao.save(vendeur);
 
 			Map<String, Boolean> mapTaillesProduits = produit.getTailles();
 
@@ -204,21 +235,21 @@ public class MapProduitDtoService {
 
 				TailleBean taille = new TailleBean();
 				taille.setTaille(entry.getKey());
+
 				tailleDao.save(taille);
 
-				TailleProduit tailleProduit = new TailleProduit();
-				tailleProduit.setDisponibilite(entry.getValue());
-				tailleProduit.setTaille(taille);
-				tailleProduit.setProduit(produitBean);
+				TailleProduit tailleProduit = new TailleProduit(entry.getValue(), produitBean, taille);
 
 				produitBean.getTaillesProduits().add(tailleProduit);
 				taille.getTaillesProduits().add(tailleProduit);
+
+				tailleProduitDao.save(tailleProduit);
 
 			}
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("problème lors de la persistence des beans (hors produit)");
+			throw new TechnicalException("problème lors de la persistence des beans (hors produit)" + e.getMessage());
 
 		}
 

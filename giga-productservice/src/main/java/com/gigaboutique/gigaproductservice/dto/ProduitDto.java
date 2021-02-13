@@ -21,6 +21,8 @@ public class ProduitDto {
 
 	private String categorie;
 
+	private String adresseWeb;
+
 	private Map<String, Boolean> tailles;
 
 	private List<String> images;
@@ -103,6 +105,14 @@ public class ProduitDto {
 
 	public void setImages(List<String> images) {
 		this.images = images;
+	}
+
+	public String getAdresseWeb() {
+		return adresseWeb;
+	}
+
+	public void setAdresseWeb(String adresseWeb) {
+		this.adresseWeb = adresseWeb;
 	}
 
 }

@@ -54,6 +54,9 @@ public class ProduitBean implements Serializable {
 	@Column(name = "maj")
 	private Boolean maj;
 
+	@Column(name = "adresse_web")
+	private String adresseWeb;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_vendeur")
 	private VendeurBean vendeur;
@@ -69,7 +72,7 @@ public class ProduitBean implements Serializable {
 	@OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
 	private List<ImageProduitBean> images = new ArrayList<>();
 
-	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private List<TailleProduit> taillesProduits = new ArrayList<>();
 
 	public Integer getIdProduit() {
@@ -160,4 +163,11 @@ public class ProduitBean implements Serializable {
 		this.maj = maj;
 	}
 
+	public String getAdresseWeb() {
+		return adresseWeb;
+	}
+
+	public void setAdresseWeb(String adresseWeb) {
+		this.adresseWeb = adresseWeb;
+	}
 }
