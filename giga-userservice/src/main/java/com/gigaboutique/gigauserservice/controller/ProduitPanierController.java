@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gigaboutique.gigauserservice.exception.TechnicalException;
 import com.gigaboutique.gigauserservice.service.ProduitPanierService;
@@ -21,17 +22,16 @@ public class ProduitPanierController {
 	private ProduitPanierService produitService;
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
+	public void addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
 
 		try {
+
 			produitService.addProduitPanier(idProduit, idUtilisateur);
-			
+
 		} catch (TechnicalException e) {
-			
-			return new ResponseEntity<String>("problème lors de l'ajout d'un produit", HttpStatus.INTERNAL_SERVER_ERROR);
+
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
-		
-		return new ResponseEntity<String>("produit ajouté avec succès", HttpStatus.CREATED);
 
 	}
 
@@ -39,7 +39,13 @@ public class ProduitPanierController {
 	@ResponseStatus(HttpStatus.OK)
 	public void removeProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
 
-		produitService.removeProduitPanier(idProduit, idUtilisateur);
-	}
+		try {
 
+			produitService.removeProduitPanier(idProduit, idUtilisateur);
+
+		} catch (TechnicalException e) {
+
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+	}
 }

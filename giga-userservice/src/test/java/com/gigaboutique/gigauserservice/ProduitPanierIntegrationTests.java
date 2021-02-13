@@ -27,6 +27,7 @@ import com.gigaboutique.gigauserservice.dao.ProduitPanierDao;
 import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
+import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @SpringBootTest
@@ -123,7 +124,6 @@ public class ProduitPanierIntegrationTests {
 
 	@Test
 	public void removeProduitPanierTest() throws Exception {
-
 		
 		int idProduitToAdd = 1;
 		int idUtilisateur = utilisateurDto.getIdUtilisateur();
@@ -153,6 +153,97 @@ public class ProduitPanierIntegrationTests {
 		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 		
 		assertFalse(produitPanierDao.findById(idProduitToRemove) != null);
+	}
+	
+	@Test
+	public void removeProduitPanierTestWithMoreThanOneUser() throws Exception {
+		
+		RegisterDto registerDto2 = new RegisterDto();
+
+		registerDto2.setNom("lastNameTest2");
+		registerDto2.setPrenom("firstNameTest2");
+		registerDto2.setMail("mail2admin@gmail.com");
+		registerDto2.setPassword("Poiuytreza3");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		mapper = objectMapper.writer().withDefaultPrettyPrinter();
+		String registerDtoJson2 = mapper.writeValueAsString(registerDto2);
+
+		mvc.perform(post("/signup/utilisateur")
+		   .contentType(MediaType.APPLICATION_JSON)
+		   .content(registerDtoJson2));
+
+		MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
+
+		params2.add("mail", "mail2admin@gmail.com");
+		params2.add("motDePasse", "Poiuytreza3");
+
+		String token2 = mvc.perform(post("/login/utilisateur")
+				           .params(params2)
+				           .accept("application/json;charset=UTF-8"))
+				           .andReturn().getResponse().getHeader("Authorization");
+	
+		UtilisateurDto utilisateurDto2 = new UtilisateurDto();
+
+		utilisateurDto.setNom("lastNameTest2");
+		utilisateurDto.setPrenom("firstNameTest2");
+		utilisateurDto.setMail("mail2admin@gmail.com");
+		
+		UtilisateurBean utilisateurBean2 = utilisateurDao.findByMail(registerDto2.getMail());
+
+		int id2 = utilisateurBean2.getId();
+
+		String role2 = utilisateurBean2.getRole().getRole();
+
+		utilisateurDto2.setIdUtilisateur(id2);
+		utilisateurDto2.setRole(role2);
+		
+		int idProduitToAdd = 1;
+		int idUtilisateur = utilisateurDto.getIdUtilisateur();
+
+		MultiValueMap<String, String> paramsAdd = new LinkedMultiValueMap<>();
+
+		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
+		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
+
+		mvc.perform(post("/panier/add")
+		   .header("Authorization", token)
+		   .contentType(MediaType.APPLICATION_JSON)
+		   .params(paramsAdd)
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
+
+		int idUtilisateur2 = utilisateurDto2.getIdUtilisateur();
+
+		MultiValueMap<String, String> paramsAdd2 = new LinkedMultiValueMap<>();
+
+		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd));
+		paramsAdd2.add("idUtilisateur2", Integer.toString(idUtilisateur2));
+
+		mvc.perform(post("/panier/add")
+		   .header("Authorization", token2)
+		   .contentType(MediaType.APPLICATION_JSON)
+		   .params(paramsAdd2)
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
+		
+		int idProduitToRemove = 1;
+
+		MultiValueMap<String, String> paramsRemove = new LinkedMultiValueMap<>();
+
+		paramsRemove.add("idProduit", Integer.toString(idProduitToRemove));
+		paramsRemove.add("idUtilisateur", Integer.toString(idUtilisateur));
+
+		mvc.perform(delete("/panier/remove")
+		   .header("Authorization", token)
+		   .params(paramsRemove)
+		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		
+		ProduitPanierBean produitPanier = produitPanierDao.findById(idProduitToRemove);
+
+		assertTrue(produitPanierDao.findById(idProduitToRemove) != null);
+		assertTrue(produitPanier.getUtilisateurs().size() == 1);
+		assertTrue(produitPanier.getUtilisateurs().contains(utilisateurBean2));
 	}
 
 }

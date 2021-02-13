@@ -32,14 +32,26 @@ public class UtilisateurService {
 	private UtilisateurDao utilisateurDao;
 
 	@Autowired
-	private ModelMapper modelMapper;
-
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	public List<UtilisateurDto> getUtilisateurs() {
-		return ((List<UtilisateurBean>) utilisateurDao.findAll()).stream()
-				.map(mapUtilisateurDtoService::convertToUtilisateurDto).collect(Collectors.toList());
+	public List<UtilisateurDto> getUtilisateurs(){
+		
+		return ((List<UtilisateurBean>) utilisateurDao.findAll())
+				.stream()
+				.map(arg0 -> {
+									
+						try {
+							
+							return mapUtilisateurDtoService.convertToUtilisateurDto(arg0);
+							
+						} catch (UtilisateurException e) {
+							
+							return null;
+						}
+						
+				
+					
+				}).collect(Collectors.toList());
 	}
 
 	public UtilisateurDto getUtilisateur(String mail) throws UtilisateurException {
@@ -48,7 +60,7 @@ public class UtilisateurService {
 
 		if (utilisateur == null) {
 
-			throw new UtilisateurException("Adresse mail incorrect!");
+			throw new UtilisateurException("adresse mail incorrect");
 
 		}
 
@@ -68,18 +80,17 @@ public class UtilisateurService {
 
 		try {
 
-			utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto, modelMapper);
+			utilisateur = mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto);
 
 			utilisateurVerify = utilisateurDao.findByMail(utilisateur.getMail());
 
 		} catch (NullPointerException npe) {
 
-			System.out.println("ici");
 		}
 
 		if (utilisateurVerify != null) {
 
-			throw new UtilisateurException("Cette adresse mail existe déjà!");
+			throw new UtilisateurException("cette adresse mail existe déjà");
 
 		}
 		
@@ -102,10 +113,6 @@ public class UtilisateurService {
 		utilisateur = rc.setRoleUtilisateur(utilisateur);
 		
 		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-
-		RoleBean role = utilisateur.getRole();
-
-		System.out.println(role.getId());
 
 		utilisateurDao.save(utilisateur);
 

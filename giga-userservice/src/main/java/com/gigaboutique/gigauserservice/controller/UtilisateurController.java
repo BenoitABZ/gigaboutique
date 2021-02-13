@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
@@ -32,12 +33,13 @@ public class UtilisateurController {
 		UtilisateurDto utilisateurDto = new UtilisateurDto();
 
 		try {
+
 			utilisateurDto = utilisateurService.registerUtilisateur(registerDto, roleService);
+
 		} catch (UtilisateurException e) {
 
-			utilisateurDto.setMessage(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 
-			return utilisateurDto;
 		}
 
 		return utilisateurDto;

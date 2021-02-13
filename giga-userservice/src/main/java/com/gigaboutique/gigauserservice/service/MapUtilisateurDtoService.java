@@ -10,25 +10,37 @@ import org.springframework.stereotype.Service;
 
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
+import com.gigaboutique.gigauserservice.exception.TechnicalException;
+import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @Service
 public class MapUtilisateurDtoService {
 
-	public UtilisateurDto convertToUtilisateurDto(UtilisateurBean utilisateur) {
+	public UtilisateurDto convertToUtilisateurDto(UtilisateurBean utilisateur) throws UtilisateurException {
 
-		UtilisateurDto utilisateurDto = new UtilisateurDto();
+		UtilisateurDto utilisateurDto = null;
 
-		utilisateurDto.setIdUtilisateur(utilisateur.getId());
-		utilisateurDto.setNom(utilisateur.getNom());
-		utilisateurDto.setPrenom(utilisateur.getPrenom());
-		utilisateurDto.setMail(utilisateur.getMail());
-		utilisateurDto.setRole(utilisateur.getRole().getRole());
+		try {
 
-		Set<Integer> produitsId = populateProduitPanierId(utilisateur);
+			utilisateurDto = new UtilisateurDto();
 
-		utilisateurDto.setProduits(produitsId);
+			utilisateurDto.setIdUtilisateur(utilisateur.getId());
+			utilisateurDto.setNom(utilisateur.getNom());
+			utilisateurDto.setPrenom(utilisateur.getPrenom());
+			utilisateurDto.setMail(utilisateur.getMail());
+			utilisateurDto.setRole(utilisateur.getRole().getRole());
+
+			Set<Integer> produitsId = populateProduitPanierId(utilisateur);
+
+			utilisateurDto.setProduits(produitsId);
+
+		} catch (Exception e) {
+
+			throw new UtilisateurException("problème convertToUtilisateurDto");
+
+		}
 
 		return utilisateurDto;
 
@@ -42,18 +54,24 @@ public class MapUtilisateurDtoService {
 
 	}
 
-	public UtilisateurBean convertToUtilisateurBeanForRegistration(RegisterDto registerDto, ModelMapper modelMapper) {
-		
-		UtilisateurBean utilisateurBean = new UtilisateurBean();
-		
-		utilisateurBean.setNom(registerDto.getNom());
-		utilisateurBean.setPrenom(registerDto.getPrenom());
-		utilisateurBean.setMail(registerDto.getMail());
-		utilisateurBean.setMotDePasse(registerDto.getPassword());
-		
-		/*
-		UtilisateurBean utilisateurBean = modelMapper.map(registerDto, UtilisateurBean.class);	
-		*/
+	public UtilisateurBean convertToUtilisateurBeanForRegistration(RegisterDto registerDto) throws UtilisateurException {
+
+		UtilisateurBean utilisateurBean = null;
+
+		try {
+
+			utilisateurBean = new UtilisateurBean();
+
+			utilisateurBean.setNom(registerDto.getNom());
+			utilisateurBean.setPrenom(registerDto.getPrenom());
+			utilisateurBean.setMail(registerDto.getMail());
+			utilisateurBean.setMotDePasse(registerDto.getPassword());
+
+		} catch (Exception e) {
+
+			throw new UtilisateurException("problème convertToUtilisateurBeanForRegistration");
+
+		}
 
 		return utilisateurBean;
 	}
@@ -63,8 +81,7 @@ public class MapUtilisateurDtoService {
 		Set<Integer> setProduitPanier = new HashSet<>();
 
 		try {
-			setProduitPanier = ((Set<ProduitPanierBean>) utilisateur
-					.getProduitsPanier())
+			setProduitPanier = ((Set<ProduitPanierBean>) utilisateur.getProduitsPanier())
 					.stream()
 					.map(ProduitPanierBean::getId)
 					.collect(Collectors.toSet());

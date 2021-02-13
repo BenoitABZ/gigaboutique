@@ -66,13 +66,15 @@ public class ProduitPanierService {
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("un problème a eu lieu lors de l'ajout du produit au panier.");
+			throw new TechnicalException("un problème a eu lieu lors de l'ajout du produit au panier");
 
 		}
 
 	}
 
-	public void removeProduitPanier(int idProduit, int idUtilisateur) {
+	public void removeProduitPanier(int idProduit, int idUtilisateur) throws TechnicalException {
+		
+		try {
 
 		ProduitPanierBean produit = produitPanierDao.findById(idProduit);
 
@@ -91,6 +93,10 @@ public class ProduitPanierService {
 			produit.setUtilisateurs(utilisateurs);
 
 			produitPanierDao.save(produit);
+		}
+		}catch(Exception e) {
+			
+			throw new TechnicalException("un problème a eu lieu lors de la suppression du produit au panier");
 		}
 
 	}
