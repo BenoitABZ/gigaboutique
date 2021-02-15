@@ -41,7 +41,6 @@ public class UtilisateurControllerIntegrationTests {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		ObjectWriter mapper = objectMapper.writer().withDefaultPrettyPrinter();
-
 		String registerDtoJson = mapper.writeValueAsString(registerDto);
 
 		mvc.perform(post("/signup/utilisateur")
@@ -74,15 +73,12 @@ public class UtilisateurControllerIntegrationTests {
 		params.add("mail", "mailadmin@gmail.com");
 		params.add("motDePasse", "Poiuytreza3");
 
-		String resultString = mvc.perform(post("/login/utilisateur")
-						         .params(params)
-						         .accept("application/json;charset=UTF-8"))
-				                 .andExpect(status().isOk())
-				                 .andReturn().getResponse().getHeader("Authorization");
-		
-		System.out.println(resultString);
+		mvc.perform(post("/login/utilisateur")
+	       .params(params)
+		   .accept("application/json;charset=UTF-8"))
+		   .andExpect(status().isOk())
+		   .andReturn().getResponse().getHeader("Authorization");
 
-		
 	}
 
 }

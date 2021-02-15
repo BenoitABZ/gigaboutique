@@ -1,9 +1,13 @@
 package com.gigaboutique.gigauserservice;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.ws.rs.core.MediaType;
@@ -29,6 +33,7 @@ import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
+import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
 
 @SpringBootTest
 @Transactional
@@ -39,6 +44,9 @@ public class ProduitPanierIntegrationTests {
 
 	@Autowired
 	private MockMvc mvc;
+	
+	@Autowired
+	MapUtilisateurDtoService mapUtilisateurDtoService;
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
@@ -101,7 +109,7 @@ public class ProduitPanierIntegrationTests {
 	  
 	
 	 }
-	
+
 	@Test
 	public void addProduitPanierTest() throws Exception {
 
@@ -115,11 +123,17 @@ public class ProduitPanierIntegrationTests {
 
 		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
-		   .contentType(MediaType.APPLICATION_JSON)
 		   .params(paramsAdd)
-		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
 		
 		assertTrue(produitPanierDao.findById(idProduitToAdd) != null);
+		
+		UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur);
+		
+		UtilisateurDto utilisateurDtoTest = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateurBean);
+		
+		assertEquals(1, utilisateurDtoTest.getProduits().size());
 	}
 
 	@Test
@@ -135,7 +149,6 @@ public class ProduitPanierIntegrationTests {
 
 		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
-		   .contentType(MediaType.APPLICATION_JSON)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
@@ -150,7 +163,8 @@ public class ProduitPanierIntegrationTests {
 		mvc.perform(delete("/panier/remove")
 		   .header("Authorization", token)
 		   .params(paramsRemove)
-		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isOk());
 		
 		assertFalse(produitPanierDao.findById(idProduitToRemove) != null);
 	}
@@ -181,13 +195,14 @@ public class ProduitPanierIntegrationTests {
 		String token2 = mvc.perform(post("/login/utilisateur")
 				           .params(params2)
 				           .accept("application/json;charset=UTF-8"))
-				           .andReturn().getResponse().getHeader("Authorization");
+				           .andReturn().getResponse()
+				           .getHeader("Authorization");
 	
 		UtilisateurDto utilisateurDto2 = new UtilisateurDto();
 
-		utilisateurDto.setNom("lastNameTest2");
-		utilisateurDto.setPrenom("firstNameTest2");
-		utilisateurDto.setMail("mail2admin@gmail.com");
+		utilisateurDto2.setNom("lastNameTest2");
+		utilisateurDto2.setPrenom("firstNameTest2");
+		utilisateurDto2.setMail("mail2admin@gmail.com");
 		
 		UtilisateurBean utilisateurBean2 = utilisateurDao.findByMail(registerDto2.getMail());
 
@@ -208,7 +223,6 @@ public class ProduitPanierIntegrationTests {
 
 		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
-		   .contentType(MediaType.APPLICATION_JSON)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
@@ -218,11 +232,10 @@ public class ProduitPanierIntegrationTests {
 		MultiValueMap<String, String> paramsAdd2 = new LinkedMultiValueMap<>();
 
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd));
-		paramsAdd2.add("idUtilisateur2", Integer.toString(idUtilisateur2));
+		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur2));
 
 		mvc.perform(post("/panier/add")
 		   .header("Authorization", token2)
-		   .contentType(MediaType.APPLICATION_JSON)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
@@ -237,13 +250,52 @@ public class ProduitPanierIntegrationTests {
 		mvc.perform(delete("/panier/remove")
 		   .header("Authorization", token)
 		   .params(paramsRemove)
-		   .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isOk());
 		
 		ProduitPanierBean produitPanier = produitPanierDao.findById(idProduitToRemove);
 
 		assertTrue(produitPanierDao.findById(idProduitToRemove) != null);
 		assertTrue(produitPanier.getUtilisateurs().size() == 1);
 		assertTrue(produitPanier.getUtilisateurs().contains(utilisateurBean2));
+	}
+	
+	@Test
+	public void getProduitPanierTest() throws Exception {
+
+		int idProduitToAdd1 = 1;
+		int idUtilisateur = utilisateurDto.getIdUtilisateur();
+
+		MultiValueMap<String, String> paramsAdd1 = new LinkedMultiValueMap<>();
+
+		paramsAdd1.add("idProduit", Integer.toString(idProduitToAdd1));
+		paramsAdd1.add("idUtilisateur", Integer.toString(idUtilisateur));
+
+		mvc.perform(post("/panier/add")
+		   .header("Authorization", token)
+		   .params(paramsAdd1)
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
+		
+		int idProduitToAdd2 = 2;
+		
+		MultiValueMap<String, String> paramsAdd2 = new LinkedMultiValueMap<>();
+
+		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd2));
+		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur));
+
+		mvc.perform(post("/panier/add")
+		   .header("Authorization", token)
+		   .params(paramsAdd2)
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(status().isCreated());
+		
+		mvc.perform(get("/panier/get/" + idUtilisateur)
+				   .header("Authorization", token)
+				   .params(paramsAdd2)
+				   .contentType(MediaType.APPLICATION_JSON))
+				   .andExpect(jsonPath("$.produits", hasSize(2)));
+
 	}
 
 }

@@ -10,5 +10,4 @@ import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 public interface ProduitPanierDao extends JpaRepository<ProduitPanierBean, Integer> {
 
 	ProduitPanierBean findById(int id);
-
 }

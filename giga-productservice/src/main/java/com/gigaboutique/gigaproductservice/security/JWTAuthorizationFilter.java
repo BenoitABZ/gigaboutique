@@ -1,6 +1,7 @@
 package com.gigaboutique.gigaproductservice.security;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -49,12 +50,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				return;
 			}
 
-			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + " ", "")).getBody();			
+			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + "", "")).getBody();			
 			String mail = claims.getSubject();	
-			ArrayList<Map<String, String>> roles = (ArrayList<Map<String, String>>) claims.get("roles");
+			ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
 			Collection<GrantedAuthority> authorities = new ArrayList<>();
 			roles.forEach(r -> {
-				authorities.add(new SimpleGrantedAuthority(r.get("authority")));
+				authorities.add(new SimpleGrantedAuthority(r));
 			});
 
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mail,null, authorities);

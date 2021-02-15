@@ -12,6 +12,8 @@ public class ProduitDto {
 	private String nom;
 
 	private String prix;
+	
+	private String newPrix;
 
 	private String promotion;
 
@@ -113,6 +115,14 @@ public class ProduitDto {
 
 	public void setAdresseWeb(String adresseWeb) {
 		this.adresseWeb = adresseWeb;
+	}
+
+	public String getNewPrix() {
+		return newPrix;
+	}
+
+	public void setNewPrix(String newPrix) {
+		this.newPrix = newPrix;
 	}
 
 }

@@ -79,6 +79,7 @@ public class ServiceLayerIntegrationTests {
 		produitDto.setNom("pantalon tommy 31");
 		produitDto.setPrix("85,50");
 		produitDto.setPromotion("50");
+		produitDto.setNewPrix(null);
 
 		List<String> adressesWebImages = new ArrayList<>();
 		adressesWebImages.add("adressetest");
@@ -227,8 +228,8 @@ public class ServiceLayerIntegrationTests {
 		produitDto1.setIdVendeur(vendeurBean.getId());
 		produitDto1.setMarque("tommy");
 		produitDto1.setNom("pantalon tommy 31");
-		produitDto1.setPrix("84");
-		produitDto1.setPromotion("50");
+		produitDto1.setPrix("82");
+		produitDto1.setPromotion("20");
 		produitDto1.setAdresseWeb("adresseWebTest");
 
 		List<String> adressesWebImages1 = new ArrayList<>();
@@ -285,6 +286,7 @@ public class ServiceLayerIntegrationTests {
 
 		assertTrue(produits.size() == 1);
 		assertEquals("pantalon tommy 32", produits.get(0).getNom());
+		assertEquals("58,10", produits.get(0).getNewPrix());
 
 	}
 

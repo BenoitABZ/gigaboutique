@@ -3,6 +3,7 @@ package com.gigaboutique.gigauserservice.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,8 +55,8 @@ public class UtilisateurBean implements Serializable {
 	@Column(name = "mot_de_passe")
 	private String motDePasse;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
+	@ManyToMany(mappedBy = "utilisateurs", fetch = FetchType.EAGER)
+	//@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
 	private Set<ProduitPanierBean> produitsPanier;
 
 	@ManyToOne(fetch = FetchType.EAGER)

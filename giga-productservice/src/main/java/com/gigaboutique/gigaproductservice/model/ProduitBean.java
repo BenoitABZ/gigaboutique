@@ -72,7 +72,7 @@ public class ProduitBean implements Serializable {
 	@OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
 	private List<ImageProduitBean> images = new ArrayList<>();
 
-	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER)
 	private List<TailleProduit> taillesProduits = new ArrayList<>();
 
 	public Integer getIdProduit() {

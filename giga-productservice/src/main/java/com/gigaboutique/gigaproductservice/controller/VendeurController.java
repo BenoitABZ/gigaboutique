@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.gigaboutique.gigaproductservice.exception.TechnicalException;
 import com.gigaboutique.gigaproductservice.service.VendeurService;
 
+
 @RestController
 @RequestMapping("/vendeur")
 public class VendeurController {

@@ -8,8 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,6 +30,7 @@ public class ProduitPanierBean implements Serializable {
 	private int id;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_ProduitPanier"), inverseJoinColumns = @JoinColumn(name = "id_utilisateur"))
 	private Set<UtilisateurBean> utilisateurs;
 
 	public int getId() {
@@ -42,6 +47,19 @@ public class ProduitPanierBean implements Serializable {
 
 	public void setUtilisateurs(Set<UtilisateurBean> utilisateurs) {
 		this.utilisateurs = utilisateurs;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ProduitPanierBean) {
+
+			ProduitPanierBean produitPanier = (ProduitPanierBean) obj;
+
+			return this.getId() == produitPanier.getId();
+		}
+
+		return false;
+
 	}
 
 }

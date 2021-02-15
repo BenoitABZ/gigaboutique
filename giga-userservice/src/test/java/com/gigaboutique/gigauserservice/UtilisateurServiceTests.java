@@ -1,7 +1,6 @@
 package com.gigaboutique.gigauserservice;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -87,7 +86,7 @@ public class UtilisateurServiceTests {
 	}
 
 	@Test
-	public void getUtilisateursTest() {
+	public void getUtilisateursTest() throws UtilisateurException {
 
 		List<UtilisateurBean> utilisateursBean = new ArrayList<>();
 
@@ -106,9 +105,9 @@ public class UtilisateurServiceTests {
 	}
 
 	@Test
-	public void registerUtilisateurTest1() {
+	public void registerUtilisateurTest1() throws UtilisateurException {
 
-		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto, modelMapper))
+		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto))
 				.thenReturn(utilisateurBean);
 
 		when(passwordEncoder.encode(anyString())).thenReturn("passwordEncoded31");
@@ -128,10 +127,9 @@ public class UtilisateurServiceTests {
 	}
 
 	@Test
-	public void registerUtilisateurTest2() {
+	public void registerUtilisateurTest2() throws UtilisateurException {
 
-		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto, modelMapper))
-				.thenReturn(utilisateurBean);
+		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto)).thenReturn(utilisateurBean);
 
 		when(utilisateurDao.findByMail(anyString())).thenReturn(null);
 
@@ -144,10 +142,9 @@ public class UtilisateurServiceTests {
 	}
 
 	@Test
-	public void registerUtilisateurTest3() {
+	public void registerUtilisateurTest3() throws UtilisateurException {
 
-		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto, modelMapper))
-				.thenReturn(utilisateurBean);
+		when(mapUtilisateurDtoService.convertToUtilisateurBeanForRegistration(registerDto)).thenReturn(utilisateurBean);
 
 		when(utilisateurDao.findByMail(anyString())).thenReturn(null);
 

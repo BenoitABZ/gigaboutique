@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
+import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
@@ -48,7 +49,7 @@ public class MapUtilisateurDtoServiceTests {
 	}
 
 	@Test
-	public void convertToUtilisateurDtoTest() {
+	public void convertToUtilisateurDtoTest() throws UtilisateurException {
 
 		UtilisateurDto utilisateurDto = map.convertToUtilisateurDto(utilisateurBean);
 
@@ -57,7 +58,7 @@ public class MapUtilisateurDtoServiceTests {
 	}
 
 	@Test
-	public void populateProduitPanierIdTest() {
+	public void populateProduitPanierIdTest() throws UtilisateurException {
 
 		ProduitPanierBean produitPanier = new ProduitPanierBean();
 		produitPanier.setId(1);
@@ -93,7 +94,7 @@ public class MapUtilisateurDtoServiceTests {
 	}
 
 	@Test
-	public void convertToUtilisateurBeanForRegistrationTest() {
+	public void convertToUtilisateurBeanForRegistrationTest() throws UtilisateurException {
 
 		RegisterDto registerDto = new RegisterDto();
 		registerDto.setMail("mailadmin@gmail.com");
@@ -101,7 +102,7 @@ public class MapUtilisateurDtoServiceTests {
 		registerDto.setPrenom("testFirstName");
 		registerDto.setPassword("Poiuytreza31");
 
-		UtilisateurBean utilisateurBeanTest = map.convertToUtilisateurBeanForRegistration(registerDto, modelMapper);
+		UtilisateurBean utilisateurBeanTest = map.convertToUtilisateurBeanForRegistration(registerDto);
 
 		assertEquals(utilisateurBeanTest.getMail(), registerDto.getMail());
 

@@ -1,6 +1,7 @@
 package com.gigaboutique.gigaproductservice.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigaproductservice.configuration.ProductConfiguration;
+import com.gigaboutique.gigaproductservice.dao.ImageProduitDao;
 import com.gigaboutique.gigaproductservice.dao.ProduitDao;
+import com.gigaboutique.gigaproductservice.dao.TailleProduitDao;
 import com.gigaboutique.gigaproductservice.dto.CritereDto;
 import com.gigaboutique.gigaproductservice.dto.ProduitDto;
 import com.gigaboutique.gigaproductservice.exception.ProduitException;
@@ -39,6 +42,12 @@ public class ProduitService {
 
 	@Autowired
 	private ProduitDao produitDao;
+
+	@Autowired
+	private TailleProduitDao tailleProduitDao;
+	
+	@Autowired
+	private ImageProduitDao imageProduitDao;
 
 	public List<ProduitDto> getProduits(Pageable paging) throws ProduitException, NotFoundException {
 
@@ -149,7 +158,18 @@ public class ProduitService {
 
 		try {
 
-			produitDao.deleteByMaj(false);
+			List<ProduitBean> produitsMajFalse = produitDao.findByMaj(false);
+
+			for (ProduitBean produit : produitsMajFalse) {
+			
+				tailleProduitDao.deleteByRelatedProduit(produit.getIdProduit());
+				imageProduitDao.deleteByRelatedProduit(produit.getIdProduit());
+					
+			}
+			
+			produitDao.deleteInBatch(produitsMajFalse);
+
+			//produitDao.deleteByMaj();
 
 		} catch (Exception e) {
 
@@ -177,7 +197,7 @@ public class ProduitService {
 				for (String categorie : categories) {
 
 					if (produitDto.getCategorie().trim().toLowerCase().contains(categorie.trim().toLowerCase())
-					    || produitDto.getNom().trim().toLowerCase().contains(categorie.trim().toLowerCase())) {
+							|| produitDto.getNom().trim().toLowerCase().contains(categorie.trim().toLowerCase())) {
 
 						produitDto.setCategorie(normalizeCategorie);
 					}
@@ -220,5 +240,5 @@ public class ProduitService {
 		Validator vValidator = vFactory.getValidator();
 		return vValidator;
 	}
-	
+
 }

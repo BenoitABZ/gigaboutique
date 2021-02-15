@@ -1,6 +1,7 @@
 package com.gigaboutique.gigaproductservice.service;
 
 import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -287,14 +288,22 @@ public class MapProduitDtoService {
 
 		try {
 
-			double prixDouble = produitBean.getPrix();
-
+			double prixDouble = produitBean.getPrix();			
+			
+			int promotion = produitBean.getPromotion();
+			
 			String prixString = String.format("%.2f", prixDouble);
 
 			produitDto.setPrix(prixString);
+			
+			double newPrixDouble = prixDouble - (prixDouble * (double)(promotion/100.0));
+			
+			String newPrixString = String.format("%.2f", newPrixDouble);
+			
+			produitDto.setNewPrix(newPrixString);
 
-			produitDto.setPromotion(String.valueOf(produitBean.getPromotion()));
-
+			produitDto.setPromotion(String.valueOf(promotion));
+			
 		} catch (Exception e) {
 
 			throw new ProduitException("problème lors de la conversion des integer et double en string");

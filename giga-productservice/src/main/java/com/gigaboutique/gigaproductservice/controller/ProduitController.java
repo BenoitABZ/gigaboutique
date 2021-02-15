@@ -57,9 +57,12 @@ public class ProduitController {
 	}
 
 	@GetMapping("/get/all")
-	public List<ProduitDto> getProduits(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
+	public List<ProduitDto> getProduits(@RequestParam(defaultValue = "0") String page, @RequestParam(defaultValue = "15") String size) {
 
-		Pageable paging = PageRequest.of(page, size);
+		int pageInt = Integer.parseInt(page);
+		int sizeInt = Integer.parseInt(size);
+		
+		Pageable paging = PageRequest.of(pageInt, sizeInt);
 
 		List<ProduitDto> produits = null;
 
@@ -162,7 +165,7 @@ public class ProduitController {
 
 		try {
 
-			produitService.removeProduitIfFalse();;
+			produitService.removeProduitIfFalse();
 
 		} catch (TechnicalException e) {
 

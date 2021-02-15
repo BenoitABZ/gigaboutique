@@ -1,6 +1,8 @@
 package com.gigaboutique.gigaproductservice;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,7 +76,7 @@ public class ControllerLayerIntegrationTests {
 	 @BeforeAll 
 	  public void setUp() throws Exception {
 		 
-		 VendeurBean vendeurBean = new VendeurBean();
+		    VendeurBean vendeurBean = new VendeurBean();
 			vendeurBean.setId(1);
 			vendeurDao.save(vendeurBean);
 
@@ -146,11 +148,11 @@ public class ControllerLayerIntegrationTests {
 		paramsAdd.add("page", "0");
 		paramsAdd.add("size", "1");
 
-		mvc.perform(get("/get/all")
-				.header(sc.getHeader(), sc.getTokenPrefix() + " " + token)
+		mvc.perform(get("/produit/get/all")
+				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.params(paramsAdd)
 				.contentType(MediaType.APPLICATION_JSON))
-		        .andExpect(jsonPath("$", hasSize(1)));
+		        .andExpect(jsonPath("$[0].nom", is("pantalon tommy 31")));
 	}
 	
 	@Test
@@ -161,9 +163,9 @@ public class ControllerLayerIntegrationTests {
 		listeMarque.add("NIKE");
 		
 		List<String> listeCategorie = new ArrayList<>();
-		listeCategorie.add("Pantalon/Jeans");
+		listeCategorie.add("Pantalons/Jeans");
 		listeCategorie.add("Pulls/Sweats");
-				
+			
 		CritereDto critereDto = new CritereDto();
 
 		critereDto.setGenre("Homme");
@@ -175,8 +177,8 @@ public class ControllerLayerIntegrationTests {
 		ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
 		String critereJson = ow.writeValueAsString(critereDto);
 
-		mvc.perform(post("/get/criteria")
-				.header(sc.getHeader(), sc.getTokenPrefix() + " " + token)
+		mvc.perform(post("/produit/get/criteria")
+				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.content(critereJson)
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(jsonPath("$", hasSize(2)));
@@ -185,8 +187,8 @@ public class ControllerLayerIntegrationTests {
 	@Test
 	public void getMarques() throws Exception {
 		
-		mvc.perform(get("/get/marques")
-				.header(sc.getHeader(), sc.getTokenPrefix() + " " + token)
+		mvc.perform(get("/produit/get/marques")
+				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(jsonPath("$", hasSize(2)));
 		
@@ -195,19 +197,23 @@ public class ControllerLayerIntegrationTests {
 	@Test
 	public void setFalse() throws Exception {
 		
-		mvc.perform(put("/setfalse")
-				.header(sc.getHeader(), sc.getTokenPrefix() + " " + token)
+		mvc.perform(put("/produit/setfalse")
+				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(status().is2xxSuccessful());
 		
-		mvc.perform(delete("/removeiffalse")
-				.header(sc.getHeader(), sc.getTokenPrefix() + " " + token)
+		List<ProduitBean> produitsTest1 = produitDao.findAll();
+		
+		assertFalse(produitsTest1.get(0).getMaj());
+		
+		mvc.perform(delete("/produit/removeiffalse")
+				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(status().is2xxSuccessful());
 		
-		List<ProduitBean> produits = produitDao.findAll();
+		List<ProduitBean> produitsTest2 = produitDao.findAll();
 		
-		assertTrue(produits.isEmpty());
+		assertTrue(produitsTest2.isEmpty());
 		
 	}
 }
