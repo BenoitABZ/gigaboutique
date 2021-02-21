@@ -22,7 +22,7 @@ services:
       - POSTGRES_DB=db_giga_product
       - POSTGRES_USER=product_giga
       - POSTGRES_PASSWORD=gigaboutique
-  giga.db.comment:
+  giga.db.seller:
     image: postgres:9.4
     ports:
       - "127.0.0.1:9034:5432"

@@ -6,6 +6,7 @@ CREATE TABLE Vendeur (
                 nom VARCHAR NOT NULL,
                 logo VARCHAR NOT NULL,
                 note VARCHAR NOT NULL,
+                nombre_commentaires VARCHAR NOT NULL,
                 CONSTRAINT vendeur_pk PRIMARY KEY (id_vendeur)
 );
 

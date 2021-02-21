@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +71,6 @@ public class ProduitPanierIntegrationTests {
 			registerDto.setPassword("Poiuytreza3");
 
 			ObjectMapper objectMapper = new ObjectMapper();
-
 			mapper = objectMapper.writer().withDefaultPrettyPrinter();
 
 			String registerDtoJson = mapper.writeValueAsString(registerDto);
@@ -101,7 +100,6 @@ public class ProduitPanierIntegrationTests {
 			UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
 
 			int id = utilisateurBean.getId();
-
 			String role = utilisateurBean.getRole().getRole();
 
 			utilisateurDto.setIdUtilisateur(id);
@@ -207,7 +205,6 @@ public class ProduitPanierIntegrationTests {
 		UtilisateurBean utilisateurBean2 = utilisateurDao.findByMail(registerDto2.getMail());
 
 		int id2 = utilisateurBean2.getId();
-
 		String role2 = utilisateurBean2.getRole().getRole();
 
 		utilisateurDto2.setIdUtilisateur(id2);
@@ -291,10 +288,10 @@ public class ProduitPanierIntegrationTests {
 		   .andExpect(status().isCreated());
 		
 		mvc.perform(get("/panier/get/" + idUtilisateur)
-				   .header("Authorization", token)
-				   .params(paramsAdd2)
-				   .contentType(MediaType.APPLICATION_JSON))
-				   .andExpect(jsonPath("$.produits", hasSize(2)));
+		   .header("Authorization", token)
+		   .params(paramsAdd2)
+		   .contentType(MediaType.APPLICATION_JSON))
+		   .andExpect(jsonPath("$.produits", hasSize(2)));
 
 	}
 

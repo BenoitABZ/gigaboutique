@@ -74,7 +74,7 @@ public class ControllerLayerIntegrationTests {
 	private String token;
 	
 	 @BeforeAll 
-	  public void setUp() throws Exception {
+	 public void setUp() throws Exception {
 		 
 		    VendeurBean vendeurBean = new VendeurBean();
 			vendeurBean.setId(1);
