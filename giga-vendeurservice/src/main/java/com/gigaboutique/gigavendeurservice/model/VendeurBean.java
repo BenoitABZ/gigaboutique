@@ -40,7 +40,58 @@ public class VendeurBean implements Serializable {
 	@Column(name = "note")
 	private String note;
 
+	@Column(name = "nombre_commentaires")
+	private String nombreDeCommentaires;
+
 	@OneToMany(mappedBy = "vendeur", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<CommentaireBean> commentaires = new ArrayList<>();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getNombreDeCommentaires() {
+		return nombreDeCommentaires;
+	}
+
+	public void setNombreDeCommentaires(String nombreDeCommentaires) {
+		this.nombreDeCommentaires = nombreDeCommentaires;
+	}
+
+	public List<CommentaireBean> getCommentaires() {
+		return commentaires;
+	}
+
+	public void setCommentaires(List<CommentaireBean> commentaires) {
+		this.commentaires = commentaires;
+	}
 
 }

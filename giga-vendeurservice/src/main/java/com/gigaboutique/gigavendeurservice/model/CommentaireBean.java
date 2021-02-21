@@ -45,7 +45,58 @@ public class CommentaireBean implements Serializable {
 	@Column(name = "note")
 	private String note;
 	
+	@Column(name = "nombreDeCommentaires")
+	private String nombreDeCommentaires;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private VendeurBean vendeur;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public LocalDate getDateCommentaire() {
+		return dateCommentaire;
+	}
+
+	public void setDateCommentaire(LocalDate dateCommentaire) {
+		this.dateCommentaire = dateCommentaire;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getAuteur() {
+		return auteur;
+	}
+
+	public void setAuteur(String auteur) {
+		this.auteur = auteur;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public VendeurBean getVendeur() {
+		return vendeur;
+	}
+
+	public void setVendeur(VendeurBean vendeur) {
+		this.vendeur = vendeur;
+	}
 
 }
