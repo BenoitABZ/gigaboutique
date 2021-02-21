@@ -1,4 +1,4 @@
-package com.gigaboutique.gigauserservice.security;
+package com.gigaboutique.gigavendeurservice.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,14 +15,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.gigaboutique.gigauserservice.configuration.SecurityConstant;
+import com.gigaboutique.gigavendeurservice.configuration.SecurityConstant;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 	
-	SecurityConstant sc;
+	private SecurityConstant sc;
 	
 	public JWTAuthorizationFilter(SecurityConstant sc) {
 		super();
@@ -48,7 +48,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				return;
 			}
 
-			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + " ", "")).getBody();			
+			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + "", "")).getBody();			
 			String mail = claims.getSubject();	
 			ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
 			Collection<GrantedAuthority> authorities = new ArrayList<>();
