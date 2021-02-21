@@ -57,7 +57,7 @@ public class ServiceLayerIntegrationTests {
 		commentaire1.setAuteur("auteur1");
 		commentaire1.setDescription("description1");
 		commentaire1.setNote("4.5");
-		commentaire1.setDateCommentaire(LocalDate.now());
+		commentaire1.setDateCommentaire(LocalDate.parse("2013-09-07"));
 		commentaire1.setVendeur(vendeur);
 
 		commentaires.add(commentaire1);
@@ -66,7 +66,7 @@ public class ServiceLayerIntegrationTests {
 		commentaire2.setAuteur("auteur2");
 		commentaire2.setDescription("description2");
 		commentaire2.setNote("5");
-		commentaire2.setDateCommentaire(LocalDate.now());
+		commentaire2.setDateCommentaire(LocalDate.parse("2013-09-07"));
 		commentaire2.setVendeur(vendeur);
 
 		commentaires.add(commentaire2);
@@ -81,12 +81,12 @@ public class ServiceLayerIntegrationTests {
 
 		assertTrue(vendeurTest.getId() == vendeurDto.getId());
 		assertTrue(vendeurDto.getCommentaires().size() == 2);
-		assertEquals(LocalDate.now().toString(), vendeurDto.getCommentaires().get(0).getDateCommentaire());
+		assertEquals("07/09/2013", vendeurDto.getCommentaires().get(0).getDateCommentaire());
 
 	}
 
 	@Test
-	public void convertToUtilisateurBeanTest() throws VendeurException {
+	public void convertToVendeurBeanTest() throws VendeurException {
 
 		VendeurDto vendeur = new VendeurDto();
 		vendeur.setNom("vendeur");
@@ -118,12 +118,12 @@ public class ServiceLayerIntegrationTests {
 
 		assertEquals("4", vendeurTest.getNote());
 		assertTrue(vendeurTest.getCommentaires().size() == 2);
-		assertEquals("07/09/2013", vendeurTest.getCommentaires().get(0).getDateCommentaire());
+		assertEquals("2013-09-07", vendeurTest.getCommentaires().get(0).getDateCommentaire().toString());
 
 	}
 
 	@Test
-	public void updateToUtilisateurBeanTest() throws VendeurException {
+	public void updateToVendeurBeanTest() throws VendeurException {
 
 		VendeurBean vendeurBean = new VendeurBean();
 		vendeurBean.setNom("vendeur");
@@ -177,7 +177,7 @@ public class ServiceLayerIntegrationTests {
 
 		assertEquals("4", vendeurTest.getNote());
 		assertTrue(vendeurTest.getCommentaires().size() == 1);
-		assertEquals("07/09/2016", vendeurTest.getCommentaires().get(0).getDateCommentaire());
+		assertEquals("2016-09-07", vendeurTest.getCommentaires().get(0).getDateCommentaire().toString());
 
 	}
 

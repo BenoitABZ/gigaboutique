@@ -44,7 +44,10 @@ public class MapVendeurDtoService {
 			commentaireDto.setAuteur(commentaireBean.getAuteur());
 			commentaireDto.setDescription(commentaireBean.getDescription());
 			commentaireDto.setNote(commentaireBean.getNote());
-			commentaireDto.setDateCommentaire(commentaireBean.getDateCommentaire().toString());
+			
+			DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			
+			commentaireDto.setDateCommentaire(commentaireBean.getDateCommentaire().format(outputFormat));
 
 			commentairesDto.add(commentaireDto);
 		}
@@ -82,10 +85,10 @@ public class MapVendeurDtoService {
 				commentaireBean.setDescription(commentaireDto.getDescription());
 				commentaireBean.setNote(commentaireDto.getNote());
 				commentaireBean.setVendeur(vendeurBean);
+				
+				DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-				commentaireBean.setDateCommentaire(LocalDate.parse(commentaireDto.getDateCommentaire(), formatter));
+				commentaireBean.setDateCommentaire(LocalDate.parse(commentaireDto.getDateCommentaire(), inputFormat));
 
 				commentairesBean.add(commentaireBean);
 			}
@@ -126,9 +129,10 @@ public class MapVendeurDtoService {
 				commentaireBean.setNote(commentaireDto.getNote());
 				commentaireBean.setVendeur(vendeurBean);
 
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+				DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-				commentaireBean.setDateCommentaire(LocalDate.parse(commentaireDto.getDateCommentaire(), formatter));
+				commentaireBean.setDateCommentaire(LocalDate.parse(LocalDate.parse(commentaireDto.getDateCommentaire(), inputFormat).format(outputFormat), outputFormat));
 
 				commentairesBean.add(commentaireBean);
 			}
