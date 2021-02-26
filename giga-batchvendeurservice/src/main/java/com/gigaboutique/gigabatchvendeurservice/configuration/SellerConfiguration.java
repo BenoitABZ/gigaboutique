@@ -1,6 +1,7 @@
 package com.gigaboutique.gigabatchvendeurservice.configuration;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
