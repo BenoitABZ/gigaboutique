@@ -22,7 +22,7 @@ public class VendeurController {
 
 	@GetMapping("/add/{idvendeur}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void addVendeur(@PathVariable("idVendeur") int idVendeur) {
+	public void addVendeur(@PathVariable("idvendeur") int idVendeur) {
 
 		try {
 			vendeurService.addVendeur(idVendeur);

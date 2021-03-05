@@ -48,7 +48,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				return;
 			}
 
-			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + " ", "")).getBody();			
+			Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(jwtToken.replace(sc.getTokenPrefix() + "", "")).getBody();			
 			String mail = claims.getSubject();	
 			ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
 			Collection<GrantedAuthority> authorities = new ArrayList<>();

@@ -76,7 +76,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 					.claim("roles", springUser.getAuthorities())
 					.compact();
 
-			res.addHeader(sc.getHeader(), sc.getTokenPrefix() + " " + token);
+			res.addHeader(sc.getHeader(), sc.getTokenPrefix() + "" + token);
 
 		} catch (NullPointerException npe) {
 

@@ -31,10 +31,10 @@ public class VendeurBean implements Serializable {
 	@Column(name = "id_vendeur")
 	private Integer id;
 
-	@Column(name = "nom")
+	@Column(name = "nom", unique = true)
 	private String nom;
 
-	@Column(name = "logo")
+	@Column(name = "logo", columnDefinition="text", length=10485760)
 	private String logo;
 
 	@Column(name = "note")

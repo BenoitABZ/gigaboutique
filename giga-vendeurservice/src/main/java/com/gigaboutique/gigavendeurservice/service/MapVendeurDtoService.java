@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigavendeurservice.dao.CommentaireDao;
+import com.gigaboutique.gigavendeurservice.dao.VendeurDao;
 import com.gigaboutique.gigavendeurservice.dto.CommentaireDto;
 import com.gigaboutique.gigavendeurservice.dto.VendeurDto;
 import com.gigaboutique.gigavendeurservice.exception.VendeurException;
@@ -22,6 +23,9 @@ public class MapVendeurDtoService {
 
 	@Autowired
 	CommentaireDao commentaireDao;
+	
+	@Autowired
+	VendeurDao vendeurDao;
 
 	public VendeurDto convertToVendeurDto(VendeurBean vendeurBean) throws VendeurException {
 		
@@ -64,8 +68,14 @@ public class MapVendeurDtoService {
 	}
 
 	public VendeurBean convertToVendeurBean(VendeurDto vendeurDto) throws VendeurException {
+		
+		VendeurBean vendeurBean = vendeurDao.findByNom(vendeurDto.getNom());
+		
+		if(vendeurBean == null) {
 
-		VendeurBean vendeurBean = new VendeurBean();
+		vendeurBean = new VendeurBean();
+		
+		}
 
 		try {
 
@@ -107,8 +117,8 @@ public class MapVendeurDtoService {
 
 		try {
 
-			List<CommentaireBean> commentairesBeanToRemove = vendeurBean.getCommentaires();
-			commentaireDao.deleteAll(commentairesBeanToRemove);
+			//List<CommentaireBean> commentairesBeanToRemove = vendeurBean.getCommentaires();
+			//commentaireDao.deleteAll(commentairesBeanToRemove);
 			
 			vendeurBean.setNom(vendeurDto.getNom());
 			vendeurBean.setLogo(vendeurDto.getLogo());

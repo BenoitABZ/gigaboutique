@@ -16,22 +16,22 @@ public class VendeurService {
 	VendeurDao vendeurDao;
 
 	public void addVendeur(int id) throws TechnicalException {
-		
+
 		try {
 
-		VendeurBean vendeur = vendeurDao.findById(id);
+			VendeurBean vendeur = vendeurDao.findById(id);
 
-		if (vendeur == null) {
-			
-			vendeur = new VendeurBean();			
-			vendeur.setId(id);
+			if (vendeur == null) {
 
-			vendeurDao.save(vendeur);
+				vendeur = new VendeurBean();
+				vendeur.setId(id);
+
+				vendeurDao.save(vendeur);
+			}
+
+		} catch (Exception e) {
+
+			throw new TechnicalException("problème lors de l'ajout d'un vendeur");
 		}
-
-	}catch(Exception e) {
-		
-		throw new TechnicalException("problème lors de l'ajout d'un vendeur");
-	}
 	}
 }
