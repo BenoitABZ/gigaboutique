@@ -25,28 +25,54 @@ public class VendeurService {
 	public VendeurDto addVendeur(VendeurDto vendeurDto) throws VendeurException, TechnicalException {
 
 		try {
+			/*
+
+			VendeurBean vendeurBeanToSave = null;
+
+			VendeurBean vendeurBeanToUpdate = null;
+			
+			
 
 			VendeurBean vendeurBean = vendeurDao.findByNom(vendeurDto.getNom());
 
 			if (vendeurBean != null) {
 
-				vendeurBean = mapVendeurDtoService.updateToVendeurBean(vendeurBean, vendeurDto);
+				vendeurBeanToUpdate = mapVendeurDtoService.updateToVendeurBean(vendeurBean, vendeurDto);
+
+				vendeurBeanToUpdate = vendeurDao.save(vendeurBeanToUpdate);
 
 			} else {
 
-				vendeurBean = mapVendeurDtoService.convertToVendeurBean(vendeurDto);
+				vendeurBeanToSave = mapVendeurDtoService.convertToVendeurBean(vendeurDto);
+
+				vendeurBeanToSave = vendeurDao.save(vendeurBeanToSave);
 
 			}
 
-			vendeurDao.save(vendeurBean);
+			if (vendeurBeanToSave != null) {
+
+				vendeurDto.setId(vendeurBeanToSave.getId());
+
+			} else {
+
+				vendeurDto.setId(vendeurBeanToUpdate.getId());
+			}
+
+			return vendeurDto;
+			
+			*/
+			
+			VendeurBean vendeurBean = mapVendeurDtoService.convertToVendeurBean(vendeurDto);
+
+			vendeurBean = vendeurDao.save(vendeurBean);
 			
 			vendeurDto.setId(vendeurBean.getId());
-
+			
 			return vendeurDto;
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("problème convertToVendeurDto" + e.getMessage());
+			throw new TechnicalException("problème addVendeur" + e.getMessage());
 		}
 
 	}
