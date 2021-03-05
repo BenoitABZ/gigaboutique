@@ -76,6 +76,7 @@ public class ConsumerLayerIntegrationTests {
 		vendeur.setNom("vendeur");
 		vendeur.setLogo("adresseLogo");
 		vendeur.setNote("note");
+		vendeur.setNombreDeCommentaires("62");
 
 		List<CommentaireBean> commentaires = new ArrayList<>();
 

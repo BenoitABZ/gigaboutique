@@ -40,7 +40,7 @@ public class SellerConfiguration {
 	@Value("#{${seller-configs.nombreCommentaires}}")
 	private String nombreCommentaires;
 
-	@Value("#{${seller-configs.patterLinkToScrap}}")
+	@Value("#{${seller-configs.patternLinkToScrap}}")
 	private String patternLinkToScrap;
 
 	@Value("#{${seller-configs.sellers}}")

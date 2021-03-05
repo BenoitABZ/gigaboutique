@@ -27,7 +27,7 @@ public class VendeurController {
 
 	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
-	public VendeurDto addProduit(@RequestBody VendeurDto vendeurDto) {
+	public VendeurDto addVendeur(@RequestBody VendeurDto vendeurDto) {
 
 		try {
 

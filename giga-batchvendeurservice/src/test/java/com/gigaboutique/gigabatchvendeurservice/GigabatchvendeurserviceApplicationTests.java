@@ -1,6 +1,11 @@
 package com.gigaboutique.gigabatchvendeurservice;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,41 +13,66 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.gigaboutique.gigabatchvendeurservice.configuration.SellerConfiguration;
 import com.gigaboutique.gigabatchvendeurservice.dto.VendeurDto;
-import com.gigaboutique.gigabatchvendeurservice.service.ScrapingService;
+import com.gigaboutique.gigabatchvendeurservice.exception.BatchVendeurException;
+import com.gigaboutique.gigabatchvendeurservice.proxy.VendeurProxy;
+import com.gigaboutique.gigabatchvendeurservice.scheduler.Scheduler;
+import com.gigaboutique.gigabatchvendeurservice.service.ScrapingGlobalService;
+import com.gigaboutique.gigabatchvendeurservice.service.ScrapingUnitService;
 
 @SpringBootTest
 class GigabatchvendeurserviceApplicationTests {
-	
+
 	@Autowired
-	ScrapingService scrapingService;
-	
+	ScrapingUnitService scrapingUnitService;
+
+	@Autowired
+	ScrapingGlobalService scrapingGlobalService;
+
 	@Autowired
 	SellerConfiguration sellerConfiguration;
+
+	@Autowired
+	VendeurProxy vendeurProxy;
+
+	@Autowired
+	Scheduler scheduler;
 
 	@Test
 	void contextLoads() {
 	}
-	
+
 	@Test
-	public void getVendeur() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		
-		VendeurDto vendeurDto = scrapingService.getVendeur(sellerConfiguration.getPatternLinkToScrap() + sellerConfiguration.getSellers().get(0));
-		
-		System.out.println(vendeurDto.getNom());
-		
-	
-		
-		System.out.println(vendeurDto.getLogo());
-		System.out.println(vendeurDto.getNote());
-		System.out.println(vendeurDto.getNombreDeCommentaires());
-		System.out.println(vendeurDto.getCommentaires().size());
-		System.out.println(vendeurDto.getCommentaires().get(0).getAuteur());
-		System.out.println(vendeurDto.getCommentaires().get(0).getDateCommentaire());
-		System.out.println(vendeurDto.getCommentaires().get(0).getDescription());
-		System.out.println(vendeurDto.getCommentaires().get(0).getNote());
-		System.out.println(vendeurDto.getCommentaires().get(0).getAuteur());
-		
-	
+	public void getVendeur() throws BatchVendeurException {
+
+		VendeurDto vendeurDto = scrapingUnitService.getVendeur(sellerConfiguration.getPatternLinkToScrap() + sellerConfiguration.getSellers().get(0));
+
+		assertNotNull(vendeurDto);
+
+		assertEquals(3, vendeurDto.getCommentaires().size());
+
+	}
+
+	@Test
+	public void setVendeursTest() throws BatchVendeurException {
+
+		List<VendeurDto> vendeursDto = scrapingGlobalService.setVendeurs();
+
+		for (VendeurDto vendeurDto : vendeursDto) {
+
+			VendeurDto vendeurDtoTest = vendeurProxy.getVendeur(vendeurDto.getId());
+
+			assertTrue(vendeurDtoTest.getId() > 0);
+		}
+
+	}
+
+	@Test
+	public void scheduledTest() throws InterruptedException {
+
+		Thread.sleep(62000);
+
+		assertEquals(2, Scheduler.getCounter());
+
 	}
 
 }

@@ -36,7 +36,7 @@ public class CommentaireBean implements Serializable {
 	@Column(name = "date_commentaire")
 	private LocalDate dateCommentaire;
 	
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition="text", length=10485760)
 	private String description;
 	
 	@Column(name = "auteur")
