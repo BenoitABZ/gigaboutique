@@ -1,5 +1,7 @@
 package com.gigaboutique.gigavendeurservice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +58,22 @@ public class VendeurController {
 			return vendeurDto;
 
 		} catch (NotFoundException | VendeurException | TechnicalException e) {
+
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+
+		}
+	}
+
+	@GetMapping("/get/all")
+	public List<VendeurDto> getVendeurs() {
+
+		try {
+
+			List<VendeurDto> vendeursDto = vendeurService.getVendeurs();
+
+			return vendeursDto;
+
+		} catch (TechnicalException e) {
 
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 
