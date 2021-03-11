@@ -1,5 +1,6 @@
 package com.gigaboutique.gigabatchproduitservice;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.gigaboutique.gigabatchproduitservice.dto.ProduitDto;
 import com.gigaboutique.gigabatchproduitservice.exception.BatchProduitException;
+import com.gigaboutique.gigabatchproduitservice.service.ScrapingImageService;
 import com.gigaboutique.gigabatchproduitservice.service.ScrapingSizeService;
 
 @SpringBootTest
@@ -15,13 +17,55 @@ class GigaBatchproduitserviceApplicationTests {
 
 	@Autowired
 	ScrapingSizeService scrapingSizeService;
+	
+	@Autowired
+	ScrapingImageService scrapingImageService;
 
 	@Test
 	void contextLoads() {
 	}
 
 	@Test
-	public void scrapingSizeServiceTest() throws BatchProduitException {
+	public void scrapingSizeServiceTest1() throws BatchProduitException {
+
+		ProduitDto produitDto = new ProduitDto();
+
+		String url = "https://www.laboutiqueofficielle.com/achat-casquettes-de-baseball/new-era-casquette-9forty-neon-12109559-new-york-yankees-jaune-fluo-240910.html";
+
+		int number = 0;
+
+		ProduitDto produitDtoTest = scrapingSizeService.setSizes(produitDto, number, url);
+
+		Map<String, Boolean> map = produitDtoTest.getTailles();
+
+		for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+			System.out.println(entry.getKey() + "/" + entry.getValue());
+		}
+		
+	}
+	
+	@Test
+	public void scrapingSizeServiceTest2() throws BatchProduitException {
+		
+		ProduitDto produitDto2 = new ProduitDto();
+
+		String url2 = "https://www.gemo.fr/produit/baskets-homme-a-lacets-details-colores-et-semelle-contrastante/GEMO_696320#ref=30270770281&couleur=noir";
+		int number2 = 1;
+
+		ProduitDto produitDtoTest2 = scrapingSizeService.setSizes(produitDto2, number2, url2);
+
+		Map<String, Boolean> map2 = produitDtoTest2.getTailles();
+
+		for (Map.Entry<String, Boolean> entry : map2.entrySet()) {
+			System.out.println(entry.getKey() + "/" + entry.getValue());
+		}
+		
+		
+	}
+	
+
+	@Test
+	public void scrapingImageServiceTest1() throws BatchProduitException {
 
 		ProduitDto produitDto = new ProduitDto();
 
@@ -29,14 +73,33 @@ class GigaBatchproduitserviceApplicationTests {
 
 		int number = 0;
 
-		ProduitDto produitDtoTest = scrapingSizeService.setSize(produitDto, number, url);
+		ProduitDto produitDtoTest = scrapingImageService.setImages(produitDto, number, url);
 
-		Map<String, Boolean> map = produitDtoTest.getTailles();
+		List<String> images = produitDtoTest.getImages();
 
-		for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-			System.out.println(entry.getKey() + "/" + entry.getValue());
+		for (String image : images) {
+			System.out.println(image);
 		}
+		
+	}
+	
+	@Test
+	public void scrapingImageServiceTest2() throws BatchProduitException {
+		
+		ProduitDto produitDto = new ProduitDto();
 
+		String url = "https://www.gemo.fr/produit/sweat-homme-molletonne-imprime-retour-vers-le-futur/GEMO_707356#ref=40171500273&couleur=gris&k=gc1615489636888";
+
+		int number = 1;
+
+		ProduitDto produitDtoTest = scrapingImageService.setImages(produitDto, number, url);
+
+		List<String> images = produitDtoTest.getImages();
+
+		for (String image : images) {
+			System.out.println(image);
+		}
+				
 	}
 
 }

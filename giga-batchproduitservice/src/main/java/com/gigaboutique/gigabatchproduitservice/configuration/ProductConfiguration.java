@@ -12,6 +12,10 @@ public class ProductConfiguration {
 	private String[] produitTailleIndisponible;
 
 	private String[] produitTailleSection;
+	
+	private String[] produitImage;
+	
+	private String[] imageSection;
 
 	public String[] getProduitTailleDisponible() {
 		return produitTailleDisponible;
@@ -36,5 +40,23 @@ public class ProductConfiguration {
 	public void setProduitTailleSection(String[] produitTailleSection) {
 		this.produitTailleSection = produitTailleSection;
 	}
+
+	public String[] getProduitImage() {
+		return produitImage;
+	}
+
+	public void setProduitImage(String[] produitImage) {
+		this.produitImage = produitImage;
+	}
+
+	public String[] getImageSection() {
+		return imageSection;
+	}
+
+	public void setImageSection(String[] imageSection) {
+		this.imageSection = imageSection;
+	}
+
+
 
 }

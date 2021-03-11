@@ -29,9 +29,9 @@ public class ScrapingGenericService {
 
 		Class<?> documentClass = document.getClass();
 
-		Class<?> elementsClass = Elements.class;
-
 		Elements elements = null;
+		
+		//List<Element> elementsList = new ArrayList<>();
 
 		Element element = null;
 
@@ -66,10 +66,8 @@ public class ScrapingGenericService {
 
 					}
 				}
-
-				Method methodeFirst = elementsClass.getMethod("first", null);
-
-				element = (Element) methodeFirst.invoke(elements, null);
+								
+				break;
 
 			} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 
@@ -80,8 +78,7 @@ public class ScrapingGenericService {
 		return elements;
 	}
 
-	public String getElementString(Element element, String url, Map<String, List<String>> map)
-			throws BatchProduitException {
+	public String getElementString(Element element, String url, Map<String, List<String>> map) throws BatchProduitException {
 
 		url = decodeUrl(url);
 

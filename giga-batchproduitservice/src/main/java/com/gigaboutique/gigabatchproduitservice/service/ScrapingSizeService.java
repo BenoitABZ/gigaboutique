@@ -25,64 +25,76 @@ public class ScrapingSizeService {
 	@Autowired
 	ScrapingXmlParserService xmlParserService;
 
-	public ProduitDto setSize(ProduitDto produitDto, int number, String url) throws BatchProduitException {
+	public ProduitDto setSizes(ProduitDto produitDto, int number, String url) throws BatchProduitException {
 
 		Map<String, Boolean> mapTailles = new HashMap<>();
 
 		String section = productConfiguration.getProduitTailleSection()[number];
-		String tailleProduitDisponible = productConfiguration.getProduitTailleDisponible()[number];
-		String tailleProduitIndisponible = productConfiguration.getProduitTailleIndisponible()[number];
-
 		Map<String, List<String>> mapSection = xmlParserService.parseXml(section);
+
+		String tailleProduitDisponible = productConfiguration.getProduitTailleDisponible()[number];
+		Map<String, List<String>> mapTailleProduitDisponible = xmlParserService.parseXml(tailleProduitDisponible);
+
+		String tailleProduitIndisponible = productConfiguration.getProduitTailleIndisponible()[number];
+		Map<String, List<String>> mapTailleProduitIndisponible = xmlParserService.parseXml(tailleProduitIndisponible);
 
 		if (section.contains("section")) {
 
-			Elements elements = null;
+			Elements elements = scrapSection(mapSection, url);
+			scrapElements(mapTailleProduitDisponible, mapTailles, elements, url, true);
+			scrapElements(mapTailleProduitIndisponible, mapTailles, elements, url, false);
 
-			elements = genericService.getElements(url, mapSection);
-
-			for (Element element : elements) {
-
-				Map<String, List<String>> mapTailleProduitDisponible = xmlParserService
-						.parseXml(tailleProduitDisponible);
-
-				String result = null;
-				try {
-					result = genericService.getElementString(element, url, mapTailleProduitDisponible);
-
-				} catch (NullPointerException e) {
-
-				}
-
-				if (result != null) {
-
-					mapTailles.put(result, true);
-
-				}
-			}
-
-			for (Element element : elements) {
-
-				Map<String, List<String>> mapTailleProduitIndisponible = xmlParserService
-						.parseXml(tailleProduitIndisponible);
-
-				String result = null;
-				try {
-					result = genericService.getElementString(element, url, mapTailleProduitIndisponible);
-				} catch (NullPointerException e) {
-
-				}
-
-				if (result != null) {
-
-					mapTailles.put(result, false);
-
-				}
-			}
-
-			produitDto.setTailles(mapTailles);
 		}
+
+		if (section.contains("null")) {
+
+			Elements elementsProduitsDisponibles = scrapSection(mapTailleProduitDisponible, url);
+			scrapElements(mapTailleProduitDisponible, mapTailles, elementsProduitsDisponibles, url, true);
+
+			Elements elementsProduitsIndisponibles = scrapSection(mapTailleProduitIndisponible, url);
+			scrapElements(mapTailleProduitIndisponible, mapTailles, elementsProduitsIndisponibles, url, false);
+		}
+
+		produitDto.setTailles(mapTailles);
+
 		return produitDto;
 	}
 
+	private Map<String, Boolean> scrapElements(Map<String, List<String>> map, Map<String, Boolean> mapTailles,
+			Elements elements, String url, Boolean bool) throws BatchProduitException {
+
+		for (Element element : elements) {
+
+			String result = null;
+			try {
+				result = genericService.getElementString(element, url, map);
+			} catch (NullPointerException e) {
+
+			}
+
+			if (result != null && bool == false) {
+
+				mapTailles.put(result, false);
+
+			}
+
+			if (result != null && bool == true) {
+
+				mapTailles.put(result, true);
+
+			}
+			
+		}
+
+		return mapTailles;
+	}
+
+	private Elements scrapSection(Map<String, List<String>> map, String url) throws BatchProduitException {
+
+		Elements elements = genericService.getElements(url, map);
+
+		return elements;
+
+	}
+	
 }
