@@ -148,7 +148,7 @@ public class ControllerLayerIntegrationTests {
 		paramsAdd.add("page", "0");
 		paramsAdd.add("size", "1");
 
-		mvc.perform(get("/produit/get/all")
+		mvc.perform(get("/produit/getall")
 				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.params(paramsAdd)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -177,7 +177,7 @@ public class ControllerLayerIntegrationTests {
 		ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
 		String critereJson = ow.writeValueAsString(critereDto);
 
-		mvc.perform(post("/produit/get/criteria")
+		mvc.perform(post("/produit/getcriteria")
 				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.content(critereJson)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -187,7 +187,7 @@ public class ControllerLayerIntegrationTests {
 	@Test
 	public void getMarques() throws Exception {
 		
-		mvc.perform(get("/produit/get/marques")
+		mvc.perform(get("/produit/getmarques")
 				.header(sc.getHeader(), sc.getTokenPrefix() + "" + token)
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(jsonPath("$", hasSize(2)));

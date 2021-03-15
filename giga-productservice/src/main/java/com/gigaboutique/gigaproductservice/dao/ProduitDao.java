@@ -23,7 +23,7 @@ public interface ProduitDao extends JpaRepository<ProduitBean, Integer> {
 
 	Page<ProduitBean> findAll(Pageable paging);
 	
-	List<ProduitBean> findByMaj(Boolean bool);
+	List<ProduitBean> findByMaj(boolean bool);
 	
 	@Transactional
 	@Modifying
