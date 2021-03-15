@@ -19,6 +19,9 @@ public interface TailleProduitDao extends JpaRepository<TailleProduit, Integer> 
 
 	List<TailleProduit> findAll();
 	
+	@Query("select tp FROM TailleProduit as tp WHERE tp.produit.idProduit =:idProduit AND tp.taille.idTaille=:idTaille")
+	TailleProduit findByTailleProduit(int idProduit, int idTaille);
+	
 	@Transactional
 	@Modifying
 	@Query("delete FROM TailleProduit as tp WHERE tp.produit.idProduit =:idProduit")

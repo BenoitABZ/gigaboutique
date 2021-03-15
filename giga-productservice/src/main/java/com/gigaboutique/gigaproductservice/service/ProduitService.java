@@ -58,12 +58,16 @@ public class ProduitService {
 		for (ProduitBean produitBean : page.getContent()) {
 
 			ProduitDto produitDto = mapProduitDtoService.convertToProduitDto(produitBean);
+			
+			if(produitDto != null) {
 
 			produitsDto.add(produitDto);
-		}
+			
+			}
+	   }
 
 		return produitsDto;
-	}
+    }
 
 	public List<ProduitDto> getProduitsByCriteria(CritereDto critere, Pageable paging)
 			throws ProduitException, NotFoundException {
@@ -121,7 +125,7 @@ public class ProduitService {
 	public void addProduit(ProduitDto produitDto) throws ProduitException, TechnicalException {
 
 		try {
-
+/*
 			ProduitBean produitBean = produitDao.findByNom(produitDto.getNom());
 
 			if (produitBean != null) {
@@ -129,12 +133,12 @@ public class ProduitService {
 				mapProduitDtoService.updateToProduitBean(produitDto, produitBean);
 
 			} else {
-
+*/
 				this.normalizeCategorieProduitDto(produitDto);
 
 				this.normalizeGenreProduitDto(produitDto);
 
-				produitBean = mapProduitDtoService.convertToProduitBean(produitDto);
+				ProduitBean produitBean = mapProduitDtoService.convertToProduitBean(produitDto);
 
 				Set<ConstraintViolation<ProduitBean>> vViolations = getConstraintValidator().validate(produitBean);
 				if (!vViolations.isEmpty()) {
@@ -145,7 +149,7 @@ public class ProduitService {
 					}
 				}
 
-			}
+			//}
 
 		} catch (Exception e) {
 
@@ -197,9 +201,13 @@ public class ProduitService {
 				for (String categorie : categories) {
 
 					if (produitDto.getCategorie().trim().toLowerCase().contains(categorie.trim().toLowerCase())
-							|| produitDto.getNom().trim().toLowerCase().contains(categorie.trim().toLowerCase())) {
+				     || produitDto.getNom().trim().toLowerCase().contains(categorie.trim().toLowerCase())
+				     || produitDto.getNom().trim().toLowerCase().equals(categorie.trim().toLowerCase())) {
 
 						produitDto.setCategorie(normalizeCategorie);
+					//}else {
+						
+						//produitDto.setCategorie(categorie);
 					}
 				}
 			}

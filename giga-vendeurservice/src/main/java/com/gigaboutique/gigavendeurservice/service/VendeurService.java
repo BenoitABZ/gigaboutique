@@ -1,5 +1,8 @@
 package com.gigaboutique.gigavendeurservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,6 +95,30 @@ public class VendeurService {
 			VendeurDto vendeurDto = mapVendeurDtoService.convertToVendeurDto(vendeurBean);
 
 			return vendeurDto;
+
+		} catch (Exception e) {
+
+			throw new TechnicalException("problème getVendeur" + e.getMessage());
+		}
+
+	}
+	
+	public List<VendeurDto> getVendeurs() throws TechnicalException {
+		
+		List<VendeurDto> vendeursDto = new ArrayList<>();
+
+		try {
+
+			List<VendeurBean> vendeursBean = vendeurDao.findAll();
+			
+			for (VendeurBean vendeurBean : vendeursBean) {
+				
+				VendeurDto vendeurDto = mapVendeurDtoService.convertToVendeurDto(vendeurBean);
+				
+				vendeursDto.add(vendeurDto);
+			}
+			
+			return vendeursDto;
 
 		} catch (Exception e) {
 

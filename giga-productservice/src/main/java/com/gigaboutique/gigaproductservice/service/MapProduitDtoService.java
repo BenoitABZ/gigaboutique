@@ -95,8 +95,10 @@ public class MapProduitDtoService {
 			produitDto.setImages(adressesWebImage);
 
 		} catch (NullPointerException npe) {
+			
+			produitDto = null;
 
-			throw new NotFoundException("produit(s) inexistant en base de données");
+			return produitDto;//throw new NotFoundException("produit(s) inexistant en base de données");//
 
 		} catch (Exception e) {
 
@@ -154,18 +156,23 @@ public class MapProduitDtoService {
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("problème lors de la persistence des beans produit ou TailleProduit");
+			throw new TechnicalException(
+					"problème lors de la persistence des beans produit ou TailleProduit" + e.getMessage());
 
 		}
 	}
 
 	public ProduitBean convertToProduitBean(ProduitDto produit) throws ProduitException, TechnicalException {
 
-		ProduitBean produitBean = null;
+		ProduitBean produitBean = produitDao.findByNom(produit.getNom());
+
+		if (produitBean == null) {
+
+			produitBean = new ProduitBean();
+		}
 
 		try {
 
-			produitBean = new ProduitBean();
 			produitBean.setNom(produit.getNom());
 			produitBean.setMarque(produit.getMarque().toUpperCase());
 			produitBean.setAdresseWeb(produit.getAdresseWeb());
@@ -214,16 +221,22 @@ public class MapProduitDtoService {
 
 			for (String adresse : adressesWebImage) {
 
-				ImageProduitBean image = new ImageProduitBean();
-				image.setAdresseWeb(adresse);
-				image.setProduit(produitBean);
+				ImageProduitBean image = imageProduitDao.findByAdresseWeb(adresse);
 
-				imageProduitDao.save(image);
-				
-				produitBean.getImages().add(image);
+				if (image == null) {
+
+					image = new ImageProduitBean();
+					image.setAdresseWeb(adresse);
+					image.setProduit(produitBean);
+
+					imageProduitDao.save(image);
+
+					produitBean.getImages().add(image);
+
+				}
 
 			}
-			
+
 			produitDao.save(produitBean);
 
 			vendeur.getProduits().add(produitBean);
@@ -234,17 +247,38 @@ public class MapProduitDtoService {
 
 			for (Map.Entry<String, Boolean> entry : mapTaillesProduits.entrySet()) {
 
-				TailleBean taille = new TailleBean();
-				taille.setTaille(entry.getKey());
+				TailleBean taille = tailleDao.findByTaille(entry.getKey());
 
-				tailleDao.save(taille);
+				if (taille == null) {
 
-				TailleProduit tailleProduit = new TailleProduit(entry.getValue(), produitBean, taille);
+					taille = new TailleBean();
+					taille.setTaille(entry.getKey());
 
-				produitBean.getTaillesProduits().add(tailleProduit);
-				taille.getTaillesProduits().add(tailleProduit);
+					tailleDao.save(taille);
 
-				tailleProduitDao.save(tailleProduit);
+				}
+
+				TailleProduit tailleProduit = null;
+
+				if (produitBean.getIdProduit() != null) {
+
+					tailleProduit = tailleProduitDao.findByTailleProduit(produitBean.getIdProduit(), taille.getIdTaille());
+
+				}
+
+				if (tailleProduit == null) {
+
+					tailleProduit = new TailleProduit(entry.getValue(), produitBean, taille);
+
+					produitBean.getTaillesProduits().add(tailleProduit);
+					taille.getTaillesProduits().add(tailleProduit);
+
+					tailleProduitDao.save(tailleProduit);
+				}else {
+					
+					tailleProduit.setDisponibilite(entry.getValue());
+					tailleProduitDao.save(tailleProduit);
+				}
 
 			}
 
@@ -288,22 +322,22 @@ public class MapProduitDtoService {
 
 		try {
 
-			double prixDouble = produitBean.getPrix();			
-			
+			double prixDouble = produitBean.getPrix();
+
 			int promotion = produitBean.getPromotion();
-			
+
 			String prixString = String.format("%.2f", prixDouble);
 
 			produitDto.setPrix(prixString);
-			
-			double newPrixDouble = prixDouble - (prixDouble * (double)(promotion/100.0));
-			
+
+			double newPrixDouble = prixDouble - (prixDouble * (double) (promotion / 100.0));
+
 			String newPrixString = String.format("%.2f", newPrixDouble);
-			
+
 			produitDto.setNewPrix(newPrixString);
 
 			produitDto.setPromotion(String.valueOf(promotion));
-			
+
 		} catch (Exception e) {
 
 			throw new ProduitException("problème lors de la conversion des integer et double en string");
