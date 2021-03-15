@@ -12,7 +12,7 @@ public class ProduitDto {
 	private String nom;
 
 	private String prix;
-	
+
 	private String newPrix;
 
 	private String promotion;
@@ -123,6 +123,14 @@ public class ProduitDto {
 
 	public void setNewPrix(String newPrix) {
 		this.newPrix = newPrix;
+	}
+
+	@Override
+	public String toString() {
+		return "ProduitDto [idProduit=" + idProduit + ", idVendeur=" + idVendeur + ", nom=" + nom + ", prix=" + prix
+				+ ", newPrix=" + newPrix + ", promotion=" + promotion + ", marque=" + marque + ", genre=" + genre
+				+ ", categorie=" + categorie + ", adresseWeb=" + adresseWeb + ", tailles=" + tailles + ", images="
+				+ images + "]";
 	}
 
 }

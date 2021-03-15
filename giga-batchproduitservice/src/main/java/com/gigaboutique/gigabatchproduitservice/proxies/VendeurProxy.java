@@ -14,7 +14,7 @@ public interface VendeurProxy {
 	@GetMapping(value = "/vendeur/get/{idVendeur}")
 	public VendeurDto getVendeur(@PathVariable("idVendeur") int idVendeur);
 	
-	@GetMapping("/vendeur/get/all")
+	@GetMapping(value = "/vendeur/getall")
 	public List<VendeurDto> getVendeurs();
 
 }

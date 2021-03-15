@@ -6,10 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +53,7 @@ public class ProduitController {
 
 	}
 
-	@GetMapping("/get/all")
+	@GetMapping("/getall")
 	public List<ProduitDto> getProduits(@RequestParam(defaultValue = "0") String page, @RequestParam(defaultValue = "15") String size) {
 
 		int pageInt = Integer.parseInt(page);
@@ -84,7 +81,7 @@ public class ProduitController {
 
 	}
 
-	@PostMapping("/get/criteria")
+	@PostMapping("/getcriteria")
 	public List<ProduitDto> getProduitsCriteria(@RequestBody CritereDto critereDto) {
 
 		int page = critereDto.getPage();
@@ -112,7 +109,7 @@ public class ProduitController {
 
 	}
 
-	@GetMapping("/get/marques")
+	@GetMapping("/getmarques")
 	public List<String> getMarques() {
 
 		List<String> marques = new ArrayList<>();

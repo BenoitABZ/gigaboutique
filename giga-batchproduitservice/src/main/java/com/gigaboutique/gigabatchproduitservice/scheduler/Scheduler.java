@@ -9,21 +9,21 @@ import com.gigaboutique.gigabatchproduitservice.service.ScrapingGlobalService;
 
 @Component
 public class Scheduler {
-/*
+
 	@Autowired
 	ScrapingGlobalService scrappingGlobalService;
-*/
+
 	private static int counter = 0;
 
-	private static final int rate = 60000;
+	private static final int rate = 80000;
 
 	@Scheduled(fixedRate = rate)
-	public void runBatchVendeur() throws BatchProduitException {
-/*
-		scrappingGlobalService.setVendeurs();
+	public void runBatchVendeur() throws BatchProduitException, InterruptedException {
+
+		scrappingGlobalService.addProduits();
 
 		setCounter(getCounter() + 1);
-*/
+
 	}
 
 	public static int getCounter() {

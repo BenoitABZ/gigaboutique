@@ -64,7 +64,7 @@ public class VendeurController {
 		}
 	}
 
-	@GetMapping("/get/all")
+	@GetMapping("/getall")
 	public List<VendeurDto> getVendeurs() {
 
 		try {

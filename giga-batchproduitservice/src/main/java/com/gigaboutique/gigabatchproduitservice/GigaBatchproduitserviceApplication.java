@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
-@EnableFeignClients("com.gigaboutique.gigabatchproduitservice.proxy")
+@EnableFeignClients("com.gigaboutique.gigabatchproduitservice.proxies")
 public class GigaBatchproduitserviceApplication {
 
 	public static void main(String[] args) {

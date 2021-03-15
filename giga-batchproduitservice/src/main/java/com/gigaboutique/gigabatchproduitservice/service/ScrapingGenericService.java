@@ -19,13 +19,7 @@ import com.gigaboutique.gigabatchproduitservice.exception.BatchProduitException;
 @Service
 public class ScrapingGenericService {
 
-	private Document document;
-
-	public Elements getElements(String url, Map<String, List<String>> map) throws BatchProduitException {
-
-		url = decodeUrl(url);
-
-		document = getDocument(url);
+	public Elements getElements(String url, Map<String, List<String>> map, Document document) throws BatchProduitException {
 
 		Class<?> documentClass = document.getClass();
 
@@ -78,11 +72,7 @@ public class ScrapingGenericService {
 		return elements;
 	}
 
-	public String getElementString(Element element, String url, Map<String, List<String>> map) throws BatchProduitException {
-
-		url = decodeUrl(url);
-
-		document = getDocument(url);
+	public String getElementString(Element element, String url, Map<String, List<String>> map, Document document) throws BatchProduitException {
 
 		Class<?> documentClass = document.getClass();
 
@@ -170,30 +160,6 @@ public class ScrapingGenericService {
 
 		return leString;
 
-	}
-
-	private Document getDocument(String url) throws BatchProduitException {
-		try {
-
-			document = Jsoup.connect(url).get();
-
-		} catch (IOException e) {
-
-			throw new BatchProduitException("problème lors de l'extraction de la page html getDocument");
-		}
-		return document;
-	}
-
-	private static String decodeUrl(String url) throws BatchProduitException {
-		try {
-
-			url = URLDecoder.decode(url, "UTF-8");
-
-		} catch (UnsupportedEncodingException e) {
-
-			throw new BatchProduitException("problème encoding scheme decodeUrl");
-		}
-		return url;
 	}
 
 }

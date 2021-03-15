@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ScrapingSizeService {
 	@Autowired
 	ScrapingXmlParserService xmlParserService;
 
-	public ProduitDto setSizes(ProduitDto produitDto, int number, String url) throws BatchProduitException {
+	public ProduitDto setSizes(ProduitDto produitDto, int number, String url, Document document) throws BatchProduitException {
 
 		Map<String, Boolean> mapTailles = new HashMap<>();
 
@@ -40,19 +41,19 @@ public class ScrapingSizeService {
 
 		if (section.contains("section")) {
 
-			Elements elements = scrapSection(mapSection, url);
-			scrapElements(mapTailleProduitDisponible, mapTailles, elements, url, true);
-			scrapElements(mapTailleProduitIndisponible, mapTailles, elements, url, false);
+			Elements elements = scrapSection(mapSection, url, document);
+			scrapElements(mapTailleProduitDisponible, mapTailles, elements, url, true, document);
+			scrapElements(mapTailleProduitIndisponible, mapTailles, elements, url, false, document);
 
 		}
 
 		if (section.contains("null")) {
 
-			Elements elementsProduitsDisponibles = scrapSection(mapTailleProduitDisponible, url);
-			scrapElements(mapTailleProduitDisponible, mapTailles, elementsProduitsDisponibles, url, true);
+			Elements elementsProduitsDisponibles = scrapSection(mapTailleProduitDisponible, url, document);
+			scrapElements(mapTailleProduitDisponible, mapTailles, elementsProduitsDisponibles, url, true, document);
 
-			Elements elementsProduitsIndisponibles = scrapSection(mapTailleProduitIndisponible, url);
-			scrapElements(mapTailleProduitIndisponible, mapTailles, elementsProduitsIndisponibles, url, false);
+			Elements elementsProduitsIndisponibles = scrapSection(mapTailleProduitIndisponible, url, document);
+			scrapElements(mapTailleProduitIndisponible, mapTailles, elementsProduitsIndisponibles, url, false, document);
 		}
 
 		produitDto.setTailles(mapTailles);
@@ -60,14 +61,13 @@ public class ScrapingSizeService {
 		return produitDto;
 	}
 
-	private Map<String, Boolean> scrapElements(Map<String, List<String>> map, Map<String, Boolean> mapTailles,
-			Elements elements, String url, Boolean bool) throws BatchProduitException {
+	private Map<String, Boolean> scrapElements(Map<String, List<String>> map, Map<String, Boolean> mapTailles, Elements elements, String url, Boolean bool, Document document) throws BatchProduitException {
 
 		for (Element element : elements) {
 
 			String result = null;
 			try {
-				result = genericService.getElementString(element, url, map);
+				result = genericService.getElementString(element, url, map, document);
 			} catch (NullPointerException e) {
 
 			}
@@ -89,9 +89,9 @@ public class ScrapingSizeService {
 		return mapTailles;
 	}
 
-	private Elements scrapSection(Map<String, List<String>> map, String url) throws BatchProduitException {
+	private Elements scrapSection(Map<String, List<String>> map, String url, Document document) throws BatchProduitException {
 
-		Elements elements = genericService.getElements(url, map);
+		Elements elements = genericService.getElements(url, map, document);
 
 		return elements;
 
