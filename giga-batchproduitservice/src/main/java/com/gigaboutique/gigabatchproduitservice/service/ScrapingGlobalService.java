@@ -16,8 +16,8 @@ import com.gigaboutique.gigabatchproduitservice.configuration.ProductConfigurati
 import com.gigaboutique.gigabatchproduitservice.dto.ProduitDto;
 import com.gigaboutique.gigabatchproduitservice.dto.VendeurDto;
 import com.gigaboutique.gigabatchproduitservice.exception.BatchProduitException;
-import com.gigaboutique.gigabatchproduitservice.proxies.ProduitProxy;
-import com.gigaboutique.gigabatchproduitservice.proxies.VendeurProxy;
+import com.gigaboutique.gigabatchproduitservice.proxy.ProduitProxy;
+import com.gigaboutique.gigabatchproduitservice.proxy.VendeurProxy;
 
 
 @Service

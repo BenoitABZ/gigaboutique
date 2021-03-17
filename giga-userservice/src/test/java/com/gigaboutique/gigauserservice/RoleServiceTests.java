@@ -39,7 +39,7 @@ public class RoleServiceTests {
 
 		utilisateurBean = new UtilisateurBean();
 
-		utilisateurBean.setMail("mailadmin@gmail.com");
+		utilisateurBean.setMail("mail.adm@gmail.com");
 
 	}
 
@@ -54,7 +54,7 @@ public class RoleServiceTests {
 		roleBeanUser.setId(2);
 		roleBeanUser.setRole("ROLE_USER");
 
-		when(rc.getAdminMail()).thenReturn("admin@gmail.com");
+		when(rc.getAdminMail()).thenReturn(".adm@gmail.com");
 
 		when(rc.getRoleBeanAdmin()).thenReturn(roleBeanAdmin);
 

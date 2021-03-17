@@ -76,7 +76,7 @@ public class UtilisateurServiceTests {
 		utilisateurBean.setId(1);
 		utilisateurBean.setNom("testLastName");
 		utilisateurBean.setPrenom("testFirstName");
-		utilisateurBean.setMail("mailadmin@gmail.com");
+		utilisateurBean.setMail("mail.adm@gmail.com");
 		utilisateurBean.setMotDePasse("Poiuytreza31");
 
 		RoleBean roleBean = new RoleBean();

@@ -36,7 +36,7 @@ public class MapUtilisateurDtoServiceTests {
 		utilisateurBean.setNom("testLastName");
 		utilisateurBean.setPrenom("testFirstName");
 		utilisateurBean.setPrenom("testFirstName");
-		utilisateurBean.setMail("mailadmin@gmail.com");
+		utilisateurBean.setMail("mail.adm@gmail.com");
 		utilisateurBean.setMotDePasse("Poiuytreza31");
 
 		RoleBean roleBean = new RoleBean();
@@ -81,7 +81,7 @@ public class MapUtilisateurDtoServiceTests {
 
 		UtilisateurDto utilisateurDto = new UtilisateurDto();
 		utilisateurDto.setIdUtilisateur(1);
-		utilisateurDto.setMail("mailadmin@gmail.com");
+		utilisateurDto.setMail("mail.adm@gmail.com");
 		utilisateurDto.setNom("testLastName");
 		utilisateurDto.setPrenom("testFirstName");
 
@@ -97,7 +97,7 @@ public class MapUtilisateurDtoServiceTests {
 	public void convertToUtilisateurBeanForRegistrationTest() throws UtilisateurException {
 
 		RegisterDto registerDto = new RegisterDto();
-		registerDto.setMail("mailadmin@gmail.com");
+		registerDto.setMail("mail.adm@gmail.com");
 		registerDto.setNom("testLastName");
 		registerDto.setPrenom("testFirstName");
 		registerDto.setPassword("Poiuytreza31");

@@ -142,6 +142,29 @@ public class ProduitController {
 		return produit;
 
 	}
+	
+	@GetMapping("/get/{id}")
+	public ProduitDto getProduitById(@PathVariable("id") int id) {
+
+		ProduitDto produit = null;
+
+		try {
+
+			produit = produitService.getProduitById(id);
+
+		} catch (ProduitException e) {
+
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+
+		} catch (Exception e) {
+
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+
+		}
+
+		return produit;
+
+	}
 
 	@PutMapping("/setfalse")
 	public void setFalse() {

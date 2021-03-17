@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +19,7 @@ import com.gigaboutique.gigauserservice.service.RoleService;
 import com.gigaboutique.gigauserservice.service.UtilisateurService;
 
 @RestController
+@RequestMapping("/utilisateur")
 public class UtilisateurController {
 
 	@Autowired
@@ -26,7 +28,7 @@ public class UtilisateurController {
 	@Autowired
 	private UtilisateurService utilisateurService;
 
-	@PostMapping("/signup/utilisateur")
+	@PostMapping("/signup")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UtilisateurDto signUp(@RequestBody RegisterDto registerDto) {
 
@@ -45,7 +47,7 @@ public class UtilisateurController {
 		return utilisateurDto;
 	}
 
-	@GetMapping("/utilisateurs")
+	@GetMapping("/getall")
 	public List<UtilisateurDto> getUtilisateurs() {
 
 		return utilisateurService.getUtilisateurs();

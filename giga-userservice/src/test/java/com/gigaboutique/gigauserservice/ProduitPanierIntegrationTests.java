@@ -67,7 +67,7 @@ public class ProduitPanierIntegrationTests {
 
 			registerDto.setNom("lastNameTest");
 			registerDto.setPrenom("firstNameTest");
-			registerDto.setMail("mailadmin@gmail.com");
+			registerDto.setMail("mail.adm@gmail.com");
 			registerDto.setPassword("Poiuytreza3");
 
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -75,13 +75,13 @@ public class ProduitPanierIntegrationTests {
 
 			String registerDtoJson = mapper.writeValueAsString(registerDto);
 
-			mvc.perform(post("/signup/utilisateur")
+			mvc.perform(post("/utilisateur/signup")
 			   .contentType(MediaType.APPLICATION_JSON)
 			   .content(registerDtoJson));
 
 			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-			params.add("mail", "mailadmin@gmail.com");
+			params.add("mail", "mail.adm@gmail.com");
 			params.add("motDePasse", "Poiuytreza3");
 
 			token = mvc.perform(post("/login/utilisateur")
@@ -95,7 +95,7 @@ public class ProduitPanierIntegrationTests {
 
 			utilisateurDto.setNom("lastNameTest");
 			utilisateurDto.setPrenom("firstNameTest");
-			utilisateurDto.setMail("mailadmin@gmail.com");
+			utilisateurDto.setMail("mail.adm@gmail.com");
 
 			UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
 
@@ -119,7 +119,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -145,7 +145,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -174,20 +174,20 @@ public class ProduitPanierIntegrationTests {
 
 		registerDto2.setNom("lastNameTest2");
 		registerDto2.setPrenom("firstNameTest2");
-		registerDto2.setMail("mail2admin@gmail.com");
+		registerDto2.setMail("mail2.adm@gmail.com");
 		registerDto2.setPassword("Poiuytreza3");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		mapper = objectMapper.writer().withDefaultPrettyPrinter();
 		String registerDtoJson2 = mapper.writeValueAsString(registerDto2);
 
-		mvc.perform(post("/signup/utilisateur")
+		mvc.perform(post("/utilisateur/signup")
 		   .contentType(MediaType.APPLICATION_JSON)
 		   .content(registerDtoJson2));
 
 		MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
 
-		params2.add("mail", "mail2admin@gmail.com");
+		params2.add("mail", "mail2.adm@gmail.com");
 		params2.add("motDePasse", "Poiuytreza3");
 
 		String token2 = mvc.perform(post("/login/utilisateur")
@@ -200,7 +200,7 @@ public class ProduitPanierIntegrationTests {
 
 		utilisateurDto2.setNom("lastNameTest2");
 		utilisateurDto2.setPrenom("firstNameTest2");
-		utilisateurDto2.setMail("mail2admin@gmail.com");
+		utilisateurDto2.setMail("mail2.adm@gmail.com");
 		
 		UtilisateurBean utilisateurBean2 = utilisateurDao.findByMail(registerDto2.getMail());
 
@@ -218,7 +218,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -231,7 +231,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur2));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token2)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -268,7 +268,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd1.add("idProduit", Integer.toString(idProduitToAdd1));
 		paramsAdd1.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd1)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -281,7 +281,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd2));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(get("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))

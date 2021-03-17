@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gigaboutique</groupId>
-	<artifactId>giga-batchproduitservice</artifactId>
+	<artifactId>giga-batchnotifyservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>giga-batchproduitservice</name>
+	<name>giga-batchnotifyservice</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -77,18 +77,10 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20201115</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jdom/jdom -->
-		<!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom2</artifactId>
-			<version>2.0.6</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.3.4.RELEASE</version>
 		</dependency>
 	</dependencies>
 
@@ -114,4 +106,3 @@
 	</build>
 
 </project>
-

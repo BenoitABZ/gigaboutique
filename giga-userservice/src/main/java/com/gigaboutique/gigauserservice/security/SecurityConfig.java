@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private SecurityConstant sc;
 
@@ -38,8 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests().antMatchers("/signup/utilisateur", "/login/**").permitAll()
-				.antMatchers("/utilisateurs").hasAuthority("ADMIN").anyRequest().authenticated().and()
+				.authorizeRequests()
+				.antMatchers("/utilisateur/signup", "/login/**").permitAll()
+				.antMatchers("utilisateur/getall")
+				.authenticated()
+				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(), sc))
 				.addFilterBefore(new JWTAuthorizationFilter(sc), UsernamePasswordAuthenticationFilter.class);
 	}

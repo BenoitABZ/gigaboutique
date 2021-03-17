@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.gigaboutique.gigabatchproduitservice.dto.ProduitDto;
 import com.gigaboutique.gigabatchproduitservice.exception.BatchProduitException;
-import com.gigaboutique.gigabatchproduitservice.proxies.ProduitProxy;
+import com.gigaboutique.gigabatchproduitservice.proxy.ProduitProxy;
 import com.gigaboutique.gigabatchproduitservice.service.ScrapingGlobalService;
 
 @SpringBootTest

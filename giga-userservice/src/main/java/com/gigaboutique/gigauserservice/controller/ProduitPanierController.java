@@ -27,7 +27,7 @@ public class ProduitPanierController {
 
 	@GetMapping("/get/{idUtilisateur}")
 	@ResponseStatus(HttpStatus.OK)
-	public UtilisateurDto getProduit(@PathVariable("idUtilisateur") int idUtilisateur) {
+	public UtilisateurDto getProduits(@PathVariable("idUtilisateur") int idUtilisateur) {
 
 		UtilisateurDto utilisateurDto = null;
 
@@ -43,7 +43,7 @@ public class ProduitPanierController {
 		return utilisateurDto;
 	}
 
-	@PostMapping("/add")
+	@GetMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
 

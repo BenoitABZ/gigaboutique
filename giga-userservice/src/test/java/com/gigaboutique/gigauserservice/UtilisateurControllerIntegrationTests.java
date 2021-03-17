@@ -35,7 +35,7 @@ public class UtilisateurControllerIntegrationTests {
 
 		registerDto.setNom("lastNameTest");
 		registerDto.setPrenom("firstNameTest");
-		registerDto.setMail("mailadmin@gmail.com");
+		registerDto.setMail("mail.adm@gmail.com");
 		registerDto.setPassword("Poiuytreza3");
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -43,7 +43,7 @@ public class UtilisateurControllerIntegrationTests {
 		ObjectWriter mapper = objectMapper.writer().withDefaultPrettyPrinter();
 		String registerDtoJson = mapper.writeValueAsString(registerDto);
 
-		mvc.perform(post("/signup/utilisateur")
+		mvc.perform(post("/utilisateur/signup")
 		   .contentType(MediaType.APPLICATION_JSON)
 		   .content(registerDtoJson))
 		   .andExpect(status().is2xxSuccessful());
@@ -57,7 +57,7 @@ public class UtilisateurControllerIntegrationTests {
 
 		registerDto.setNom("lastNameTest");
 		registerDto.setPrenom("firstNameTest");
-		registerDto.setMail("mailadmin@gmail.com");
+		registerDto.setMail("mail.adm@gmail.com");
 		registerDto.setPassword("Poiuytreza3");
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -66,11 +66,11 @@ public class UtilisateurControllerIntegrationTests {
 
 		String registerDtoJson = mapper.writeValueAsString(registerDto);
 
-		mvc.perform(post("/signup/utilisateur").contentType(MediaType.APPLICATION_JSON).content(registerDtoJson));
+		mvc.perform(post("/utilisateur/signup").contentType(MediaType.APPLICATION_JSON).content(registerDtoJson));
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-		params.add("mail", "mailadmin@gmail.com");
+		params.add("mail", "mail.adm@gmail.com");
 		params.add("motDePasse", "Poiuytreza3");
 
 		mvc.perform(post("/login/utilisateur")

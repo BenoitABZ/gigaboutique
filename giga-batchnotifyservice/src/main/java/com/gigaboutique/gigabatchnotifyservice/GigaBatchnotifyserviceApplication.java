@@ -1,4 +1,4 @@
-package com.gigaboutique.gigabatchproduitservice;
+package com.gigaboutique.gigabatchnotifyservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,11 +9,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
-@EnableFeignClients("com.gigaboutique.gigabatchproduitservice.proxy")
-public class GigaBatchproduitserviceApplication {
+@EnableFeignClients("com.gigaboutique.gigabatchnotifyservice.proxy")
+public class GigaBatchnotifyserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GigaBatchproduitserviceApplication.class, args);
+		SpringApplication.run(GigaBatchnotifyserviceApplication.class, args);
 	}
 
 }

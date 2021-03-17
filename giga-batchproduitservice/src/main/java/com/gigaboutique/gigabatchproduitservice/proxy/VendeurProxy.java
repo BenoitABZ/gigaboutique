@@ -1,4 +1,4 @@
-package com.gigaboutique.gigabatchproduitservice.proxies;
+package com.gigaboutique.gigabatchproduitservice.proxy;
 
 import java.util.List;
 

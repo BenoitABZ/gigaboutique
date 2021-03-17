@@ -105,10 +105,28 @@ public class ProduitService {
 
 		return produitDto;
 	}
+	
+	public ProduitDto getProduitById(int id) throws ProduitException, NotFoundException {
+
+		ProduitBean produitBean = produitDao.findById(id);
+		
+		ProduitDto produitDto = null;
+
+		if (produitBean == null) {
+
+			return produitDto;
+						
+		}
+
+		produitDto = mapProduitDtoService.convertToProduitDto(produitBean);
+
+		return produitDto;
+	}
 
 	public void setMajFalse() throws TechnicalException {
 
 		try {
+			
 			for (ProduitBean produit : produitDao.findAll()) {
 
 				produit.setMaj(false);
@@ -116,6 +134,7 @@ public class ProduitService {
 				produitDao.save(produit);
 
 			}
+			
 		} catch (Exception e) {
 
 			throw new TechnicalException("problème lors de la mise à jour du produit");
@@ -125,15 +144,7 @@ public class ProduitService {
 	public void addProduit(ProduitDto produitDto) throws ProduitException, TechnicalException {
 
 		try {
-/*
-			ProduitBean produitBean = produitDao.findByNom(produitDto.getNom());
-
-			if (produitBean != null) {
-
-				mapProduitDtoService.updateToProduitBean(produitDto, produitBean);
-
-			} else {
-*/
+			
 				this.normalizeCategorieProduitDto(produitDto);
 
 				this.normalizeGenreProduitDto(produitDto);
@@ -149,8 +160,6 @@ public class ProduitService {
 					}
 				}
 
-			//}
-
 		} catch (Exception e) {
 
 			throw new TechnicalException("problème lors de l'ajout du produit" + e.getMessage());
@@ -161,7 +170,7 @@ public class ProduitService {
 	public void removeProduitIfFalse() throws TechnicalException {
 
 		try {
-
+			
 			List<ProduitBean> produitsMajFalse = produitDao.findByMaj(false);
 
 			for (ProduitBean produit : produitsMajFalse) {
@@ -205,9 +214,6 @@ public class ProduitService {
 				     || produitDto.getNom().trim().toLowerCase().equals(categorie.trim().toLowerCase())) {
 
 						produitDto.setCategorie(normalizeCategorie);
-					//}else {
-						
-						//produitDto.setCategorie(categorie);
 					}
 				}
 			}
