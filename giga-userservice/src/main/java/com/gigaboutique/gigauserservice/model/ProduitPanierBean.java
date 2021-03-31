@@ -4,6 +4,7 @@ package com.gigaboutique.gigauserservice.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -29,8 +28,8 @@ public class ProduitPanierBean implements Serializable {
 	@Column(name = "id_produitPanier")
 	private int id;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_ProduitPanier"), inverseJoinColumns = @JoinColumn(name = "id_utilisateur"))
+	@ManyToMany(mappedBy = "produitsPanier",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	//@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_ProduitPanier"))
 	private Set<UtilisateurBean> utilisateurs;
 
 	public int getId() {

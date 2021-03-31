@@ -33,7 +33,9 @@ public class NotifyUsersService {
 
 	@Autowired
 
-	public void notifyUsers() throws BatchNotifyException {
+	public boolean notifyUsers() throws BatchNotifyException {
+		
+		boolean bool = false;
 
 		try {
 
@@ -58,12 +60,16 @@ public class NotifyUsersService {
 						String message = mailConfiguration.getMessage();
 
 						mailSenderService.sendMessage(destinataire, sujet, message);
+						
+						bool = true;
 
 					}
 
 				}
 
 			}
+			
+			return bool;
 			
 		} catch (Exception e) {
 

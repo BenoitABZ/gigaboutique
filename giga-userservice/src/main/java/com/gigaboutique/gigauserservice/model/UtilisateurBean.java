@@ -55,8 +55,8 @@ public class UtilisateurBean implements Serializable {
 	@Column(name = "mot_de_passe")
 	private String motDePasse;
 
-	@ManyToMany(mappedBy = "utilisateurs", fetch = FetchType.EAGER)
-	//@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
 	private Set<ProduitPanierBean> produitsPanier;
 
 	@ManyToOne(fetch = FetchType.EAGER)

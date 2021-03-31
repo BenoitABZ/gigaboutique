@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,7 @@ public class ProduitPanierService {
 		return utilisateurDto;
 
 	}
-
+    @Transactional
 	public void addProduitPanier(Integer idProduit, Integer idUtilisateur) throws TechnicalException {
 
 		ProduitPanierBean produit = null;
@@ -46,9 +48,37 @@ public class ProduitPanierService {
 			UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur).get();
 
 			if (produitPanierDao.findById(idProduit).isPresent()) {
+				
+				utilisateurDao.save(utilisateurBean);
 
 				produit = produitPanierDao.findById(idProduit).get();
+								
+				Set<UtilisateurBean> utilisateurs = produit.getUtilisateurs();
+
+				utilisateurs.add(utilisateurBean);
+
+				produit.setUtilisateurs(utilisateurs);
+
+				produitPanierDao.save(produit);
 				
+				if(utilisateurBean.getProduitsPanier() != null) {
+					
+					utilisateurBean.getProduitsPanier().add(produit);
+					
+					}else {
+						
+						Set<ProduitPanierBean> produitsPanier = new HashSet<>();
+						produitsPanier.add(produit);
+						utilisateurBean.setProduitsPanier(produitsPanier);
+						
+					}
+
+				utilisateurDao.save(utilisateurBean);
+
+				
+
+
+/*				
 				Set<ProduitPanierBean> produitsPanier = new HashSet<>();
 				
 				produitsPanier.add(produit);
@@ -64,13 +94,15 @@ public class ProduitPanierService {
 				produitPanierDao.save(produit);
 
 				utilisateurDao.save(utilisateurBean);
-
+*/
 			} else {
+				
+				utilisateurDao.save(utilisateurBean);
 
 				produit = new ProduitPanierBean();
 
 				produit.setId(idProduit);
-
+				
 				Set<UtilisateurBean> utilisateurs = new HashSet<>();
 
 				utilisateurs.add(utilisateurBean);
@@ -79,15 +111,25 @@ public class ProduitPanierService {
 
 				produitPanierDao.save(produit);
 				
+				if(utilisateurBean.getProduitsPanier() != null) {
+					
 				utilisateurBean.getProduitsPanier().add(produit);
+				
+				}else {
+					
+					Set<ProduitPanierBean> produitsPanier = new HashSet<>();
+					produitsPanier.add(produit);
+					utilisateurBean.setProduitsPanier(produitsPanier);
+					
+				}
 
 				utilisateurDao.save(utilisateurBean);
-
+				
 			}
 
 		} catch (Exception e) {
 
-			throw new TechnicalException("un problème a eu lieu lors de l'ajout du produit au panier");
+			throw new TechnicalException("un problème a eu lieu lors de l'ajout du produit au panier" + e.getMessage());
 
 		}
 

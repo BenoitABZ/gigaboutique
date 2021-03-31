@@ -119,7 +119,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -145,7 +145,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -168,7 +168,7 @@ public class ProduitPanierIntegrationTests {
 	}
 	
 	@Test
-	public void removeProduitPanierTestWithMoreThanOneUser() throws Exception {
+	public void removeProduitPanierTestWithMoreThanOneUserTest() throws Exception {
 		
 		RegisterDto registerDto2 = new RegisterDto();
 
@@ -218,7 +218,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -231,7 +231,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur2));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token2)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -268,7 +268,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd1.add("idProduit", Integer.toString(idProduitToAdd1));
 		paramsAdd1.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd1)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -281,7 +281,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd2));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(get("/panier/add")
+		mvc.perform(post("/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))

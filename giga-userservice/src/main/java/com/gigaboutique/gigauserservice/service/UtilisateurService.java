@@ -1,5 +1,6 @@
 package com.gigaboutique.gigauserservice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,24 +35,27 @@ public class UtilisateurService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	public List<UtilisateurDto> getUtilisateurs(){
+	public List<UtilisateurDto> getUtilisateurs() {
 		
-		return ((List<UtilisateurBean>) utilisateurDao.findAll())
-				.stream()
-				.map(arg0 -> {
-									
-						try {
-							
-							return mapUtilisateurDtoService.convertToUtilisateurDto(arg0);
-							
-						} catch (UtilisateurException e) {
-							
-							return null;
-						}
-						
-				
-					
-				}).collect(Collectors.toList());
+		List<UtilisateurDto> utilisateursDto = new ArrayList<>();
+
+		List<UtilisateurBean> utilisateursBean = utilisateurDao.findAll();
+
+		for (UtilisateurBean utilisateurBean : utilisateursBean) {
+
+			try {
+
+				utilisateursDto.add(mapUtilisateurDtoService.convertToUtilisateurDto(utilisateurBean));
+
+			} catch (UtilisateurException e) {
+
+				return null;
+			}
+
+		}
+
+		return utilisateursDto;
+
 	}
 
 	public UtilisateurDto getUtilisateur(String mail) throws UtilisateurException {
@@ -93,12 +97,11 @@ public class UtilisateurService {
 			throw new UtilisateurException("cette adresse mail existe déjà");
 
 		}
-		
-		if(!utilisateur.getMotDePasse().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}")){
-			
+
+		if (!utilisateur.getMotDePasse().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}")) {
+
 			throw new UtilisateurException("votre mot de passe doit comporter au moins 8 caractères dont 1 majuscule et 1 chiffre");
 		}
-		
 
 		Set<ConstraintViolation<UtilisateurBean>> vViolations = getConstraintValidator().validate(utilisateur);
 		if (!vViolations.isEmpty()) {
@@ -111,7 +114,7 @@ public class UtilisateurService {
 		}
 
 		utilisateur = rc.setRoleUtilisateur(utilisateur);
-		
+
 		utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
 		utilisateurDao.save(utilisateur);

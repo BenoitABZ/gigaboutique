@@ -2,7 +2,8 @@ package com.gigaboutique.gigauserservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,10 +44,10 @@ public class ProduitPanierController {
 		return utilisateurDto;
 	}
 
-	@GetMapping("/add")
+	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
-
+		
 		try {
 
 			produitService.addProduitPanier(idProduit, idUtilisateur);
