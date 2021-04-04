@@ -82,7 +82,6 @@ public class UtilisateurServiceTests {
 		RoleBean roleBean = new RoleBean();
 		roleBean.setRole("ROLE_ADMIN");
 		utilisateurBean.setRole(roleBean);
-
 	}
 
 	@Test
@@ -123,7 +122,6 @@ public class UtilisateurServiceTests {
 		}
 
 		verify(utilisateurDao, times(1)).save(utilisateurBean);
-
 	}
 
 	@Test
@@ -138,7 +136,6 @@ public class UtilisateurServiceTests {
 		assertThrows(UtilisateurException.class, () -> {
 			utilisateurService.registerUtilisateur(registerDto, roleService);
 		});
-
 	}
 
 	@Test
@@ -153,7 +150,6 @@ public class UtilisateurServiceTests {
 		assertThrows(UtilisateurException.class, () -> {
 			utilisateurService.registerUtilisateur(registerDto, roleService);
 		});
-
 	}
 
 }

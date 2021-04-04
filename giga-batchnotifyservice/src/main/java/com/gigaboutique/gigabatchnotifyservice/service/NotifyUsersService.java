@@ -31,50 +31,52 @@ public class NotifyUsersService {
 	@Autowired
 	MailConfiguration mailConfiguration;
 
-	@Autowired
-
 	public boolean notifyUsers() throws BatchNotifyException {
-		
+
 		boolean bool = false;
 
 		try {
 
 			List<UtilisateurDto> utilisateursDto = utilisateurProxy.getUtilisateurs();
 
-			for (UtilisateurDto utilisateurDto : utilisateursDto) {
+				for (UtilisateurDto utilisateurDto : utilisateursDto) {
 
-				Set<Integer> idProduits = utilisateurDto.getProduits();
+					Set<Integer> idProduits = utilisateurDto.getProduits();
 
-				for (Integer idProduit : idProduits) {
+					for (Integer idProduit : idProduits) {
 
-					ProduitDto produitDto = produitProxy.getProduit(idProduit);
+						ProduitDto produitDto = produitProxy.getProduit(idProduit);
 
-					if (produitDto == null) {
+						if (produitDto == null) {
 
-						int idUtilisateur = utilisateurDto.getIdUtilisateur();
+							int idUtilisateur = utilisateurDto.getIdUtilisateur();
 
-						updatePanierService.update(idProduit, idUtilisateur);
+							updatePanierService.update(idProduit, idUtilisateur);
 
-						String destinataire = utilisateurDto.getMail();
-						String sujet = mailConfiguration.getSujet();
-						String message = mailConfiguration.getMessage();
+							String destinataire = utilisateurDto.getMail();
+							String sujet = mailConfiguration.getSujet();
+							String message = mailConfiguration.getMessage();
 
-						mailSenderService.sendMessage(destinataire, sujet, message);
-						
-						bool = true;
+							mailSenderService.sendMessage(destinataire, sujet, message);
+
+							bool = true;
+
+						}
 
 					}
 
 				}
-
-			}
+				
+				return bool;
 			
+		} catch (NullPointerException npe) {
+		
 			return bool;
-			
+	
 		} catch (Exception e) {
 
 			throw new BatchNotifyException("problème lors de la notification aux utilisateurs notifyUsers" + e.getMessage());
-			
+
 		}
 
 	}

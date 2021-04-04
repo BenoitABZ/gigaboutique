@@ -10,21 +10,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.gigaboutique.gigaproductservice.model.TailleProduit;
+import com.gigaboutique.gigaproductservice.model.TailleProduitBean;
 
 @Repository
-public interface TailleProduitDao extends JpaRepository<TailleProduit, Integer> {
+public interface TailleProduitDao extends JpaRepository<TailleProduitBean, Integer> {
 
-	List<TailleProduit> findById(int id);
+	List<TailleProduitBean> findById(int id);
 
-	List<TailleProduit> findAll();
+	List<TailleProduitBean> findAll();
 	
-	@Query("select tp FROM TailleProduit as tp WHERE tp.produit.idProduit =:idProduit AND tp.taille.idTaille=:idTaille")
-	TailleProduit findByTailleProduit(int idProduit, int idTaille);
+	@Query("select tp FROM TailleProduitBean as tp WHERE tp.produit.idProduit =:idProduit AND tp.taille.idTaille=:idTaille")
+	TailleProduitBean findByTailleProduit(int idProduit, int idTaille);
 	
 	@Transactional
 	@Modifying
-	@Query("delete FROM TailleProduit as tp WHERE tp.produit.idProduit =:idProduit")
+	@Query("delete FROM TailleProduitBean as tp WHERE tp.produit.idProduit =:idProduit")
 	void deleteByRelatedProduit(@Param("idProduit") int idProduit);
 
 }

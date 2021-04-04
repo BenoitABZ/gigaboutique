@@ -20,7 +20,7 @@ public class CategorieController {
 	@Autowired
 	private CategorieService categorieService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/getall")
 	public List<String> getCategories() {
 
 		List<String> categories = new ArrayList<>();

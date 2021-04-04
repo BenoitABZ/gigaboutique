@@ -35,7 +35,7 @@ public class TailleBean implements Serializable {
 	private String taille;
 
 	@OneToMany(mappedBy = "taille", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	private List<TailleProduit> taillesProduits = new ArrayList<>();
+	private List<TailleProduitBean> taillesProduits = new ArrayList<>();
 
 	public Integer getIdTaille() {
 		return idTaille;
@@ -53,11 +53,11 @@ public class TailleBean implements Serializable {
 		this.taille = taille;
 	}
 
-	public List<TailleProduit> getTaillesProduits() {
+	public List<TailleProduitBean> getTaillesProduits() {
 		return taillesProduits;
 	}
 
-	public void setTaillesProduits(List<TailleProduit> taillesProduits) {
+	public void setTaillesProduits(List<TailleProduitBean> taillesProduits) {
 		this.taillesProduits = taillesProduits;
 	}
 

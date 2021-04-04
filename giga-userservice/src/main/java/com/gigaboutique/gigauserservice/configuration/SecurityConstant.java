@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("security-configs")
 public class SecurityConstant {
-	
+
 	private String tokenPrefix;
 
 	private String expiration;

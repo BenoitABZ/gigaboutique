@@ -3,7 +3,6 @@ package com.gigaboutique.gigauserservice.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -11,19 +10,19 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
-import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 
 @Service
+@Transactional
 public class UtilisateurService {
 
 	@Autowired
@@ -36,7 +35,7 @@ public class UtilisateurService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<UtilisateurDto> getUtilisateurs() {
-		
+
 		List<UtilisateurDto> utilisateursDto = new ArrayList<>();
 
 		List<UtilisateurBean> utilisateursBean = utilisateurDao.findAll();

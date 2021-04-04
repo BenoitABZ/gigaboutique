@@ -20,9 +20,11 @@ public class Scheduler {
 	@Scheduled(fixedRate = rate)
 	public void runBatchVendeur() throws BatchNotifyException {
 
-		notifyUsersService.notifyUsers();
+		boolean bool = notifyUsersService.notifyUsers();
 
 		setCounter(getCounter() + 1);
+		
+		System.out.println(counter + "" + bool);
 
 	}
 

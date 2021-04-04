@@ -59,6 +59,7 @@ public class RoleServiceTests {
 		when(rc.getRoleBeanAdmin()).thenReturn(roleBeanAdmin);
 
 		doNothing().when(rc).init();
+		
 		when(roleDao.save(roleBeanAdmin)).thenReturn(roleBeanAdmin);
 
 		utilisateurBean = roleService.setRoleUtilisateur(utilisateurBean);

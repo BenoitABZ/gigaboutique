@@ -73,7 +73,7 @@ public class ProduitBean implements Serializable {
 	private List<ImageProduitBean> images = new ArrayList<>();
 
 	@OneToMany(mappedBy = "produit", fetch = FetchType.EAGER)
-	private List<TailleProduit> taillesProduits = new ArrayList<>();
+	private List<TailleProduitBean> taillesProduits = new ArrayList<>();
 
 	public Integer getIdProduit() {
 		return idProduit;
@@ -147,11 +147,11 @@ public class ProduitBean implements Serializable {
 		this.images = images;
 	}
 
-	public List<TailleProduit> getTaillesProduits() {
+	public List<TailleProduitBean> getTaillesProduits() {
 		return taillesProduits;
 	}
 
-	public void setTaillesProduits(List<TailleProduit> taillesProduits) {
+	public void setTaillesProduits(List<TailleProduitBean> taillesProduits) {
 		this.taillesProduits = taillesProduits;
 	}
 

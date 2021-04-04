@@ -120,7 +120,7 @@ public class ProduitController {
 
 	}
 
-	@GetMapping("/get/{nom}")
+	@GetMapping("/getnom/{nom}")
 	public ProduitDto getProduitByNom(@PathVariable("nom") String nom) {
 
 		ProduitDto produit = null;
@@ -143,7 +143,7 @@ public class ProduitController {
 
 	}
 	
-	@GetMapping("/get/{id}")
+	@GetMapping("/getid/{id}")
 	public ProduitDto getProduitById(@PathVariable("id") int id) {
 
 		ProduitDto produit = null;

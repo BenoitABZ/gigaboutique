@@ -1,23 +1,23 @@
 package com.gigaboutique.gigauserservice.service;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigauserservice.dao.ProduitPanierDao;
 import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
+import com.gigaboutique.gigauserservice.dao.UtilisateurProduitPanierDao;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.TechnicalException;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
+import com.gigaboutique.gigauserservice.model.UtilisateurProduitPanierBean;
 
 @Service
+@Transactional
 public class ProduitPanierService {
 
 	@Autowired
@@ -29,6 +29,9 @@ public class ProduitPanierService {
 	@Autowired
 	UtilisateurDao utilisateurDao;
 
+	@Autowired
+	UtilisateurProduitPanierDao utilisateurProduitPanierDao;
+
 	public UtilisateurDto getProduits(Integer idUtilisateur) throws UtilisateurException {
 
 		UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur).get();
@@ -38,93 +41,50 @@ public class ProduitPanierService {
 		return utilisateurDto;
 
 	}
-    @Transactional
-	public void addProduitPanier(Integer idProduit, Integer idUtilisateur) throws TechnicalException {
 
-		ProduitPanierBean produit = null;
+	public void addProduitPanier(Integer idProduitPanier, Integer idUtilisateur) throws TechnicalException {
+
+		ProduitPanierBean produitPanierBean = null;
+
+		UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur).get();
 
 		try {
 
-			UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur).get();
+			if (produitPanierDao.findById(idProduitPanier).isPresent()) {
 
-			if (produitPanierDao.findById(idProduit).isPresent()) {
-				
-				utilisateurDao.save(utilisateurBean);
+				produitPanierBean = produitPanierDao.findById(idProduitPanier).get();
 
-				produit = produitPanierDao.findById(idProduit).get();
-								
-				Set<UtilisateurBean> utilisateurs = produit.getUtilisateurs();
+				UtilisateurProduitPanierBean utilisateurProduitPanierBean = utilisateurProduitPanierDao.findByUtilisateurProduitPanier(idProduitPanier, idUtilisateur);
 
-				utilisateurs.add(utilisateurBean);
+				if (utilisateurProduitPanierBean == null) {
 
-				produit.setUtilisateurs(utilisateurs);
+					utilisateurProduitPanierBean = new UtilisateurProduitPanierBean(utilisateurBean, produitPanierBean);
 
-				produitPanierDao.save(produit);
-				
-				if(utilisateurBean.getProduitsPanier() != null) {
-					
-					utilisateurBean.getProduitsPanier().add(produit);
-					
-					}else {
-						
-						Set<ProduitPanierBean> produitsPanier = new HashSet<>();
-						produitsPanier.add(produit);
-						utilisateurBean.setProduitsPanier(produitsPanier);
-						
-					}
+					utilisateurBean.getUtilisateurProduits().add(utilisateurProduitPanierBean);
+					produitPanierBean.getUtilisateurProduits().add(utilisateurProduitPanierBean);
 
-				utilisateurDao.save(utilisateurBean);
+					utilisateurProduitPanierDao.save(utilisateurProduitPanierBean);
 
-				
+				} else {
 
+					return;
 
-/*				
-				Set<ProduitPanierBean> produitsPanier = new HashSet<>();
-				
-				produitsPanier.add(produit);
-				
-				utilisateurBean.setProduitsPanier(produitsPanier);
-				
-				Set<UtilisateurBean> utilisateurs = new HashSet<>();
-				
-				utilisateurs.add(utilisateurBean);
-				
-				produit.setUtilisateurs(utilisateurs);
-				
-				produitPanierDao.save(produit);
-
-				utilisateurDao.save(utilisateurBean);
-*/
-			} else {
-				
-				utilisateurDao.save(utilisateurBean);
-
-				produit = new ProduitPanierBean();
-
-				produit.setId(idProduit);
-				
-				Set<UtilisateurBean> utilisateurs = new HashSet<>();
-
-				utilisateurs.add(utilisateurBean);
-
-				produit.setUtilisateurs(utilisateurs);
-
-				produitPanierDao.save(produit);
-				
-				if(utilisateurBean.getProduitsPanier() != null) {
-					
-				utilisateurBean.getProduitsPanier().add(produit);
-				
-				}else {
-					
-					Set<ProduitPanierBean> produitsPanier = new HashSet<>();
-					produitsPanier.add(produit);
-					utilisateurBean.setProduitsPanier(produitsPanier);
-					
 				}
+			} else {
+
+				produitPanierBean = new ProduitPanierBean();
+				produitPanierBean.setId(idProduitPanier);
+				produitPanierDao.save(produitPanierBean);
 
 				utilisateurDao.save(utilisateurBean);
-				
+
+				UtilisateurProduitPanierBean utilisateurProduitPanierBean = new UtilisateurProduitPanierBean(utilisateurBean, produitPanierBean);
+
+				utilisateurBean.getUtilisateurProduits().add(utilisateurProduitPanierBean);
+				produitPanierBean.getUtilisateurProduits().add(utilisateurProduitPanierBean);
+
+				utilisateurProduitPanierDao.save(utilisateurProduitPanierBean);
+
 			}
 
 		} catch (Exception e) {
@@ -132,49 +92,25 @@ public class ProduitPanierService {
 			throw new TechnicalException("un problème a eu lieu lors de l'ajout du produit au panier" + e.getMessage());
 
 		}
-
 	}
 
-	public void removeProduitPanier(int idProduit, int idUtilisateur) throws TechnicalException {
+	public void removeProduitPanier(int idProduitPanier, int idUtilisateur) throws TechnicalException {
 
 		try {
 
-			ProduitPanierBean produit = produitPanierDao.findById(idProduit);
+			utilisateurProduitPanierDao.deleteByRelatedProduit(idProduitPanier);
 
-			UtilisateurBean utilisateur = utilisateurDao.findById(idUtilisateur);
-			/*			
-			utilisateur.getProduitsPanier().remove(produit);
-			
-			utilisateurDao.save(utilisateur);
-			
-			List<UtilisateurBean> utilisateurs = utilisateurDao.findAll();
-			
-			for(UtilisateurBean utilisateurTest : utilisateurs) {
-				
-				if(utilisateurTest.getProduitsPanier().contains(produit)) {
-					
-					return;
+			ProduitPanierBean produitPanierBean = produitPanierDao.findById(idProduitPanier);
+
+			if (produitPanierBean != null) {
+
+				Set<UtilisateurProduitPanierBean> utilisateurs = produitPanierBean.getUtilisateurProduits();
+
+				if (utilisateurs == null || utilisateurs.size() == 0) {
+
+					produitPanierDao.delete(produitPanierBean);
+
 				}
-				
-			}
-			
-			produitPanierDao.delete(produit);
-			*/
-			Set<UtilisateurBean> utilisateurs = produit.getUtilisateurs();
-
-			utilisateurs.removeIf(x -> (x == utilisateur));
-
-			if (utilisateurs.isEmpty()) {
-
-				produitPanierDao.delete(produit);
-
-			} else {
-
-				produit.setUtilisateurs(utilisateurs);
-
-				produitPanierDao.save(produit);
-			
-			
 			}
 			
 		} catch (Exception e) {

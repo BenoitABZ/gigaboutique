@@ -24,7 +24,7 @@ import com.gigaboutique.gigauserservice.dto.RegisterDto;
 @Rollback(true)
 @AutoConfigureMockMvc
 public class UtilisateurControllerIntegrationTests {
-/*
+
 	@Autowired
 	private MockMvc mvc;
 
@@ -35,7 +35,7 @@ public class UtilisateurControllerIntegrationTests {
 
 		registerDto.setNom("lastNameTest");
 		registerDto.setPrenom("firstNameTest");
-		registerDto.setMail("mail.adm@gmail.com");
+		registerDto.setMail("mailtest1.adm@gmail.com");
 		registerDto.setPassword("Poiuytreza3");
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -47,7 +47,6 @@ public class UtilisateurControllerIntegrationTests {
 		   .contentType(MediaType.APPLICATION_JSON)
 		   .content(registerDtoJson))
 		   .andExpect(status().is2xxSuccessful());
-
 	}
 
 	@Test
@@ -57,7 +56,7 @@ public class UtilisateurControllerIntegrationTests {
 
 		registerDto.setNom("lastNameTest");
 		registerDto.setPrenom("firstNameTest");
-		registerDto.setMail("mail.adm@gmail.com");
+		registerDto.setMail("mailtest2.adm@gmail.com");
 		registerDto.setPassword("Poiuytreza3");
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -72,7 +71,7 @@ public class UtilisateurControllerIntegrationTests {
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-		params.add("mail", "mail.adm@gmail.com");
+		params.add("mail", "mailtest2.adm@gmail.com");
 		params.add("motDePasse", "Poiuytreza3");
 
 		mvc.perform(post("/login/utilisateur")
@@ -82,7 +81,6 @@ public class UtilisateurControllerIntegrationTests {
 		   .andReturn()
 		   .getResponse()
 		   .getHeader("Authorization");
-
 	}
-*/
+
 }

@@ -9,7 +9,7 @@ import com.gigaboutique.gigabatchnotifyservice.dto.ProduitDto;
 @FeignClient(name = "giga-productservice", url = "localhost:8002")
 public interface ProduitProxy {
 
-	@GetMapping("/produit/get/{id}")
+	@GetMapping("/produit/getid/{id}")
 	public ProduitDto getProduit(@PathVariable("id") int id);
 
 }

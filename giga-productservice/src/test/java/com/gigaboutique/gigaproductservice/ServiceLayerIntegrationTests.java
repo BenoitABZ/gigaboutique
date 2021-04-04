@@ -30,7 +30,7 @@ import com.gigaboutique.gigaproductservice.exception.TechnicalException;
 import com.gigaboutique.gigaproductservice.model.CategorieBean;
 import com.gigaboutique.gigaproductservice.model.GenreBean;
 import com.gigaboutique.gigaproductservice.model.ProduitBean;
-import com.gigaboutique.gigaproductservice.model.TailleProduit;
+import com.gigaboutique.gigaproductservice.model.TailleProduitBean;
 import com.gigaboutique.gigaproductservice.model.VendeurBean;
 import com.gigaboutique.gigaproductservice.service.CategorieService;
 import com.gigaboutique.gigaproductservice.service.MapProduitDtoService;
@@ -206,11 +206,11 @@ public class ServiceLayerIntegrationTests {
 
 		assertEquals(produitBean1.getIdProduit(), produitBean2.getIdProduit());
 
-		List<TailleProduit> taillesProduits = produitBean2.getTaillesProduits();
+		List<TailleProduitBean> taillesProduits = produitBean2.getTaillesProduits();
 
-		TailleProduit tailleProduit = taillesProduits.get(0);
+		TailleProduitBean tailleProduitBean = taillesProduits.get(0);
 
-		assertTrue(tailleProduit.isDisponibilite() == false);
+		assertTrue(tailleProduitBean.isDisponibilite() == false);
 		assertTrue(!produitBean2.getImages().isEmpty());
 
 	}

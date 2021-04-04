@@ -1,5 +1,7 @@
 package com.gigaboutique.gigauserservice;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import javax.ws.rs.core.MediaType;
@@ -10,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -24,8 +25,9 @@ import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
 import com.gigaboutique.gigauserservice.service.ProduitPanierService;
 
 @SpringBootTest
+@Rollback(true)
 @AutoConfigureMockMvc
-public class AdditionalIntegrationTests {
+public class AddIntegrationTests {
 
 	@Autowired
 	private MockMvc mvc;
@@ -35,7 +37,7 @@ public class AdditionalIntegrationTests {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-	
+
 	@Autowired
 	private ProduitPanierService produitPanierService;
 
@@ -51,28 +53,29 @@ public class AdditionalIntegrationTests {
 
 		RegisterDto registerDto = new RegisterDto();
 
-		registerDto.setNom("ABOU2");
-		registerDto.setPrenom("Benoit2");
-		registerDto.setMail("mail2.adm@gmail.com");
+		registerDto.setNom("ABOUZEID");
+		registerDto.setPrenom("Benoit");
+		registerDto.setMail("mail.adm@gmail.com");
 		registerDto.setPassword("Poiuytreza31");
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		mapper = objectMapper.writer().withDefaultPrettyPrinter();
 
 		String registerDtoJson = mapper.writeValueAsString(registerDto);
 
-		mvc.perform(post("/utilisateur/signup")
-		   .contentType(MediaType.APPLICATION_JSON)
-		   .content(registerDtoJson));
-		
+		mvc.perform(post("/utilisateur/signup").contentType(MediaType.APPLICATION_JSON).content(registerDtoJson));
+
 		UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
-		
+
 		int idUtilisateur = utilisateurBean.getId();
 		int idProduit = 500;
-		
+
 		produitPanierService.addProduitPanier(idProduit, idUtilisateur);
-		
+
 		ProduitPanierBean produitPanierBean = produitPanierDao.findById(idProduit);
+
+		assertEquals(500, produitPanierBean.getId());
+		assertNotNull(produitPanierBean.getUtilisateurProduits().toArray());
 	}
 
 }

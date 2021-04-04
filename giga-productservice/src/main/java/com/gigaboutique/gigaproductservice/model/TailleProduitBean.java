@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Taille_Produit")
-public class TailleProduit implements Serializable {
+public class TailleProduitBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,11 +45,11 @@ public class TailleProduit implements Serializable {
 	@JoinColumn(name = "id_taille")
 	private TailleBean taille;
 
-	public TailleProduit() {
+	public TailleProduitBean() {
 
 	}
 
-	public TailleProduit(boolean disponibilite, ProduitBean produit, TailleBean taille) {
+	public TailleProduitBean(boolean disponibilite, ProduitBean produit, TailleBean taille) {
 		super();
 		this.disponibilite = disponibilite;
 		this.produit = produit;

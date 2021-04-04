@@ -33,6 +33,7 @@ import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
+import com.gigaboutique.gigauserservice.model.UtilisateurProduitPanierBean;
 import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
 
 @SpringBootTest
@@ -67,7 +68,7 @@ public class ProduitPanierIntegrationTests {
 
 			registerDto.setNom("lastNameTest");
 			registerDto.setPrenom("firstNameTest");
-			registerDto.setMail("mail.adm@gmail.com");
+			registerDto.setMail("mail1.adm@gmail.com");
 			registerDto.setPassword("Poiuytreza3");
 
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -81,7 +82,7 @@ public class ProduitPanierIntegrationTests {
 
 			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-			params.add("mail", "mail.adm@gmail.com");
+			params.add("mail", "mail1.adm@gmail.com");
 			params.add("motDePasse", "Poiuytreza3");
 
 			token = mvc.perform(post("/login/utilisateur")
@@ -95,7 +96,7 @@ public class ProduitPanierIntegrationTests {
 
 			utilisateurDto.setNom("lastNameTest");
 			utilisateurDto.setPrenom("firstNameTest");
-			utilisateurDto.setMail("mail.adm@gmail.com");
+			utilisateurDto.setMail("mail1.adm@gmail.com");
 
 			UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
 
@@ -103,9 +104,7 @@ public class ProduitPanierIntegrationTests {
 			String role = utilisateurBean.getRole().getRole();
 
 			utilisateurDto.setIdUtilisateur(id);
-			utilisateurDto.setRole(role);
-	  
-	
+			utilisateurDto.setRole(role);			
 	 }
 
 	@Test
@@ -166,7 +165,7 @@ public class ProduitPanierIntegrationTests {
 		
 		assertFalse(produitPanierDao.findById(idProduitToRemove) != null);
 	}
-	
+
 	@Test
 	public void removeProduitPanierTestWithMoreThanOneUserTest() throws Exception {
 		
@@ -253,8 +252,8 @@ public class ProduitPanierIntegrationTests {
 		ProduitPanierBean produitPanier = produitPanierDao.findById(idProduitToRemove);
 
 		assertTrue(produitPanierDao.findById(idProduitToRemove) != null);
-		assertTrue(produitPanier.getUtilisateurs().size() == 1);
-		assertTrue(produitPanier.getUtilisateurs().contains(utilisateurBean2));
+		assertTrue(produitPanier.getUtilisateurProduits().size() == 1);
+		assertTrue(((UtilisateurProduitPanierBean)produitPanier.getUtilisateurProduits().toArray()[0]).getUtilisateur().getId() == utilisateurBean2.getId());
 	}
 	
 	@Test
@@ -292,7 +291,6 @@ public class ProduitPanierIntegrationTests {
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(jsonPath("$.produits", hasSize(2)));
-
 	}
 
 }

@@ -26,7 +26,7 @@ import com.gigaboutique.gigaproductservice.model.GenreBean;
 import com.gigaboutique.gigaproductservice.model.ImageProduitBean;
 import com.gigaboutique.gigaproductservice.model.ProduitBean;
 import com.gigaboutique.gigaproductservice.model.TailleBean;
-import com.gigaboutique.gigaproductservice.model.TailleProduit;
+import com.gigaboutique.gigaproductservice.model.TailleProduitBean;
 import com.gigaboutique.gigaproductservice.model.VendeurBean;
 
 import javassist.NotFoundException;
@@ -76,9 +76,9 @@ public class MapProduitDtoService {
 
 			Map<String, Boolean> map = new HashMap<String, Boolean>();
 
-			for (TailleProduit tailleProduit : produit.getTaillesProduits()) {
+			for (TailleProduitBean tailleProduitBean : produit.getTaillesProduits()) {
 
-				map.put(tailleProduit.getTaille().getTaille(), tailleProduit.isDisponibilite());
+				map.put(tailleProduitBean.getTaille().getTaille(), tailleProduitBean.isDisponibilite());
 
 			}
 
@@ -120,34 +120,34 @@ public class MapProduitDtoService {
 
 			Map<String, Boolean> mapTaillesProduits = produit.getTailles();
 
-			List<TailleProduit> taillesProduits = tailleProduitDao.findAll();
+			List<TailleProduitBean> taillesProduits = tailleProduitDao.findAll();
 
 			for (Map.Entry<String, Boolean> entry : mapTaillesProduits.entrySet()) {
 
 				TailleBean tailleBean = tailleDao.findByTaille(entry.getKey());
 
-				for (TailleProduit tailleProduit : taillesProduits) {
+				for (TailleProduitBean tailleProduitBean : taillesProduits) {
 
-					if ((tailleProduit.getProduit().getIdProduit() == produitBean.getIdProduit())
-							&& (tailleProduit.getTaille().getIdTaille() == tailleBean.getIdTaille())) {
+					if ((tailleProduitBean.getProduit().getIdProduit() == produitBean.getIdProduit())
+							&& (tailleProduitBean.getTaille().getIdTaille() == tailleBean.getIdTaille())) {
 
-						int indexProduit = tailleProduit.getProduit().getTaillesProduits().indexOf(tailleProduit);
+						int indexProduit = tailleProduitBean.getProduit().getTaillesProduits().indexOf(tailleProduitBean);
 
-						tailleProduit.getProduit().getTaillesProduits().remove(indexProduit);
+						tailleProduitBean.getProduit().getTaillesProduits().remove(indexProduit);
 
-						tailleProduit.setDisponibilite(entry.getValue());
+						tailleProduitBean.setDisponibilite(entry.getValue());
 
-						tailleProduit.getProduit().getTaillesProduits().add(indexProduit, tailleProduit);
+						tailleProduitBean.getProduit().getTaillesProduits().add(indexProduit, tailleProduitBean);
 
-						int indexTaille = tailleProduit.getTaille().getTaillesProduits().indexOf(tailleProduit);
+						int indexTaille = tailleProduitBean.getTaille().getTaillesProduits().indexOf(tailleProduitBean);
 
-						tailleProduit.getTaille().getTaillesProduits().remove(indexTaille);
+						tailleProduitBean.getTaille().getTaillesProduits().remove(indexTaille);
 
-						tailleProduit.setDisponibilite(entry.getValue());
+						tailleProduitBean.setDisponibilite(entry.getValue());
 
-						tailleProduit.getTaille().getTaillesProduits().add(indexTaille, tailleProduit);
+						tailleProduitBean.getTaille().getTaillesProduits().add(indexTaille, tailleProduitBean);
 
-						tailleProduitDao.save(tailleProduit);
+						tailleProduitDao.save(tailleProduitBean);
 					}
 
 				}
@@ -157,7 +157,7 @@ public class MapProduitDtoService {
 		} catch (Exception e) {
 
 			throw new TechnicalException(
-					"problème lors de la persistence des beans produit ou TailleProduit" + e.getMessage());
+					"problème lors de la persistence des beans produit ou TailleProduitBean" + e.getMessage());
 
 		}
 	}
@@ -258,26 +258,26 @@ public class MapProduitDtoService {
 
 				}
 
-				TailleProduit tailleProduit = null;
+				TailleProduitBean tailleProduitBean = null;
 
 				if (produitBean.getIdProduit() != null) {
 
-					tailleProduit = tailleProduitDao.findByTailleProduit(produitBean.getIdProduit(), taille.getIdTaille());
+					tailleProduitBean = tailleProduitDao.findByTailleProduit(produitBean.getIdProduit(), taille.getIdTaille());
 
 				}
 
-				if (tailleProduit == null) {
+				if (tailleProduitBean == null) {
 
-					tailleProduit = new TailleProduit(entry.getValue(), produitBean, taille);
+					tailleProduitBean = new TailleProduitBean(entry.getValue(), produitBean, taille);
 
-					produitBean.getTaillesProduits().add(tailleProduit);
-					taille.getTaillesProduits().add(tailleProduit);
+					produitBean.getTaillesProduits().add(tailleProduitBean);
+					taille.getTaillesProduits().add(tailleProduitBean);
 
-					tailleProduitDao.save(tailleProduit);
+					tailleProduitDao.save(tailleProduitBean);
 				}else {
 					
-					tailleProduit.setDisponibilite(entry.getValue());
-					tailleProduitDao.save(tailleProduit);
+					tailleProduitBean.setDisponibilite(entry.getValue());
+					tailleProduitDao.save(tailleProduitBean);
 				}
 
 			}

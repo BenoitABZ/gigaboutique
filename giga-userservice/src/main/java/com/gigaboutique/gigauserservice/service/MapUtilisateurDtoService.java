@@ -7,15 +7,17 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
-import com.gigaboutique.gigauserservice.exception.TechnicalException;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
+import com.gigaboutique.gigauserservice.model.UtilisateurProduitPanierBean;
 
 @Service
+@Transactional
 public class MapUtilisateurDtoService {
 
 	public UtilisateurDto convertToUtilisateurDto(UtilisateurBean utilisateur) throws UtilisateurException {
@@ -25,7 +27,6 @@ public class MapUtilisateurDtoService {
 		try {
 
 			utilisateurDto = new UtilisateurDto();
-
 			utilisateurDto.setIdUtilisateur(utilisateur.getId());
 			utilisateurDto.setNom(utilisateur.getNom());
 			utilisateurDto.setPrenom(utilisateur.getPrenom());
@@ -54,14 +55,14 @@ public class MapUtilisateurDtoService {
 
 	}
 
-	public UtilisateurBean convertToUtilisateurBeanForRegistration(RegisterDto registerDto) throws UtilisateurException {
+	public UtilisateurBean convertToUtilisateurBeanForRegistration(RegisterDto registerDto)
+			throws UtilisateurException {
 
 		UtilisateurBean utilisateurBean = null;
 
 		try {
 
 			utilisateurBean = new UtilisateurBean();
-
 			utilisateurBean.setNom(registerDto.getNom());
 			utilisateurBean.setPrenom(registerDto.getPrenom());
 			utilisateurBean.setMail(registerDto.getMail());
@@ -81,8 +82,9 @@ public class MapUtilisateurDtoService {
 		Set<Integer> setProduitPanier = new HashSet<>();
 
 		try {
-			setProduitPanier = ((Set<ProduitPanierBean>) utilisateur.getProduitsPanier())
-					.stream()
+			setProduitPanier = ((Set<UtilisateurProduitPanierBean>) utilisateur
+					.getUtilisateurProduits()).stream()
+					.map(UtilisateurProduitPanierBean::getProduitPanier)
 					.map(ProduitPanierBean::getId)
 					.collect(Collectors.toSet());
 		} catch (NullPointerException npe) {

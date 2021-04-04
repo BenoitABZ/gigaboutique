@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import com.gigaboutique.gigauserservice.dto.RegisterDto;
 import com.gigaboutique.gigauserservice.dto.UtilisateurDto;
 import com.gigaboutique.gigauserservice.exception.UtilisateurException;
-import com.gigaboutique.gigauserservice.model.ProduitPanierBean;
 import com.gigaboutique.gigauserservice.model.RoleBean;
 import com.gigaboutique.gigauserservice.model.UtilisateurBean;
 import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
@@ -58,21 +57,6 @@ public class MapUtilisateurDtoServiceTests {
 	}
 
 	@Test
-	public void populateProduitPanierIdTest() throws UtilisateurException {
-
-		ProduitPanierBean produitPanier = new ProduitPanierBean();
-		produitPanier.setId(1);
-		Set<ProduitPanierBean> produitsPanier = new HashSet<>();
-
-		utilisateurBean.setProduitsPanier(produitsPanier);
-
-		UtilisateurDto utilisateurDto = map.convertToUtilisateurDto(utilisateurBean);
-
-		assertEquals(utilisateurDto.getProduits().size(), utilisateurBean.getProduitsPanier().size());
-
-	}
-
-	@Test
 	public void convertToUtilisateurBeanTest() {
 
 		Set<Integer> produitsPanierId = new HashSet<>();
@@ -109,4 +93,3 @@ public class MapUtilisateurDtoServiceTests {
 	}
 
 }
-

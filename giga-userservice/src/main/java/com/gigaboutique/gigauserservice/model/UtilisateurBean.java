@@ -1,9 +1,9 @@
 package com.gigaboutique.gigauserservice.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,29 +11,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "Utilisateur")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = UtilisateurBean.class)
 public class UtilisateurBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "identifier", sequenceName = "utilisateur_id_utilisateur_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "identifier")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_utlisateur")
 	private Integer id;
 
@@ -51,13 +44,11 @@ public class UtilisateurBean implements Serializable {
 	private String mail;
 
 	@JsonProperty("motDePasse")
-	//@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}", message = "votre mot de passe doit comporter au moins 8 caractères dont 1 majuscule et 1 chiffre")
 	@Column(name = "mot_de_passe")
 	private String motDePasse;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_produitPanier"))
-	private Set<ProduitPanierBean> produitsPanier;
+	@OneToMany(mappedBy = "utilisateur", fetch = FetchType.EAGER)
+	private Set<UtilisateurProduitPanierBean> utilisateurProduits = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_role", nullable = false)
@@ -103,20 +94,33 @@ public class UtilisateurBean implements Serializable {
 		this.motDePasse = motDePasse;
 	}
 
-	public Set<ProduitPanierBean> getProduitsPanier() {
-		return produitsPanier;
-	}
-
-	public void setProduitsPanier(Set<ProduitPanierBean> produitPanier) {
-		this.produitsPanier = produitPanier;
-	}
-
 	public RoleBean getRole() {
 		return role;
 	}
 
 	public void setRole(RoleBean role) {
 		this.role = role;
+	}
+
+	public Set<UtilisateurProduitPanierBean> getUtilisateurProduits() {
+		return utilisateurProduits;
+	}
+
+	public void setUtilisateurProduits(Set<UtilisateurProduitPanierBean> utilisateurProduits) {
+		this.utilisateurProduits = utilisateurProduits;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof UtilisateurBean) {
+
+			UtilisateurBean utilisateur = (UtilisateurBean) obj;
+
+			return this.getId() == utilisateur.getId();
+		}
+
+		return false;
+
 	}
 
 }

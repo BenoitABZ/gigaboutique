@@ -23,7 +23,7 @@ import com.gigaboutique.gigaproductservice.model.GenreBean;
 import com.gigaboutique.gigaproductservice.model.ImageProduitBean;
 import com.gigaboutique.gigaproductservice.model.ProduitBean;
 import com.gigaboutique.gigaproductservice.model.TailleBean;
-import com.gigaboutique.gigaproductservice.model.TailleProduit;
+import com.gigaboutique.gigaproductservice.model.TailleProduitBean;
 import com.gigaboutique.gigaproductservice.model.VendeurBean;
 
 @SpringBootTest
@@ -92,20 +92,20 @@ public class ConsumerLayerIntegrationTests {
 
 		vendeurDao.save(vendeur);
 
-		TailleProduit tailleProduit = new TailleProduit(true, produit, taille);
-		tailleProduit.setProduit(produit);
-		tailleProduit.setTaille(taille);
+		TailleProduitBean tailleProduitBean = new TailleProduitBean(true, produit, taille);
+		tailleProduitBean.setProduit(produit);
+		tailleProduitBean.setTaille(taille);
 
-		produit.getTaillesProduits().add(tailleProduit);
-		taille.getTaillesProduits().add(tailleProduit);
+		produit.getTaillesProduits().add(tailleProduitBean);
+		taille.getTaillesProduits().add(tailleProduitBean);
 
-		tailleProduitDao.save(tailleProduit);
+		tailleProduitDao.save(tailleProduitBean);
 
 		VendeurBean vendeurTest = vendeurDao.findById(1);
 
 		List<ProduitBean> produits = vendeurTest.getProduits();
 
-		List<TailleProduit> taillesProduits = produits.get(0).getTaillesProduits();
+		List<TailleProduitBean> taillesProduits = produits.get(0).getTaillesProduits();
 
 		assertEquals("nike", produits.get(0).getMarque());
 

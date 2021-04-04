@@ -30,6 +30,7 @@ public class VendeurController {
 
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
-
+		
 	}
+	
 }

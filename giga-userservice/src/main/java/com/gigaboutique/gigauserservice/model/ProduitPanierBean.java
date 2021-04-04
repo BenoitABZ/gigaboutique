@@ -2,35 +2,40 @@
 package com.gigaboutique.gigauserservice.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "ProduitPanier")
+@Table(name = "Produitpanier")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ProduitPanierBean.class)
 public class ProduitPanierBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_produitPanier")
+	@Column(name = "id_produitpanier")
 	private int id;
 
-	@ManyToMany(mappedBy = "produitsPanier",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	//@JoinTable(name = "Utilisateur_ProduitPanier", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_ProduitPanier"))
-	private Set<UtilisateurBean> utilisateurs;
+	@OneToMany(mappedBy = "produitPanier", fetch = FetchType.EAGER)
+	private Set<UtilisateurProduitPanierBean> utilisateurProduits = new HashSet<>();
+
+	public Set<UtilisateurProduitPanierBean> getUtilisateurProduits() {
+		return utilisateurProduits;
+	}
+
+	public void setUtilisateurProduits(Set<UtilisateurProduitPanierBean> utilisateurProduits) {
+		this.utilisateurProduits = utilisateurProduits;
+	}
 
 	public int getId() {
 		return id;
@@ -38,14 +43,6 @@ public class ProduitPanierBean implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Set<UtilisateurBean> getUtilisateurs() {
-		return utilisateurs;
-	}
-
-	public void setUtilisateurs(Set<UtilisateurBean> utilisateurs) {
-		this.utilisateurs = utilisateurs;
 	}
 
 	@Override
