@@ -1,37 +1,34 @@
 spring:
-   application:
-      name:giga-gateway
-   jpa:
-     show-sql:true
-   h2:
-    console:
-       enabled:true
+ application:
+  name: giga-gateway
+ jpa:
+  show-sql: true
+ h2:
+  console:
+   enabled: true
+ cloud:
+  gateway:
+   routes:
+    - id: userModule
+      uri: http://localhost:8001/
+      predicates:
+       - Path=/utilisateur/**, /login/**
+    - id: productModule
+      uri: http://localhost:8002/
+      predicates:
+       - Path=/produit/**, /categorie/**, /vendeur/**
 server:
-  port:8080
+ port: 8080
  
 #Eureka
 eureka:
-  client:
-     serviceUrl:
-        defaultZone:http://localhost:9102/eureka/
-        register-with-eureka:true
-        fetch-registry:true
-  instance: 
-      hostname:localhost    
-        
+ client:
+  service-url:
+   defaultZone: http://localhost:9102/eureka/           
+          
 management:
-    security:
-       enabled:false
+ security:
+  enabled: false
        
-spring:
-  cloud:
-    gateway:
-      routes:
-      - id: userModule
-        uri: http://localhost:8001/
-        predicates:
-        - Path=/utilisateur/**, /login/**
-      - id: productModule
-        uri: http://localhost:8002/
-        predicates:
-        - Path=/produit/**, /categorie/**, /vendeur/**
+
+  
