@@ -1,7 +1,8 @@
 package com.gigaboutique.gigaproductservice.service;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,21 +65,28 @@ public class ProduitService {
 			produitsDto.add(produitDto);
 			
 			}
+			
+			Collections.sort(produitsDto, new ProductComparator());
+			Collections.reverse(produitsDto);
 	   }
 
 		return produitsDto;
     }
 
-	public List<ProduitDto> getProduitsByCriteria(CritereDto critere, Pageable paging)
-			throws ProduitException, NotFoundException {
+	public List<ProduitDto> getProduitsByCriteria(CritereDto critere, Pageable paging) throws ProduitException, NotFoundException {
 
-		List<String> marques = critere.getMarques();
-		List<String> categories = critere.getCategories();
+		String marque = critere.getMarque();
+		String categorie = critere.getCategorie();
 		String genre = critere.getGenre();
 
 		List<ProduitDto> produitsDto = new ArrayList<>();
 
-		Page<ProduitBean> page = produitDao.findByCriteria(genre, categories, marques, paging);
+		Page<ProduitBean> page = produitDao.findByCriteria(genre, categorie, marque, paging);
+		
+		if(!page.hasContent()) {
+			
+			return null;
+		}
 
 		for (ProduitBean produitBean : page.getContent()) {
 
@@ -182,8 +190,6 @@ public class ProduitService {
 			
 			produitDao.deleteInBatch(produitsMajFalse);
 
-			//produitDao.deleteByMaj();
-
 		} catch (Exception e) {
 
 			throw new TechnicalException("problème lors de la suppression des produits n'ayant pas été mis à jour");
@@ -254,5 +260,15 @@ public class ProduitService {
 		Validator vValidator = vFactory.getValidator();
 		return vValidator;
 	}
+	
+	private class ProductComparator implements Comparator<ProduitDto> {
+	    public int compare(ProduitDto p1, ProduitDto p2) {
+	    	
+	    	Integer p1Promo = Integer.parseInt(p1.getPromotion());	    	
+	    	Integer p2Promo = Integer.parseInt(p2.getPromotion());
+	    	
+	    	return p1Promo.compareTo(p2Promo);
 
+	    }
+	}
 }

@@ -12,7 +12,7 @@ public class ProduitDto {
 	private String nom;
 
 	private String prix;
-	
+
 	private String newPrix;
 
 	private String promotion;

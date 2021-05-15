@@ -50,7 +50,7 @@ public class FeignConfiguration {
 
 			roles.add("USER");
 
-			String token = Jwts.builder().setSubject("fromBatchVendeur")
+			String token = Jwts.builder().setSubject("fromBatchProduit")
 					.setExpiration(new Date(System.currentTimeMillis() + expiration))
 					.signWith(SignatureAlgorithm.HS512, secret.getBytes()).claim("roles", roles).compact();
 

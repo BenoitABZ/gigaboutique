@@ -1,25 +1,23 @@
 package com.gigaboutique.gigaproductservice.dto;
 
-import java.util.List;
-
 public class CritereDto {
-	
-	private List<String> marques;
-	
+
+	private String marque;
+
 	private String genre;
-	
-	private List<String> categories;
 
-    public int size;
-    
-    public int page;
+	private String categorie;
 
-	public List<String> getMarques() {
-		return marques;
+	public int size;
+
+	public int page;
+
+	public String getMarque() {
+		return marque;
 	}
 
-	public void setMarques(List<String> marques) {
-		this.marques = marques;
+	public void setMarque(String marque) {
+		this.marque = marque;
 	}
 
 	public String getGenre() {
@@ -30,12 +28,12 @@ public class CritereDto {
 		this.genre = genre;
 	}
 
-	public List<String> getCategories() {
-		return categories;
+	public String getCategorie() {
+		return categorie;
 	}
 
-	public void setCategories(List<String> categories) {
-		this.categories = categories;
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
 	}
 
 	public int getSize() {

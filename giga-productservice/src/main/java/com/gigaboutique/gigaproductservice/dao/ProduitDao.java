@@ -36,9 +36,9 @@ public interface ProduitDao extends JpaRepository<ProduitBean, Integer> {
 		
 	@Query("Select p FROM ProduitBean as p INNER JOIN p.genre as g INNER JOIN p.categorie as c "
 			+ "WHERE (:genre is null OR g.genre =:genre) "
-			+ "AND  ((:categories) is null OR c.categorie IN (:categories)) "
-			+ "AND ((:marques) is null OR p.marque IN (:marques)) "
-			+ "ORDER BY (p.prix - (p.promotion * p.prix))")	
-	Page<ProduitBean> findByCriteria(@Param("genre") String genre, @Param("categories") List<String> categories, @Param("marques") List<String> marques, Pageable paging);
+			+ "AND  ((:categorie) is null OR c.categorie =:categorie) "
+			+ "AND ((:marque) is null OR p.marque =:marque) "
+			+ "ORDER BY p.promotion DESC")	
+	Page<ProduitBean> findByCriteria(@Param("genre") String genre, @Param("categorie") String categorie, @Param("marque") String marque, Pageable paging);
 
 }

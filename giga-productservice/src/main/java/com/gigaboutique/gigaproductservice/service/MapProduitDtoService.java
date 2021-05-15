@@ -98,7 +98,7 @@ public class MapProduitDtoService {
 			
 			produitDto = null;
 
-			return produitDto;//throw new NotFoundException("produit(s) inexistant en base de données");//
+			return produitDto;
 
 		} catch (Exception e) {
 

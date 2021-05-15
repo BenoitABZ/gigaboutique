@@ -42,7 +42,7 @@ import javassist.NotFoundException;
 @Transactional
 @Rollback(true)
 public class ServiceLayerIntegrationTests {
-
+/*
 	@Autowired
 	ProduitService produitService;
 
@@ -224,7 +224,7 @@ public class ServiceLayerIntegrationTests {
 
 		ProduitDto produitDto1 = new ProduitDto();
 		produitDto1.setCategorie("jean");
-		produitDto1.setGenre("homme");
+		produitDto1.setGenre("femme");
 		produitDto1.setIdVendeur(vendeurBean.getId());
 		produitDto1.setMarque("tommy");
 		produitDto1.setNom("pantalon tommy 31");
@@ -266,16 +266,13 @@ public class ServiceLayerIntegrationTests {
 		produitDto2.setTailles(mapTaillesDispos2);
 
 		produitService.addProduit(produitDto2);
-
-		List<String> listeMarque = new ArrayList<>();
-		listeMarque.add("TOMMY");
 		
 		CritereDto critereDto = new CritereDto();
 
 		critereDto.setGenre("Homme");
-		critereDto.setMarques(listeMarque);
+		critereDto.setMarque("tommy");
 		critereDto.setPage(0);
-		critereDto.setSize(1);
+		critereDto.setSize(2);
 
 		int page = critereDto.getPage();
 		int size = critereDto.getSize();
@@ -353,5 +350,5 @@ public class ServiceLayerIntegrationTests {
 		assertTrue(categories.size() == 2);
 
 	}
-
+*/
 }

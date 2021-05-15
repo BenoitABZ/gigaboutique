@@ -9,14 +9,19 @@ spring:
  cloud:
   gateway:
    routes:
-    - id: userModule
-      uri: http://localhost:8001/
-      predicates:
-       - Path=/utilisateur/**, /login/**
-    - id: productModule
-      uri: http://localhost:8002/
-      predicates:
-       - Path=/produit/**, /categorie/**, /vendeur/**
+   - id: userModule
+     uri: http://localhost:8001/
+     predicates:
+     - Path=/utilisateur/**, /panier/**
+   - id: productModule
+     uri: http://localhost:8002/
+     predicates:
+     - Path=/produit/**, /categorie/**
+   - id: sellerModule
+     uri: http://localhost:8003/
+     predicates:
+     - Path=/vendeur/**
+      
 server:
  port: 8080
  
@@ -24,11 +29,13 @@ server:
 eureka:
  client:
   service-url:
-   defaultZone: http://localhost:9102/eureka/           
-          
+   defaultZone: http://localhost:9102/eureka/
+                
 management:
  security:
   enabled: false
+  
+#route uri: mettre le nom du microservice tel que defini dans application.properties
        
 
   

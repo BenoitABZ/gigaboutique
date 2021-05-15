@@ -14,13 +14,13 @@ import com.gigaboutique.gigaproductservice.exception.TechnicalException;
 import com.gigaboutique.gigaproductservice.service.CategorieService;
 
 @RestController
-@RequestMapping("/categorie")
+@RequestMapping("/produit")
 public class CategorieController {
 
 	@Autowired
 	private CategorieService categorieService;
 
-	@GetMapping("/getall")
+	@GetMapping("/categorie/getall")
 	public List<String> getCategories() {
 
 		List<String> categories = new ArrayList<>();

@@ -18,13 +18,13 @@ import com.gigaboutique.gigauserservice.exception.UtilisateurException;
 import com.gigaboutique.gigauserservice.service.ProduitPanierService;
 
 @RestController
-@RequestMapping("/panier")
+@RequestMapping("/utilisateur")
 public class ProduitPanierController {
 
 	@Autowired
 	private ProduitPanierService produitService;
 
-	@GetMapping("/get/{idUtilisateur}")
+	@GetMapping("/panier/get/{idUtilisateur}")
 	@ResponseStatus(HttpStatus.OK)
 	public UtilisateurDto getProduits(@PathVariable("idUtilisateur") int idUtilisateur) {
 
@@ -42,7 +42,7 @@ public class ProduitPanierController {
 		return utilisateurDto;
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/panier/add")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
 
@@ -57,7 +57,7 @@ public class ProduitPanierController {
 
 	}
 
-	@DeleteMapping("/remove")
+	@DeleteMapping("/panier/remove")
 	@ResponseStatus(HttpStatus.OK)
 	public void removeProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur) {
 

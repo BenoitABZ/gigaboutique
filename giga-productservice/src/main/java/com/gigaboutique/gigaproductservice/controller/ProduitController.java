@@ -23,7 +23,9 @@ import com.gigaboutique.gigaproductservice.dto.CritereDto;
 import com.gigaboutique.gigaproductservice.dto.ProduitDto;
 import com.gigaboutique.gigaproductservice.exception.ProduitException;
 import com.gigaboutique.gigaproductservice.exception.TechnicalException;
+import com.gigaboutique.gigaproductservice.service.CategorieService;
 import com.gigaboutique.gigaproductservice.service.ProduitService;
+import com.gigaboutique.gigaproductservice.service.VendeurService;
 
 import javassist.NotFoundException;
 
@@ -33,7 +35,7 @@ public class ProduitController {
 
 	@Autowired
 	private ProduitService produitService;
-
+	
 	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addProduit(@RequestBody ProduitDto produitDto) {
@@ -58,14 +60,21 @@ public class ProduitController {
 
 		int pageInt = Integer.parseInt(page);
 		int sizeInt = Integer.parseInt(size);
-		
+
 		Pageable paging = PageRequest.of(pageInt, sizeInt);
 
 		List<ProduitDto> produits = null;
 
 		try {
+			
+			if(paging.getPageNumber()>=pageInt) {
 
 			produits = produitService.getProduits(paging);
+			
+			}else {
+				
+				return null;
+			}
 
 		} catch (ProduitException e) {
 
@@ -84,8 +93,15 @@ public class ProduitController {
 	@PostMapping("/getcriteria")
 	public List<ProduitDto> getProduitsCriteria(@RequestBody CritereDto critereDto) {
 
-		int page = critereDto.getPage();
 		int size = critereDto.getSize();
+
+		if (size == 0) {
+
+			size = 15;
+
+		}
+
+		int page = critereDto.getPage();
 
 		Pageable paging = PageRequest.of(page, size);
 
@@ -142,7 +158,7 @@ public class ProduitController {
 		return produit;
 
 	}
-	
+
 	@GetMapping("/getid/{id}")
 	public ProduitDto getProduitById(@PathVariable("id") int id) {
 

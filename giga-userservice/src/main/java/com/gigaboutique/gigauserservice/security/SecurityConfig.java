@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.gigaboutique.gigauserservice.configuration.SecurityConstant;
 import com.gigaboutique.gigauserservice.configuration.UserConfiguration;
+import com.gigaboutique.gigauserservice.dao.UtilisateurDao;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private UtilisateurDao utilisateurDao;
 
 	@Autowired
 	private SecurityConstant sc;
@@ -39,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
-				.antMatchers("/utilisateur/signup", "/login/**").permitAll()
-				.antMatchers("utilisateur/getall")
+				.antMatchers("/utilisateur/signup", "/utilisateur/login").permitAll()
+				.anyRequest()
 				.authenticated()
 				.and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager(), sc))
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(), sc, utilisateurDao))
 				.addFilterBefore(new JWTAuthorizationFilter(sc), UsernamePasswordAuthenticationFilter.class);
 	}
 

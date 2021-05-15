@@ -28,7 +28,7 @@ import com.gigaboutique.gigauserservice.service.ProduitPanierService;
 @Rollback(true)
 @AutoConfigureMockMvc
 public class AddIntegrationTests {
-
+/*
 	@Autowired
 	private MockMvc mvc;
 
@@ -77,5 +77,5 @@ public class AddIntegrationTests {
 		assertEquals(500, produitPanierBean.getId());
 		assertNotNull(produitPanierBean.getUtilisateurProduits().toArray());
 	}
-
+*/
 }
