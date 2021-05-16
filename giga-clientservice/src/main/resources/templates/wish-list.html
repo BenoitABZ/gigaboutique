@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Products</title>
+<title>Wish-list</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -19,7 +19,8 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/fonts/linearicons-v1.0.0/icon-font.min.css}">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
@@ -33,7 +34,8 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/vendor/daterangepicker/daterangepicker.css}">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/vendor/MagnificPopup/magnific-popup.css}">
@@ -57,8 +59,9 @@
 
 					<div class="right-top-bar flex-w h-full">
 
-						<a th:href="@{/logout}" class="flex-c-m trans-04 p-lr-25"> Deconnexion </a>
-					
+						<a th:href="@{/logout}" class="flex-c-m trans-04 p-lr-25">
+							Deconnexion </a>
+
 					</div>
 				</div>
 			</div>
@@ -67,30 +70,29 @@
 				<nav class="limiter-menu-desktop container">
 
 					<!-- Logo desktop -->
-					<a href="#" class="logo"> 
-					    <img th:src="@{/images/icons/logo-01.png}"
-						alt="IMG-LOGO">
+					<a href="#" class="logo"> <img
+						th:src="@{/images/icons/logo-01.png}" alt="IMG-LOGO">
 					</a>
 
 					<!-- Menu desktop -->
-			      <div class="menu-desktop">
+					<div class="menu-desktop">
 						<ul class="main-menu">
 							<li class="active-menu"><a th:href="@{/inscription}">Home</a></li>
 
-							<li class="label1" data-label1="New"><a th:href="@{/getproduits}">Shopping</a>
-							</li>
+							<li class="label1" data-label1="New"><a
+								th:href="@{/getproduits}">Shopping</a></li>
 
-							<li><a href= "#" >Contact</a></li>
+							<li><a href="#">Contact</a></li>
 						</ul>
 					</div>
 
 					<!-- Icon header -->
 					<div class="wrap-icon-header flex-w flex-r-m">
-						<a  
-						    id = "heart"
+						<a  id="heart" 
 						    th:href="@{/getproduitspanier}"
 							class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-							th:attr="data-notify=${numberOfItems}"> <i class="zmdi zmdi-favorite-outline"></i>
+							th:attr="data-notify=${numberOfItems}"> <i
+							class="zmdi zmdi-favorite-outline"></i>
 						</a>
 					</div>
 				</nav>
@@ -100,153 +102,79 @@
 
 	<div class="flex-w flex-sb-m p-b-52"></div>
 
-<form name='f' th:action="@{/getproduitscriteria}" th:object="${critereDto}" method='POST'>
-	<div class="p-t-33">
-		<div class="flex-w flex-r-m p-b-10">
-			<div class="size-203 flex-c-m respon6">Genre</div>
-
-			<div class="size-204 respon6-next form-group">
-				<div class="rs1-select2 bor8 bg0">
-					<select class="js-select2 select2-hidden-accessible form-control" name="genre"
-						tabindex="-1" aria-hidden="true">
-						<option th:if="${critereDto.genre != null}" 
-						        th:value="${critereDto.genre}"
-						        th:text="${critereDto.genre}"></option>
-						<option value="">Tous les genres</option>
-                        <option th:each="genre : ${genres}"
-                                th:value="${genre}"
-                                th:text="${genre}">
-                         </option>
-					</select>
-					<div class="dropDownSelect2"></div>
-				</div>
-			</div>
-		</div>
-
-		<div class="flex-w flex-r-m p-b-10">
-			<div class="size-203 flex-c-m respon6">Catégories</div>
-
-			<div class="size-204 respon6-next form-group">
-				<div class="rs1-select2 bor8 bg0">
-					<select class="js-select2 select2-hidden-accessible form-control" name="categorie"
-						tabindex="-1" aria-hidden="true">
-						 <option th:if="${critereDto.categorie != null}" 
-						         th:value="${critereDto.categorie}"
-						         th:text="${critereDto.categorie}"></option>
-						 <option value="" >Toutes les catégories</option>
-						 <option th:each="categorie : ${categories}"
-						         th:value="${categorie}"
-                                 th:text="${categorie}">
-                         </option>
-					</select>
-					<div class="dropDownSelect2"></div>
-				</div>
-			</div>
-		</div>
-
-		<div class="flex-w flex-r-m p-b-10">
-			<div class="size-203 flex-c-m respon6">Marques</div>
-
-			<div class="size-204 respon6-next form-group">
-				<div class="rs1-select2 bor8 bg0">
-					<select class="js-select2 select2-hidden-accessible form-control" name="marque"
-						tabindex="-1" aria-hidden="true">
-						<option th:if="${critereDto.marque != null}" 
-						        th:value="${critereDto.marque}"
-						        th:text="${critereDto.marque}"></option>
-						<option value ="">Toutes les marques</option>
-					    <option th:each="marque : ${marques}"
-					            th:value="${marque}"                             
-                                th:text="${marque}">
-                         </option>
-					</select>
-					<div class="dropDownSelect2"></div>
-				</div>
-			</div>
-		</div>
-
-		<div class="flex-w flex-r-m p-b-10">
-			<div class="size-204 flex-w flex-m respon6-next">
-				<button 
-				    type = "submit"
-					class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-					FILTRER
-			    </button>
-			</div>
-		</div>
-	</div>
-</form>
-    
-	<!-- Product -->
-	<div class="bg0 m-t-23 p-b-140">
+	<!-- Shoping Cart -->
+	<form class="bg0 p-t-75 p-b-85">
 		<div class="container">
-			<div class="row isotope-grid" style="position: relative; height: 2269.15px;">
-			   <h1 th:if="${produitsDto == null}" style="size:60px"> Ooops....Aucun produit ne correspond à vos critères</h1>
-				<div th:each="produit : ${produitsDto}" class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women" style="position: absolute; left: 0%; top: 0px;">
-					<!-- Block2 -->
-					<div class="block2">
-						<div class="block2-pic hov-img0">
-							<img th:src="${produit.images[0]}" alt="IMG-PRODUCT"> 
-							  <a
-								 th:href="@{|/getproduit/${produit.idProduit}|}"
-								 class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-								 VOIR! 
-							  </a>
+			<div class="row">
+				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl">
+						<div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">
+								<tr class="table_head">
+									<th class="column-1">ARTICLE</th>
+									<th class="column-2">DENOMINATION</th>
+									<th class="column-3">PRIX</th>
+									<th class="column-4">PROMOTION</th>
+									<th class="column-5">COUPON</th>
+									<th class="column-6">TOTAL</th>
+									<th class="column-7"></th>
+								</tr>
+
+								<tr th:each = "produit : ${produitsDto}" class="table_row">
+									<td class="column-1">
+										<div class="how-itemcart1">
+											<img th:src="${produit.images[0]}" alt="IMG">
+										</div>
+									</td>
+									<td class="column-2">
+									<a 
+									th:href="${produit.adresseWeb}" 
+									th:text="${produit.nom}">
+									</a>
+									</td>
+									<td th:text="|${produit.newPrix}€|" class="column-3"></td>
+									<td th:text="| - ${produit.promotion}%|" class="column-4"></td>
+									<td class="column-5">OUI</td>
+									<td th:text="|${produit.newPrix}€|" class="column-6"></td>
+									<td class="column-7 block2-txt-child2 flex-r p-t-3">
+									<a href="#"
+								    th:id="${produit.idProduit}"
+									class="btn-addwish-b2 btn btn-danger js-addedwish-b2">
+									∅
+								    </a>					
+								    </td>
+								</tr>
+							</table>
 						</div>
 
-						<div class="block2-txt flex-w flex-t p-t-14">
-							<div class="block2-txt-child1 flex-col-l ">
-								<a th:href="@{|/getproduit/${produit.idProduit}|}"
-								   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-								   th:text ="${produit.nom}">
-								</a> 
-								<span class="stext-105 cl3"
-								th:text ="|${produit.newPrix}€|">
-								</span>
-								<span 
-								style="color : red; font-size : 17px"
-								th:text ="| - ${produit.promotion}%|">
-								</span>
+						<div class="flex-w flex-m m-r-20 m-tb-5">
+							<div
+								class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+								APPLIQUER COUPONS
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+					<div
+						class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+						<h4 class="mtext-109 cl2 p-b-30">PANIER</h4>
+
+						<div class="flex-w flex-t bor12 p-b-13">
+							<div class="size-208">
+								<span class="stext-110 cl2"> TOTAL: </span>
 							</div>
 
-						   <!--  -->
-						   <div class="block2-txt-child2 flex-r p-t-3">
-								<a href="#"
-								    th:if="${produit.isHeart()}"
-								    th:id="${produit.idProduit}"
-									class="btn-addwish-b2 dis-block pos-relative js-addedwish-b2">
-									<img 
-									class="icon-heart1 dis-block trans-04"
-									th:src="@{|/images/icons/icon-heart-01.png|}" alt="ICON"> 
-									<img
-									class="icon-heart2 dis-block trans-04 ab-t-l"
-									th:src="@{|/images/icons/icon-heart-02.png|}" alt="ICON">
-								</a>
-								<a href="#"
-								    th:unless="${produit.isHeart()}"
-								    th:id="${produit.idProduit}"
-									class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-									<img 
-									class="icon-heart1 dis-block trans-04"
-									th:src="@{|/images/icons/icon-heart-01.png|}" alt="ICON"> 
-									<img
-									class="icon-heart2 dis-block trans-04 ab-t-l"
-									th:src="@{|/images/icons/icon-heart-02.png|}" alt="ICON">
-								</a>
+							<div class="size-209">
+								<span th:text="|${total}€|" class="mtext-110 cl2"></span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<div class="flex-c-m flex-w w-full p-t-45 ">
-		  <ul class="pager">
-		      <li><a th:if="${more}" class="flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04" th:href="@{/getpaginatedproduits(pagination='next')}">Next</a></li>
-              <li><a th:if="${less}" class="flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04" th:href="@{/getpaginatedproduits(pagination='previous')}">Previous</a></li>
-          </ul>
-        </div>
-	</div>
+	</form>
 
 	<!-- Footer -->
 	<footer class="bg3 p-t-75 p-b-32">
@@ -384,47 +312,41 @@
 	<!--===============================================================================================-->
 	<script th:src="@{/vendor/sweetalert/sweetalert.min.js}"></script>
 	<script>
-		$('.js-addwish-b2').on('click', function(e) {
+		$('.js-addedwish-b2').on('click', function(e) {
 			e.preventDefault();
 		});
 
-		$('.js-addwish-b2').each(
+		$('.js-addedwish-b2').each(
 				function() {
-					var nameProduct = $(this).parent().parent().find(
-							'.js-name-b2').html();
-					$(this).on('click', function() {
-						
-						var id = $(this).attr('id');
-						var notify = $('#heart').attr('data-notify');
-						
-						$.ajax
-					    ({ 
-					        url: 'http://localhost:8006/addproduitpanier',
-					        data: "id="+id,
-					        type: 'GET',
-					        success: function()
-					        {
-						
-						
-						swal(nameProduct, "est ajouté à la wishlist!", "success");
-											
-						var notifynum = parseInt(notify);
-						notifynum++;
-						var newnotify = notifynum.toString();
-						
-						$('#heart').attr('data-notify', newnotify);
-											
-						
-					        }
-					    });
-						
-						$(this).removeClass('js-addwish-b2');
-						$(this).addClass('js-addedwish-b2');
-						$(this).off('click')
-										
-					});
-				});
-		
+							var nameProduct = $(this).parent().parent().find('.column-2').children().html();
+							
+							$(this).on('click',function() {
+
+												var id = $(this).attr('id');
+												var notify = $('#heart').attr('data-notify');
+
+												$.ajax({
+															url : 'http://localhost:8006/removeproduitpanier',
+															data : "id=" + id,
+															type : 'GET',
+															success : function() {
+
+																swal(nameProduct,
+																		"est supprimé de la wishlist!",
+																		"success");
+
+																var notifynum = parseInt(notify);
+																notifynum--;
+																var newnotify = notifynum.toString();
+
+																$('#heart').attr('data-notify', newnotify);
+
+															}
+														});
+
+												$(this).parent().parent().hide();
+										});
+						});
 	</script>
 	<!--===============================================================================================-->
 	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.min.js}"></script>

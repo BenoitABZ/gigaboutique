@@ -145,9 +145,9 @@ public class UtilisateurController {
 				return "Connexion";
 			}
 
-		} catch (ResponseStatusException rse) {
+		} catch (Exception rse) {
 
-			message = rse.getMessage();
+			message = "authentification échec";
 
 			model.addAttribute("message", message);
 
@@ -182,9 +182,9 @@ public class UtilisateurController {
 				return "inscription";
 			}
 
-		} catch (ResponseStatusException rse) {
+		} catch (Exception rse) {
 
-			message = rse.getMessage();
+			message = "inscription échec";
 
 			model.addAttribute("message", message);
 

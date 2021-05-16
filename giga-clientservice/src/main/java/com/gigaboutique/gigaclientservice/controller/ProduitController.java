@@ -364,10 +364,16 @@ public class ProduitController {
 			int idUtilisateur = (int) claims.get("id");
 
 			List<ProduitDto> produitsDto = produitService.getProduitsPanier(token, idUtilisateur);
-
+			
+			int numberOfItems = produitsDto.size();
+			
+			double total = calculateTotal(produitsDto);
+			
+			model.addAttribute("numberOfItems", numberOfItems);
+			model.addAttribute("total", total);
 			model.addAttribute("produitsDto", produitsDto);
 
-			return "shoping-cart";
+			return "wish-list";
 
 		} else {
 
@@ -431,5 +437,17 @@ public class ProduitController {
 		}
 		
 		return produitsSet;		
+	}
+	
+	private double calculateTotal(List<ProduitDto> produitsDto) {
+		
+		double total = 0;
+				
+		for(ProduitDto produitDto : produitsDto) {
+			
+			total += Double.parseDouble(produitDto.getNewPrix().replace(",", "."));
+		}
+		
+		return total;		
 	}
 }

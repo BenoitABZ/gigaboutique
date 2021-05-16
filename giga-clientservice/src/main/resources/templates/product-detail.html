@@ -87,7 +87,7 @@
 					<div class="wrap-icon-header flex-w flex-r-m">
 						<a  
 						    id = "heart"
-						    href="#"
+						    th:href="@{/getproduitspanier}"
 							class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
 							th:attr="data-notify=${numberOfItems}"> <i class="zmdi zmdi-favorite-outline"></i>
 						</a>
@@ -510,8 +510,8 @@
 
 		$('.js-addwish-b2').each(
 				function() {
-					var nameProduct = $(this).parent().parent().find(
-							'.js-name-detail').html();
+					var nameProduct = $(this).parent().parent().find('.js-name-detail').html();
+					
 					$(this).on('click', function() {
 						
 						var id = $(this).attr('id');
@@ -522,10 +522,8 @@
 					        url: 'http://localhost:8006/addproduitpanier',
 					        data: "id="+id,
 					        type: 'GET',
-					        success: function()
-					        {
-						
-						
+					        success: function(){
+					        	
 						swal(nameProduct, "est ajouté à la wishlist!", "success");
 											
 						var notifynum = parseInt(notify);
