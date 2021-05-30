@@ -7,15 +7,7 @@ before_script:
   - cd docker/dev
   - docker-compose up -d
   - sleep 1m
-  - docker-compose up -d
-  - sleep 1m
-  - docker-compose up -d
-  - sleep 1m
-  - docker-compose up -d
-  - sleep 1m
-  - docker-compose up -d
-  - sleep 1m
-  - docker-compose up -d
+script:
   - cd config
   - docker build -t config .
   - docker run --network="host" -d -p9101:9101 config:latest
@@ -25,7 +17,6 @@ before_script:
   - docker build -t eureka .
   - docker run --network="host" -d -p9102:9102 eureka:latest
   - sleep 3m
-script:
   - cd ..
   - cd ..
   - cd ..
