@@ -47,5 +47,7 @@ script:
   #- cd giga-vendeurservice
   #- mvn clean package
 after_script:
+  - fuser -k 9102/tcp
+  - fuser -k 9101/tcp
   - cd ..
   - docker-compose -f docker/dev/docker-compose.yml down
