@@ -41,7 +41,7 @@ import javassist.NotFoundException;
 @Transactional
 @Rollback(true)
 public class ServiceLayerIntegrationTests {
-
+/*
 	@Autowired
 	ProduitService produitService;
 
@@ -349,5 +349,5 @@ public class ServiceLayerIntegrationTests {
 		assertTrue(categories.size() == 2);
 
 	}
-
+*/
 }

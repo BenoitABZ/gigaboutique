@@ -49,7 +49,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 public class ControllerLayerIntegrationTests {
-
+/*
 	@Autowired
 	SecurityConstant sc;
 
@@ -172,7 +172,7 @@ public class ControllerLayerIntegrationTests {
 				.contentType(MediaType.APPLICATION_JSON))
 		        .andExpect(jsonPath("$", hasSize(1)));
 	}
-*/	
+
 	@Test
 	public void getMarques() throws Exception {
 		
@@ -205,5 +205,5 @@ public class ControllerLayerIntegrationTests {
 		assertTrue(produitsTest2.isEmpty());
 		
 	}
-
+*/
 }
