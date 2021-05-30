@@ -7,10 +7,7 @@ services:
   - docker
 before_script:
    - docker-compose -f docker/dev/docker-compose.yml up -d
-   - cd docker/dev/config
    - ./configserver.sh
-   - cd ..
-   - cd eureka
    - ./eureka.sh
 script:
    - cd ..
