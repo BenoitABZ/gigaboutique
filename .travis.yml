@@ -3,10 +3,13 @@ language: java
 jdk: 
   - openjdk8
 sudo: false
+services:
+  - docker
 before_script:
   - cd docker/dev
+  - docker volume prune
   - docker-compose up -d
-  - sleep 1m
+  - sleep 2m
 script:
   - cd config
   - docker build -t config .
@@ -29,4 +32,5 @@ script:
   - cd giga-vendeurservice
   - mvn clean package
 after_script:
+  - docker volume prune
   - docker-compose -f docker/dev/docker-compose.yml down
