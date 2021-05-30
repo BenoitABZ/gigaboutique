@@ -7,6 +7,9 @@ services:
   - docker
 before_script:
    - docker-compose -f docker/dev/docker-compose.yml up -d
+   - sleep 2m
+   - docker-compose -f docker/dev/docker-compose.yml up -d
+   - sleep 2m
    - ./configserver.sh
    - ./eureka.sh
 script:

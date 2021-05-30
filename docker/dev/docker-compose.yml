@@ -1,7 +1,7 @@
 version: '3'
 services:
   giga.db.user:
-    image: postgres:9.4
+    image: postgres:10-alpine
     ports:
       - "127.0.0.1:9032:5432"
     volumes:
@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=user_giga
       - POSTGRES_PASSWORD=gigaboutique
   giga.db.product:
-    image: postgres:9.4
+    image: postgres:10-alpine
     ports:
       - "127.0.0.1:9033:5432"
     volumes:
@@ -23,7 +23,7 @@ services:
       - POSTGRES_USER=product_giga
       - POSTGRES_PASSWORD=gigaboutique
   giga.db.seller:
-    image: postgres:9.4
+    image: postgres:10-alpine
     ports:
       - "127.0.0.1:9034:5432"
     volumes:
