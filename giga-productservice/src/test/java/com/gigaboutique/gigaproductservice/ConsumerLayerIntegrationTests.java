@@ -30,7 +30,7 @@ import com.gigaboutique.gigaproductservice.model.VendeurBean;
 @Transactional
 @Rollback(true)
 public class ConsumerLayerIntegrationTests {
-
+	
 	@Autowired
 	CategorieDao categorieDao;
 

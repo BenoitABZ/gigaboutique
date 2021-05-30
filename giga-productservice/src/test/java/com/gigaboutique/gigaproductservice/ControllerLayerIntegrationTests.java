@@ -4,10 +4,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,11 +32,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.gigaboutique.gigaproductservice.configuration.SecurityConstant;
 import com.gigaboutique.gigaproductservice.dao.ProduitDao;
 import com.gigaboutique.gigaproductservice.dao.VendeurDao;
-import com.gigaboutique.gigaproductservice.dto.CritereDto;
 import com.gigaboutique.gigaproductservice.dto.ProduitDto;
 import com.gigaboutique.gigaproductservice.model.ProduitBean;
 import com.gigaboutique.gigaproductservice.model.VendeurBean;

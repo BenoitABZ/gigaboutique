@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import com.gigaboutique.gigaproductservice.dao.CategorieDao;
@@ -214,7 +213,7 @@ public class ServiceLayerIntegrationTests {
 		assertTrue(!produitBean2.getImages().isEmpty());
 
 	}
-/*
+
 	@Test
 	public void getProduitsByCriteria() throws ProduitException, NotFoundException, TechnicalException {
 
@@ -286,7 +285,7 @@ public class ServiceLayerIntegrationTests {
 		assertEquals("58,10", produits.get(0).getNewPrix());
 
 	}
-*/
+
 	@Test
 	public void getCategories() throws ProduitException, NotFoundException, TechnicalException {
 
