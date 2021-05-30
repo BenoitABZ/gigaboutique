@@ -17,9 +17,13 @@ script:
   - docker build -t eureka .
   - docker run --network="host" -d -p9101:9101 eureka:latest
   - sleep 3m
-  - cd /home/benoit/gigaboutique/giga-userservice/
+  - cd ..
+  - cd ..
+  - cd ..
+  - cd giga-userservice
   - mvn clean package
-  - cd /home/benoit/gigaboutique/giga-productservice/
+  - cd ..
+  - cd giga-productservice
   - mvn clean package
   - cd /home/benoit/gigaboutique/giga-vendeurservice/
   - mvn clean package
