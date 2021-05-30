@@ -7,7 +7,6 @@ services:
   - docker
 before_script:
   - cd docker/dev
-  - docker volume prune
   - docker-compose up -d
   - sleep 2m
 script:
@@ -32,5 +31,4 @@ script:
   - cd giga-vendeurservice
   - mvn clean package
 after_script:
-  - docker volume prune
   - docker-compose -f docker/dev/docker-compose.yml down
