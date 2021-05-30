@@ -10,9 +10,6 @@ before_script:
    - ./configserver.sh
    - ./eureka.sh
 script:
-   - cd ..
-   - cd ..
-   - cd ..
    - cd giga-userservice
    - mvn clean package
    - cd ..
