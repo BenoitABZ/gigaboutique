@@ -35,7 +35,7 @@ import com.gigaboutique.gigauserservice.service.UtilisateurService;
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 public class UtilisateurServiceTests {
-/*
+
 	@InjectMocks
 	UtilisateurService utilisateurService;
 
@@ -151,5 +151,5 @@ public class UtilisateurServiceTests {
 			utilisateurService.registerUtilisateur(registerDto, roleService);
 		});
 	}
-*/
+
 }

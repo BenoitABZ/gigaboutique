@@ -30,7 +30,7 @@ import com.gigaboutique.gigaproductservice.model.VendeurBean;
 @Transactional
 @Rollback(true)
 public class ConsumerLayerIntegrationTests {
-/*
+
 	@Autowired
 	CategorieDao categorieDao;
 
@@ -116,5 +116,5 @@ public class ConsumerLayerIntegrationTests {
 		assertEquals("43", taillesProduits.get(0).getTaille().getTaille());
 
 	}
-*/
+
 }

@@ -42,7 +42,7 @@ import javassist.NotFoundException;
 @Transactional
 @Rollback(true)
 public class ServiceLayerIntegrationTests {
-/*
+
 	@Autowired
 	ProduitService produitService;
 
@@ -214,7 +214,7 @@ public class ServiceLayerIntegrationTests {
 		assertTrue(!produitBean2.getImages().isEmpty());
 
 	}
-
+/*
 	@Test
 	public void getProduitsByCriteria() throws ProduitException, NotFoundException, TechnicalException {
 
@@ -286,7 +286,7 @@ public class ServiceLayerIntegrationTests {
 		assertEquals("58,10", produits.get(0).getNewPrix());
 
 	}
-
+*/
 	@Test
 	public void getCategories() throws ProduitException, NotFoundException, TechnicalException {
 
@@ -350,5 +350,5 @@ public class ServiceLayerIntegrationTests {
 		assertTrue(categories.size() == 2);
 
 	}
-*/
+
 }

@@ -65,7 +65,7 @@ class GigabatchvendeurserviceApplicationTests {
 		}
 
 	}
-
+/*
 	@Test
 	public void scheduledTest() throws InterruptedException {
 
@@ -74,5 +74,5 @@ class GigabatchvendeurserviceApplicationTests {
 		assertEquals(2, Scheduler.getCounter());
 
 	}
-
+*/
 }

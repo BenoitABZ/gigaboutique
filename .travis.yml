@@ -1,0 +1,27 @@
+dist: trusty 
+language: java
+jdk: 
+  - openjdk8
+sudo: false
+services:
+  - docker
+before_script:
+  - docker-compose -f docker/dev/docker-compose.yml up -d
+script:
+  - cd docker/dev/config
+  - docker build -t config .
+  - docker run --network="host" -d -p9101:9101 config:latest
+  - sleep 3m
+  - cd ..
+  - cd eureka
+  - docker build -t eureka .
+  - docker run --network="host" -d -p9101:9101 eureka:latest
+  - sleep 3m
+  - cd /home/benoit/gigaboutique/giga-userservice/
+  - mvn clean package
+  - cd /home/benoit/gigaboutique/giga-productservice/
+  - mvn clean package
+  - cd /home/benoit/gigaboutique/giga-vendeurservice/
+  - mvn clean package
+after_script:
+  - docker-compose -f docker/dev/docker-compose.yml down

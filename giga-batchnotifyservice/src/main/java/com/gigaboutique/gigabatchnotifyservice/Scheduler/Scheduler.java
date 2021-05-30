@@ -15,9 +15,11 @@ public class Scheduler {
 
 	private static int counter = 0;
 
-	private static final int rate = 150000;
+	//private static final int rate = 150000;
+	
+	//fixedRate = rate
 
-	@Scheduled(fixedRate = rate)
+	@Scheduled(cron = "0 0 0 * * *")
 	public void runBatchVendeur() throws BatchNotifyException {
 
 		boolean bool = notifyUsersService.notifyUsers();

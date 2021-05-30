@@ -24,7 +24,7 @@ import com.gigaboutique.gigauserservice.dto.RegisterDto;
 @Rollback(true)
 @AutoConfigureMockMvc
 public class UtilisateurControllerIntegrationTests {
-/*
+
 	@Autowired
 	private MockMvc mvc;
 
@@ -82,5 +82,5 @@ public class UtilisateurControllerIntegrationTests {
 		   .getResponse()
 		   .getHeader("Authorization");
 	}
-*/
+
 }

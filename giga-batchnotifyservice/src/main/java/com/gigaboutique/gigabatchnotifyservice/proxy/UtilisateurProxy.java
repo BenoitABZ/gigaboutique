@@ -21,13 +21,13 @@ public interface UtilisateurProxy {
 	@PostMapping("/utilisateur/signup")
 	public UtilisateurDto signUp(@RequestBody RegisterDto registerDto);
 
-	@PostMapping("/login/utilisateur")
+	@PostMapping("/utilisateur/login")
 	public void login();
 
-	@PostMapping("/panier/add")
+	@PostMapping("/utilisateur/panier/add")
 	public void addProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur);
 
-	@DeleteMapping("/panier/remove")
+	@DeleteMapping("/utilisateur/panier/remove")
 	public void removeProduit(@RequestParam int idProduit, @RequestParam int idUtilisateur);
 
 }

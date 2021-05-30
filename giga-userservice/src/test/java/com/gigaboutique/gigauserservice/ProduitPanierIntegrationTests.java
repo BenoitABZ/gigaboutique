@@ -42,70 +42,68 @@ import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 public class ProduitPanierIntegrationTests {
-/*
+
 	@Autowired
 	private MockMvc mvc;
-	
+
 	@Autowired
 	MapUtilisateurDtoService mapUtilisateurDtoService;
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-	
+
 	@Autowired
 	private ProduitPanierDao produitPanierDao;
 
 	UtilisateurDto utilisateurDto;
-	
+
 	ObjectWriter mapper;
-	
+
 	String token;
-	
-	  @BeforeAll 
-	  public void authenticate() throws Exception {
-		  
-			RegisterDto registerDto = new RegisterDto();
 
-			registerDto.setNom("lastNameTest");
-			registerDto.setPrenom("firstNameTest");
-			registerDto.setMail("mail1.adm@gmail.com");
-			registerDto.setPassword("Poiuytreza3");
+	@BeforeAll
+	public void authenticate() throws Exception {
 
-			ObjectMapper objectMapper = new ObjectMapper();
-			mapper = objectMapper.writer().withDefaultPrettyPrinter();
+		RegisterDto registerDto = new RegisterDto();
 
-			String registerDtoJson = mapper.writeValueAsString(registerDto);
+		registerDto.setNom("lastNameTest");
+		registerDto.setPrenom("firstNameTest");
+		registerDto.setMail("mail1.adm@gmail.com");
+		registerDto.setPassword("Poiuytreza3");
 
-			mvc.perform(post("/utilisateur/signup")
-			   .contentType(MediaType.APPLICATION_JSON)
-			   .content(registerDtoJson));
+		ObjectMapper objectMapper = new ObjectMapper();
+		mapper = objectMapper.writer().withDefaultPrettyPrinter();
 
-			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		String registerDtoJson = mapper.writeValueAsString(registerDto);
 
-			params.add("mail", "mail1.adm@gmail.com");
-			params.add("motDePasse", "Poiuytreza3");
+		mvc.perform(post("/utilisateur/signup").contentType(MediaType.APPLICATION_JSON).content(registerDtoJson));
 
-			token = mvc.perform(post("/utilisateur/login")
-					   .params(params)
-					   .accept("application/json;charset=UTF-8"))
-					   .andReturn().getResponse().getHeader("Authorization");
-			
-			System.out.println(token);
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-			utilisateurDto = new UtilisateurDto();
+		params.add("mail", "mail1.adm@gmail.com");
+		params.add("motDePasse", "Poiuytreza3");
 
-			utilisateurDto.setNom("lastNameTest");
-			utilisateurDto.setPrenom("firstNameTest");
-			utilisateurDto.setMail("mail1.adm@gmail.com");
+		token = mvc.perform(post("/utilisateur/login")
+				.params(params)
+				.accept("application/json;charset=UTF-8"))
+				.andReturn().getResponse().getHeader("Authorization");
 
-			UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
+		System.out.println(token);
 
-			int id = utilisateurBean.getId();
-			String role = utilisateurBean.getRole().getRole();
+		utilisateurDto = new UtilisateurDto();
 
-			utilisateurDto.setIdUtilisateur(id);
-			utilisateurDto.setRole(role);			
-	 }
+		utilisateurDto.setNom("lastNameTest");
+		utilisateurDto.setPrenom("firstNameTest");
+		utilisateurDto.setMail("mail1.adm@gmail.com");
+
+		UtilisateurBean utilisateurBean = utilisateurDao.findByMail(registerDto.getMail());
+
+		int id = utilisateurBean.getId();
+		String role = utilisateurBean.getRole().getRole();
+
+		utilisateurDto.setIdUtilisateur(id);
+		utilisateurDto.setRole(role);
+	}
 
 	@Test
 	public void addProduitPanierTest() throws Exception {
@@ -118,24 +116,24 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
-		   .header("Authorization", token)
-		   .params(paramsAdd)
-		   .contentType(MediaType.APPLICATION_JSON))
-		   .andExpect(status().isCreated());
-		
+		mvc.perform(post("/utilisateur/panier/add")
+				.header("Authorization", token)
+				.params(paramsAdd)
+				.contentType(MediaType.APPLICATION_JSON))
+		        .andExpect(status().isCreated());
+
 		assertTrue(produitPanierDao.findById(idProduitToAdd) != null);
-		
+
 		UtilisateurBean utilisateurBean = utilisateurDao.findById(idUtilisateur);
-		
+
 		UtilisateurDto utilisateurDtoTest = mapUtilisateurDtoService.convertToUtilisateurDto(utilisateurBean);
-		
+
 		assertEquals(1, utilisateurDtoTest.getProduits().size());
 	}
 
 	@Test
 	public void removeProduitPanierTest() throws Exception {
-		
+
 		int idProduitToAdd = 1;
 		int idUtilisateur = utilisateurDto.getIdUtilisateur();
 
@@ -144,11 +142,10 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
-		   .header("Authorization", token)
-		   .params(paramsAdd)
-		   .contentType(MediaType.APPLICATION_JSON))
-		   .andExpect(status().isCreated());
+		mvc.perform(post("/utilisateur/panier/add").header("Authorization", token)
+				.params(paramsAdd)
+				.contentType(MediaType.APPLICATION_JSON))
+		        .andExpect(status().isCreated());
 
 		int idProduitToRemove = 1;
 
@@ -157,18 +154,17 @@ public class ProduitPanierIntegrationTests {
 		paramsRemove.add("idProduit", Integer.toString(idProduitToRemove));
 		paramsRemove.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(delete("/panier/remove")
-		   .header("Authorization", token)
-		   .params(paramsRemove)
-		   .contentType(MediaType.APPLICATION_JSON))
-		   .andExpect(status().isOk());
-		
+		mvc.perform(delete("/utilisateur/panier/remove").header("Authorization", token)
+				.params(paramsRemove)
+				.contentType(MediaType.APPLICATION_JSON))
+		        .andExpect(status().isOk());
+
 		assertFalse(produitPanierDao.findById(idProduitToRemove) != null);
 	}
 
 	@Test
 	public void removeProduitPanierTestWithMoreThanOneUserTest() throws Exception {
-		
+
 		RegisterDto registerDto2 = new RegisterDto();
 
 		registerDto2.setNom("lastNameTest2");
@@ -180,9 +176,7 @@ public class ProduitPanierIntegrationTests {
 		mapper = objectMapper.writer().withDefaultPrettyPrinter();
 		String registerDtoJson2 = mapper.writeValueAsString(registerDto2);
 
-		mvc.perform(post("/utilisateur/signup")
-		   .contentType(MediaType.APPLICATION_JSON)
-		   .content(registerDtoJson2));
+		mvc.perform(post("/utilisateur/signup").contentType(MediaType.APPLICATION_JSON).content(registerDtoJson2));
 
 		MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
 
@@ -192,15 +186,14 @@ public class ProduitPanierIntegrationTests {
 		String token2 = mvc.perform(post("/utilisateur/login")
 				           .params(params2)
 				           .accept("application/json;charset=UTF-8"))
-				           .andReturn().getResponse()
-				           .getHeader("Authorization");
-	
+				           .andReturn().getResponse().getHeader("Authorization");
+
 		UtilisateurDto utilisateurDto2 = new UtilisateurDto();
 
 		utilisateurDto2.setNom("lastNameTest2");
 		utilisateurDto2.setPrenom("firstNameTest2");
 		utilisateurDto2.setMail("mail2.adm@gmail.com");
-		
+
 		UtilisateurBean utilisateurBean2 = utilisateurDao.findByMail(registerDto2.getMail());
 
 		int id2 = utilisateurBean2.getId();
@@ -208,7 +201,7 @@ public class ProduitPanierIntegrationTests {
 
 		utilisateurDto2.setIdUtilisateur(id2);
 		utilisateurDto2.setRole(role2);
-		
+
 		int idProduitToAdd = 1;
 		int idUtilisateur = utilisateurDto.getIdUtilisateur();
 
@@ -217,7 +210,7 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(post("/utilisateur/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd)
 		   .contentType(MediaType.APPLICATION_JSON))
@@ -230,12 +223,12 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur2));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(post("/utilisateur/panier/add")
 		   .header("Authorization", token2)
-		   .params(paramsAdd2)
+	       .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
-		
+
 		int idProduitToRemove = 1;
 
 		MultiValueMap<String, String> paramsRemove = new LinkedMultiValueMap<>();
@@ -243,19 +236,19 @@ public class ProduitPanierIntegrationTests {
 		paramsRemove.add("idProduit", Integer.toString(idProduitToRemove));
 		paramsRemove.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(delete("/panier/remove")
+		mvc.perform(delete("/utilisateur/panier/remove")
 		   .header("Authorization", token)
 		   .params(paramsRemove)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isOk());
-		
+
 		ProduitPanierBean produitPanier = produitPanierDao.findById(idProduitToRemove);
 
 		assertTrue(produitPanierDao.findById(idProduitToRemove) != null);
 		assertTrue(produitPanier.getUtilisateurProduits().size() == 1);
-		assertTrue(((UtilisateurProduitPanierBean)produitPanier.getUtilisateurProduits().toArray()[0]).getUtilisateur().getId() == utilisateurBean2.getId());
+		assertTrue(((UtilisateurProduitPanierBean) produitPanier.getUtilisateurProduits().toArray()[0]).getUtilisateur().getId() == utilisateurBean2.getId());
 	}
-	
+
 	@Test
 	public void getProduitPanierTest() throws Exception {
 
@@ -267,30 +260,30 @@ public class ProduitPanierIntegrationTests {
 		paramsAdd1.add("idProduit", Integer.toString(idProduitToAdd1));
 		paramsAdd1.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(post("/utilisateur/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd1)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
-		
+
 		int idProduitToAdd2 = 2;
-		
+
 		MultiValueMap<String, String> paramsAdd2 = new LinkedMultiValueMap<>();
 
 		paramsAdd2.add("idProduit", Integer.toString(idProduitToAdd2));
 		paramsAdd2.add("idUtilisateur", Integer.toString(idUtilisateur));
 
-		mvc.perform(post("/panier/add")
+		mvc.perform(post("/utilisateur/panier/add")
 		   .header("Authorization", token)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isCreated());
-		
-		mvc.perform(get("/panier/get/" + idUtilisateur)
+
+		mvc.perform(get("/utilisateur/panier/get/" + idUtilisateur)
 		   .header("Authorization", token)
 		   .params(paramsAdd2)
 		   .contentType(MediaType.APPLICATION_JSON))
 		   .andExpect(jsonPath("$.produits", hasSize(2)));
 	}
-*/
+
 }

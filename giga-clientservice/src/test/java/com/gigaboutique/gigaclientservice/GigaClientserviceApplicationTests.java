@@ -17,23 +17,27 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gigaboutique.gigaclientservice.dto.RegisterDto;
 import com.gigaboutique.gigaclientservice.proxy.GatewayProxy;
+
+import ch.qos.logback.core.net.ObjectWriter;
 
 @SpringBootTest
 @Rollback(true)
 @AutoConfigureMockMvc
 class GigaClientserviceApplicationTests {
-	
+/*	
 	@Autowired
 	private MockMvc mvc;
 	
 	@Autowired
 	private GatewayProxy gatewayProxy;
-
+*/
 	@Test
 	void contextLoads() {
 	}
-/*		
+/*	
 	@Test
 	public void signUpTest() throws Exception {
 
@@ -46,8 +50,8 @@ class GigaClientserviceApplicationTests {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		ObjectWriter mapper = objectMapper.writer().withDefaultPrettyPrinter();
-		String registerDtoJson = mapper.writeValueAsString(registerDto);
+		ObjectWriter mapper = (ObjectWriter) objectMapper.writer().withDefaultPrettyPrinter();
+		String registerDtoJson = ((ObjectMapper) mapper).writeValueAsString(registerDto);
 
 		mvc.perform(post("/signup")
 		   .contentType(MediaType.APPLICATION_JSON)
@@ -100,9 +104,7 @@ class GigaClientserviceApplicationTests {
 		ResponseEntity<String> responseEntity = gatewayProxy.login(mail, mdp);
 
 	    String token = responseEntity.getHeaders().getFirst("Authorization");
-	    
-	    //gatewayProxy.addProduit(token, 4, 1);
-	    
+	    	    
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		
 		params.add("genre", "Homme");
@@ -126,9 +128,7 @@ class GigaClientserviceApplicationTests {
 		ResponseEntity<String> responseEntity = gatewayProxy.login(mail, mdp);
 
 	    String token = responseEntity.getHeaders().getFirst("Authorization");
-	    
-	    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	    
+    
 	    int idProduit = 4;
 	    
 	    mvc.perform(get("/getproduit/"+idProduit)
@@ -138,7 +138,6 @@ class GigaClientserviceApplicationTests {
 				   .andExpect(status().isOk());
 	    		
 	}
-*/
 	
 	@Test
 	public void addProductListTest() throws Exception {
@@ -158,5 +157,6 @@ class GigaClientserviceApplicationTests {
 			       .contentType(MediaType.APPLICATION_JSON)
 				   .accept("application/json;charset=UTF-8"))
 				   .andExpect(status().isOk());
-}
+     }
+*/
 }

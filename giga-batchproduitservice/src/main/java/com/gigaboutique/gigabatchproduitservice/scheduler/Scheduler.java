@@ -15,9 +15,11 @@ public class Scheduler {
 
 	private static int counter = 0;
 
-	private static final int rate = 80000;
+	//private static final int rate = 80000;
+	
+	//fixedRate = rate
 
-	@Scheduled(fixedRate = rate)
+	@Scheduled(cron = "0 10 0 * * *")
 	public void runBatchVendeur() throws BatchProduitException, InterruptedException {
 
 		scrappingGlobalService.addProduits();

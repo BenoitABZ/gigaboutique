@@ -20,7 +20,7 @@ import com.gigaboutique.gigauserservice.service.MapUtilisateurDtoService;
 
 @ExtendWith(MockitoExtension.class)
 public class MapUtilisateurDtoServiceTests {
-/*
+
 	MapUtilisateurDtoService map;
 
 	UtilisateurBean utilisateurBean;
@@ -91,5 +91,5 @@ public class MapUtilisateurDtoServiceTests {
 		assertEquals(utilisateurBeanTest.getMail(), registerDto.getMail());
 
 	}
-*/
+
 }
