@@ -5,10 +5,14 @@ jdk:
 sudo: false
 services:
   - docker
+  - docker-compose
 before_script:
   - cd docker/dev
-  - docker-compose up -d
+  - docker-compose up -d --build
   - sleep 2m
+  - docker-compose up -d 
+  - sleep 2m
+
 script:
   - cd config
   - docker build -t config .
