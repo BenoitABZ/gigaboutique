@@ -2,37 +2,42 @@ dist: trusty
 language: java
 jdk: 
   - openjdk8
-sudo: false
+sudo: true
 services:
   - docker
-  - docker-compose
 before_script:
-  - cd docker/dev
-  - docker-compose up -d --build
-  - sleep 2m
-  - docker-compose up -d 
-  - sleep 2m
-
+   - docker-compose -f docker/dev/docker-compose.yml up -d
+   - cd giga-configserver/target
+   - java -jar giga-configserver-0.0.1-SNAPSHOT.jar
+   - cd ..
+   - cd ..
+   - cd giga-eureka/target
+   - java -jar giga-eureka-0.0.1-SNAPSHOT.jar
 script:
-  - cd config
-  - docker build -t config .
-  - docker run --network="host" -d -p9101:9101 config:latest
-  - sleep 3m
-  - cd ..
-  - cd eureka
-  - docker build -t eureka .
-  - docker run --network="host" -d -p9102:9102 eureka:latest
-  - sleep 3m
-  - cd ..
-  - cd ..
-  - cd ..
-  - cd giga-userservice
-  - mvn clean package
-  - cd ..
-  - cd giga-productservice
-  - mvn clean package
-  - cd ..
-  - cd giga-vendeurservice
-  - mvn clean package
+   - cd ..
+   - cd ..
+   - cd giga-userservice
+   - mvn clean package  
+#script:
+  #- cd config
+  #- docker build -t config .
+  #- docker run --network="host" -d -p9101:9101 config:latest
+  #- sleep 3m
+  #- cd ..
+  #- cd eureka
+  #- docker build -t eureka .
+  #- docker run --network="host" -d -p9102:9102 eureka:latest
+  #- sleep 3m
+  #- cd ..
+  #- cd ..
+  #- cd ..
+  #- cd giga-userservice
+  #- mvn clean package
+  #- cd ..
+  #- cd giga-productservice
+  #- mvn clean package
+  #- cd ..
+  #- cd giga-vendeurservice
+  #- mvn clean package
 after_script:
   - docker-compose -f docker/dev/docker-compose.yml down
