@@ -7,17 +7,23 @@ services:
   - docker
 before_script:
    - docker-compose -f docker/dev/docker-compose.yml up -d
-   - cd giga-configserver/target
-   - java -jar giga-configserver-0.0.1-SNAPSHOT.jar
+   - cd docker/dev/config
+   - ./configserver.sh
    - cd ..
-   - cd ..
-   - cd giga-eureka/target
-   - java -jar giga-eureka-0.0.1-SNAPSHOT.jar
+   - cd eureka
+   - ./eureka.sh
 script:
    - cd ..
    - cd ..
+   - cd ..
    - cd giga-userservice
-   - mvn clean package  
+   - mvn clean package
+   - cd ..
+   - cd giga-productservice
+   - mvn clean package
+   - cd ..
+   - cd giga-vendeurservice
+   - mvn clean package   
 #script:
   #- cd config
   #- docker build -t config .
