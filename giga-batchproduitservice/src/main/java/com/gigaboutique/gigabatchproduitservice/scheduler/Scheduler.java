@@ -19,7 +19,7 @@ public class Scheduler {
 	
 	//fixedRate = rate
 
-	@Scheduled(cron = "0 10 0 * * *")
+	@Scheduled(cron = "* */5 * * * *")
 	public void runBatchVendeur() throws BatchProduitException, InterruptedException {
 
 		scrappingGlobalService.addProduits();

@@ -1,5 +1,6 @@
 package com.gigaboutique.gigaclientservice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,17 @@ public class HeartService {
 		for (ProduitDto produitDto : produitsDto) {
 
 			produitDto.setHeart(false);
+			
+			List<ProduitDto> produitsDtoFromUser = new ArrayList<>();
+			
+			try {
 
-			List<ProduitDto> produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
+			produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
 
+			} catch(Exception e) {
+				
+				return 0;
+			}
 			if (produitsDtoFromUser != null) {
 
 				numberOfItems = produitsDtoFromUser.size();

@@ -306,22 +306,21 @@ public class ProduitController {
 			ProduitDto produitDto = produitService.getProduit(token, idProduit);
 			
 			produitsDto.add(produitDto);
-
-			VendeurDto vendeurDto = vendeurService.getVendeur(token, produitDto.getIdVendeur());
 			
-			System.out.println(vendeurDto.getLogo());
-			
-			int numberOfItems = heartService.setHeart(produitsDto, token);
-			
-			boolean heart = produitDto.isHeart();
-			
-			produitDto = produitsDto.get(0);
-			
-			List<CommentaireDto> commentaires= vendeurDto.getCommentaires();			
-			List<CommentaireDto> threeLastComments = commentaires.subList(0, 3);
+			List<CommentaireDto> commentaires= new ArrayList<>();
 			
 			List<FormatReview> reviews = new ArrayList<>();
 			
+			VendeurDto vendeurDto = null;
+			
+			try {
+
+			vendeurDto = vendeurService.getVendeur(token, produitDto.getIdVendeur());
+			
+			commentaires = vendeurDto.getCommentaires();
+			
+		    List<CommentaireDto> threeLastComments = commentaires.subList(0, 3);
+						
 			for(CommentaireDto commentaire: threeLastComments) {
 				
 				FormatReview formatReview = new FormatReview();
@@ -332,16 +331,30 @@ public class ProduitController {
 				formatReview.setNote(Integer.parseInt(commentaire.getNote()));
 				
 				reviews.add(formatReview);
-				
-				System.out.println(formatReview.getDescription());
+
 			}
 			
+			}catch(NullPointerException npe) {
+				
+				
+			}
+		
+			int numberOfItems = heartService.setHeart(produitsDto, token);
 			
+			boolean heart = produitDto.isHeart();
+			
+			produitDto = produitsDto.get(0);
+						
 			model.addAttribute("heart", heart);
 			model.addAttribute("commentaires", reviews);
 			model.addAttribute("numberOfItems", numberOfItems);
 			model.addAttribute("produitDto", produitDto);
+			
+			if(vendeurDto != null) {
+			
 			model.addAttribute("vendeurDto", vendeurDto);
+			
+			}
 
 			return "product-detail";
 

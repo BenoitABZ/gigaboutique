@@ -1,5 +1,6 @@
 package com.gigaboutique.gigaclientservice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,8 +87,19 @@ public class UtilisateurController {
 						.parseClaimsJws(token.replace(sc.getTokenPrefix() + "", "")).getBody();
 
 				int idUtilisateur = (int) claims.get("id");
+				
+				List<ProduitDto> produitsDtoFromUser = new ArrayList<>();
+				
+				try {
 
-				List<ProduitDto> produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
+				produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
+				
+				}catch (Exception e) {
+					
+					model.addAttribute("numberOfItems", 0);
+
+					return "index";
+				}
 
 				int size = produitsDtoFromUser.size();
 
@@ -103,7 +115,8 @@ public class UtilisateurController {
 		} catch (NullPointerException npe) {
 
 			return "connexion";
-		}
+			
+		} 
 	}
 
 	@PostMapping(path = "/login", consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE })
@@ -126,8 +139,20 @@ public class UtilisateurController {
 				Claims claims = Jwts.parser().setSigningKey(sc.getSecret().getBytes()).parseClaimsJws(token.replace(sc.getTokenPrefix() + "", "")).getBody();
 
 				int idUtilisateur = (int) claims.get("id");
+				
+				List<ProduitDto> produitsDtoFromUser = new ArrayList<>();
+				
+				try {
 
-				List<ProduitDto> produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
+					produitsDtoFromUser = produitService.getProduitsPanier(token, idUtilisateur);
+					
+					}catch (Exception e) {
+						
+						model.addAttribute("numberOfItems", 0);
+						model.addAttribute("message", message);
+
+						return "index";
+					}
 
 				int size = produitsDtoFromUser.size();
 
