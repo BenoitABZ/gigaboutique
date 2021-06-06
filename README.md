@@ -49,8 +49,7 @@ features :
                        
  - Spring boot microservices : 
    
-     - Spring config : Centralize all .properties and .yml config files located in github repository 
-                       Each microservices retrieve their congifuration here
+     - Spring config : Centralize all .properties and .yml config files located in a github repository. Each microservices retrieve their congifuration here
                        
      - Spring eureka : All microservices instances are registered into eureka --> allow load balancing and healthcheck
                        
@@ -68,8 +67,7 @@ features :
                       
      - giga-batchproductservice : Scheduled batch that scrap every products
                        
-     - giga-batchnotifyservice : Scheduled batch that check if a product of a user's wish-list is unavailable
-                                 Send mail to warn customer
+     - giga-batchnotifyservice : Scheduled batch that check if a product of a user's wish-list is unavailable and send mail to warn customer
                        
     On the next release : 
      
