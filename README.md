@@ -6,6 +6,7 @@ git link : https://github.com/BenoitABZ/gigaboutique
 Gigaboutique is an spring cloud architecture platform witch allow customer to easily find best discount on clothes sold on the web. It can be shoes, jeans, tee shirt...
 Each product are grouped by category. 
 
+
 features :
 
 . Backend scrap from websites:
@@ -83,7 +84,7 @@ features :
                         
   - CI/CD : TRAVIS CI
                         
-  - To deploy : Databases ans microservices (except batch) are dockerized (directory /gigaboutique/docker/dev) : 
+  - To deploy : Databases and microservices (except batch) are dockerized (directory /gigaboutique/docker/dev) : 
   
     - to run databases only : docker-compose up -d
                        
@@ -92,10 +93,3 @@ features :
    
    Browser : localhost:8007
   
-  
-  
-                       
-                       
-                       
-                        
-
