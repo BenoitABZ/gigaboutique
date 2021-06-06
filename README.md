@@ -95,7 +95,8 @@ features :
                        
     - to run all the application, run the script : ./gigaboutique.sh
                        
-  browser : localhost:8007
+   
+   Browser : localhost:8007
   
   
   
