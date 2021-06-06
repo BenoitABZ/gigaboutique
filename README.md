@@ -73,7 +73,7 @@ features :
      - giga-batchnotifyservice : 
                                  - Scheduled batch that check if a product of a user's wish-list is unavailable
      
-                                 - send email to warn the customer
+                                 - Send mail to warn customer
                        
     On the next release : 
      
