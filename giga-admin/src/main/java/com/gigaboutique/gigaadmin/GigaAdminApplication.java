@@ -12,7 +12,7 @@ import de.codecentric.boot.admin.server.config.EnableAdminServer;
 public class GigaAdminApplication {
 
 	public static void main(String[] args) {
-	        //un com
+	        //un com2
 		SpringApplication.run(GigaAdminApplication.class, args);
 	}
 
